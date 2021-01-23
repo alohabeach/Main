@@ -1,0 +1,6 @@
+Versions = {
+  JailbreakArrestFarm = "1.0.0",
+  JailbreakAutoRob = "1.5.0"
+}
+
+return Versions
