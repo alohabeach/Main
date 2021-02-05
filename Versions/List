@@ -1,7 +1,7 @@
 Versions = {
-  JailbreakArrestFarm = "1.0.0",
-  JailbreakAutoRob = "1.9.6",
-  PiggyAutoFarm = "1.0.0"
+  JailbreakArrestFarm = "1.0.0 beta",
+  JailbreakAutoRob = "1.9.6 beta",
+  PiggyAutoFarm = "1.0.0 beta"
 }
 
 return Versions
