@@ -1,5 +1,5 @@
 Versions = {
-  JailbreakAutoRob = "1.14.2 beta"
+  JailbreakAutoRob = "1.14.3 beta"
 }
 
 return Versions
