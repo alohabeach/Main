@@ -1,5 +1,6 @@
 Versions = {
-  JailbreakAutoRob = "1.16.2 beta"
+  JailbreakAutoRob = "1.0.0",
+  BloxburgAutoFarm = "1.0.0 beta"
 }
 
 return Versions
