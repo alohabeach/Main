@@ -1028,7 +1028,7 @@ do
 					Size = UDim2.new(1, 0, 1, 0),
 					ZIndex = 3,
 					Font = Enum.Font.GothamSemibold,
-					Text = options.key.Name,
+					Text = this.key.Name,
 					TextColor3 = themes.TextColor,
 					TextSize = 11
 				})
