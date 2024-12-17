@@ -1028,7 +1028,7 @@ do
 					Size = UDim2.new(1, 0, 1, 0),
 					ZIndex = 3,
 					Font = Enum.Font.GothamSemibold,
-					Text = input:GetStringForKeyCode(this.key),
+					Text = options.key.Name,
 					TextColor3 = themes.TextColor,
 					TextSize = 11
 				})
@@ -1067,7 +1067,6 @@ do
 				text.Text = "..."
 
 				this.key = utility:KeyPressed().KeyCode
-				text.Text = this.key.Name
 
 				self:updateKeybind(module)
 				animate()
@@ -2162,7 +2161,7 @@ do
 
 		if options.key ~= Enum.KeyCode.Unknown then
 			self.binds[keybind].connection = utility:BindToKey(options.key, bind.callback, options.gameProcessedEvent)
-			text.Text = input:GetStringForKeyCode(options.key)
+			text.Text = options.key.Name
 		else
 			text.Text = "Unknown"
 		end
