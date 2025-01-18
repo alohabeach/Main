@@ -856,6 +856,7 @@ do
 
 			this.callback(this.toggled)
 		end)
+		this.callback(this.toggled)
 
 		return module
 	end
