@@ -1786,6 +1786,8 @@ do
 			return section:updateSlider(module)
 		end
 
+		this.callback(this.default)
+
 		return module
 	end
 
