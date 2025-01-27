@@ -856,7 +856,7 @@ do
 
 			this.callback(this.toggled)
 		end)
-		this.callback(this.toggled)
+		task.spawn(this.callback, this.toggled)
 
 		return module
 	end
@@ -1786,7 +1786,7 @@ do
 			return section:updateSlider(module)
 		end
 
-		this.callback(this.default)
+		task.spawn(this.callback, this.default)
 
 		return module
 	end
