@@ -2154,8 +2154,12 @@ do
 		local keybind = module.Instance
 		local options = module.Options
 
-		if (typeof(options.key) == "Instance" and options.key:IsA("InputObject")) then
-			options.key = options.key.KeyCode
+		if typeof(options.key) == "Instance" and options.key:IsA("InputObject") then
+			if options.key.UserInputType == Enum.UserInputType.Keyboard then
+				options.key = options.key.KeyCode
+			else
+				options.key = options.key.UserInputType
+			end
 		end
 
 		local text = keybind.Button.Text
@@ -2167,13 +2171,17 @@ do
 			bind.connection = bind.connection:UnBind()
 		end
 
-		if options.key ~= Enum.KeyCode.Unknown then
+		if options.key ~= Enum.KeyCode.Unknown and options.key ~= Enum.UserInputType.MouseButton1 and options.key ~= Enum.UserInputType.MouseButton2 then
 			self.binds[keybind].connection = utility:BindToKey(options.key, bind.callback, options.gameProcessedEvent)
 			text.Text = options.key.Name
+		elseif options.key == Enum.UserInputType.MouseButton1 then
+			text.Text = "Left Click"
+		elseif options.key == Enum.UserInputType.MouseButton2 then
+			text.Text = "Right Click"
 		else
 			text.Text = "Unknown"
 		end
-	end
+	end	
 
 	function section:updateColorPicker(module)
 		local colorpicker = module.Instance
