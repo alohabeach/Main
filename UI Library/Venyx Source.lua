@@ -1092,6 +1092,8 @@ do
 			return section:updateKeybind(module)
 		end
 
+		this.changedCallback(this.key)
+
 		return module
 	end
 
