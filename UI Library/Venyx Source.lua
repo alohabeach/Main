@@ -148,7 +148,7 @@ do
 	function utility:KeyPressed() -- yield until next key is pressed
 		local key = input.InputBegan:Wait()
 
-		while key.UserInputType ~= Enum.UserInputType.Keyboard	 do
+		while key.UserInputType ~= Enum.UserInputType.Keyboard and key.UserInputType ~= Enum.UserInputType.MouseButton1 and key.UserInputType ~= Enum.UserInputType.MouseButton2 do
 			key = input.InputBegan:Wait()
 		end
 
@@ -1067,7 +1067,12 @@ do
 			if text.Text == "Unknown" then -- new bind
 				text.Text = "..."
 
-				this.key = utility:KeyPressed().KeyCode
+				local input = utility:KeyPressed()
+				if input.UserInputType == Enum.UserInputType.Keyboard then
+					this.key = input.KeyCode
+				elseif input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.MouseButton2 then
+					this.key = input.UserInputType
+				end
 
 				self:updateKeybind(module)
 				animate()
