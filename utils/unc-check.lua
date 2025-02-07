@@ -315,6 +315,7 @@ addTest("debug.traceback", {}, function()
     local function outerFunction()
         innerFunction()
     end
+    pcall(function() getgenv().debug.traceback = getrenv().debug.traceback end)
     local success, message = xpcall(outerFunction, debug.traceback)
     assert(not success, "debug.traceback did not capture the error")
     assert(message:find("outerFunction"), "debug.traceback did not include 'outerFunction' in the stack trace")
