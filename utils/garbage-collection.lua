@@ -13,7 +13,7 @@ end
 --- Garbage Collection ---
 local garbageCollection = {}
 
-function garbageCollection:attemptCollection(garbageInfo, maxAttempts)
+function garbageCollection:attemptCollection(maxAttempts, garbageInfo)
     local failedCollections
 
     for _ = 0, maxAttempts or 1 do
