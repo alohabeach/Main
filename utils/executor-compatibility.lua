@@ -1,3 +1,5 @@
+if not getgenv then return end
+
 getgenv().getgc = getgc or get_gc_objects
 getgenv().getreg = getreg or debug.getregistry
 getgenv().getinfo = getinfo or debug.getinfo
