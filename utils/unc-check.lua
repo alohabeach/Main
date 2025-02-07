@@ -3,7 +3,7 @@ local function customKick(title, message)
     local LocalPlayer = game.GetService(game, "Players").LocalPlayer
     LocalPlayer.Kick(LocalPlayer, message)
 
-    local prompt = game.CoreGui.RobloxPromptGui.promptOverlay.ErrorPrompt
+    local prompt = game:GetService("CoreGui").RobloxPromptGui.promptOverlay.ErrorPrompt
     prompt.TitleFrame.ErrorTitle.Text = title
     prompt.MessageArea.ErrorFrame.ErrorMessage.Text = message
 end
