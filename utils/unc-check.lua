@@ -912,3 +912,5 @@ addTest("WebSocket.connect", {}, function()
 	end
 	ws:Close()
 end)
+
+return test
