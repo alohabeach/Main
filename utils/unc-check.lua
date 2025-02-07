@@ -772,6 +772,12 @@ addTest("getgc", {}, function()
 	assert(#gc > 0, "Did not return a table with any values")
 end)
 
+addTest("getreg", {}, function()
+	local registry = getreg()
+	assert(type(registry) == "table", "Did not return a table")
+	assert(#registry > 0, "Did not return a table with any values")
+end)
+
 addTest("getgenv", {}, function()
 	getgenv().__TEST_GLOBAL = true
 	assert(__TEST_GLOBAL, "Failed to set a global variable")
