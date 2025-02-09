@@ -847,6 +847,9 @@ do
                 end
 			end
 
+			self.toggled = module.Options.toggled
+			self.callback(self.toggled)
+
 			return section:updateToggle(module)
 		end
 
@@ -1959,7 +1962,7 @@ do
 			this:Update({
 				title = this.default
 			})
-			this.callback(this.default)
+			task.spawn(this.callback, this.default)
 		end
 
 		return module
