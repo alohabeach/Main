@@ -847,8 +847,10 @@ do
                 end
 			end
 
-			self.toggled = module.Options.toggled
-			self.callback(self.toggled)
+			if type(dataOptions.toggled) == "boolean" then
+				self.toggled = dataOptions.toggled
+				self.callback(self.toggled)
+			end
 
 			return section:updateToggle(module)
 		end
