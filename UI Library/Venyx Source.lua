@@ -1959,7 +1959,7 @@ do
 			this:Update({
 				title = this.default
 			})
-			this.callback(this.defualt)
+			this.callback(this.default)
 		end
 
 		return module
