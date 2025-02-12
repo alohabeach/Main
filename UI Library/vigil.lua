@@ -614,7 +614,7 @@ function Vigil.new(Name, ...)
 					local fill_fraction = (Slider.Value - min) / (max - min)
 					TweenService:Create(
 						SliderFill,
-						TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut),
+						TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut),
 						{ Size = UDim2.new(fill_fraction, 0, 1, 0) }
 					):Play()
 
