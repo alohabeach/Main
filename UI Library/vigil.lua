@@ -1,4 +1,4 @@
---- @ doom.dtw | 1.6
+-- @ doom.dtw | 1.7
 -- @ This UI uses SafeLoad V1. Will bypass most CoreGui checks. (ex: Peroxide, Da Hood)
 
 -- $ VARIABLES
@@ -26,7 +26,7 @@ function AddInstance(class : string, properties : {})
 	local i
 
 	local madeInstance, errorMessage = pcall(function()
-		i = Instance.new(class)	
+		i = Instance.new(class)
 	end)
 
 	if not madeInstance then
@@ -38,8 +38,8 @@ function AddInstance(class : string, properties : {})
 			i[property] = value
 		end)
 
-		if err then 
-			return warn(`[{i}] Problem adding instance: {err}`) 
+		if err then
+			return warn(`[{i}] Problem adding instance: {err}`)
 		end
 	end
 
@@ -64,7 +64,7 @@ function EncryptedString()
 	local str = ''
 	for i=1, 99 do
 		str = str .. characters:sub(
-			math.random(1, #characters), 
+			math.random(1, #characters),
 			math.random(1, #characters)
 		)
 	end
@@ -80,7 +80,7 @@ function SafeLoad(instance : Instance, encrypt_names : boolean)
 	end
 
 	local ElevationAllowed = pcall(function() local a = cloneref(game:GetService("CoreGui")):GetFullName() end)
-	instance.Parent = ElevationAllowed and Services.CoreGui --> or game.Players.LocalPlayer.PlayerGui
+	instance.Parent = ElevationAllowed and Services.CoreGui or Services.Players.LocalPlayer.PlayerGui
 end
 
 -- $ LIBRARY
@@ -95,7 +95,7 @@ end
 
 function Vigil:toggle(v)
 	if not Vigil.LIBRARY_INSTANCE then return warn('No VIGIL instance detected.') end
-	
+
 	if v then
 		Vigil.LIBRARY_INSTANCE.Enabled = v
 	else
@@ -210,27 +210,27 @@ function Vigil.new(Name, ...)
 			end
 		end
 	end)
-	
+
 	function Window:toggle()
-        if not game:GetService('UserInputService'):GetFocusedTextBox() then
-            Window.Hidden = not Window.Hidden
+		if not game:GetService('UserInputService'):GetFocusedTextBox() then
+			Window.Hidden = not Window.Hidden
 
-            TweenService:Create(
-                WindowFrame,
-                tween_info.new(.25, easing_style.Quad, easing_direction.InOut),
-                { Size = Window.Hidden and UDim2.new(Meta.Size.X.Scale, Meta.Size.X.Offset, 0, 0) or Meta.Size }
-            ):Play()
+			TweenService:Create(
+				WindowFrame,
+				tween_info.new(.25, easing_style.Quad, easing_direction.InOut),
+				{ Size = Window.Hidden and UDim2.new(Meta.Size.X.Scale, Meta.Size.X.Offset, 0, 0) or Meta.Size }
+			):Play()
 
-            TweenService:Create(
-                TitleTextLabel,
-                tween_info.new(.25, easing_style.Quad, easing_direction.InOut),
-                { TextTransparency = Window.Hidden and 1 or 0 }
-            ):Play()
+			TweenService:Create(
+				TitleTextLabel,
+				tween_info.new(.25, easing_style.Quad, easing_direction.InOut),
+				{ TextTransparency = Window.Hidden and 1 or 0 }
+			):Play()
 
-            ContentFrame.Visible = not Window.Hidden
-        end
+			ContentFrame.Visible = not Window.Hidden
+		end
 	end
-	
+
 	function Window:addPage(Name, ...)
 		-- $$$ Metadata
 		local Page, Meta = {}, {
@@ -322,7 +322,7 @@ function Vigil.new(Name, ...)
 					ButtonLabel.Text = newText
 				end
 			end
-			
+
 			function Section:addButton(...)
 				-- $$$$$ Metadata
 				local Button, Meta = {}, {
@@ -371,7 +371,7 @@ function Vigil.new(Name, ...)
 
 			function Section:addKeybind(...)
 				-- $$$$$ Metadata
-				local Keybind, Meta = { Key = nil; Pressed = false; }, {
+				local Keybind, Meta = { Type = 'Keyboard', Key = nil; Pressed = false; }, {
 					title = 'Keybind';
 					default = nil;
 					mode = 'click';
@@ -394,12 +394,25 @@ function Vigil.new(Name, ...)
 				local KeybindFrame = AddInstance("Frame", { Parent = SectionFrame, Name = [[KeybindFrame]], BorderSizePixel = 0, Size = UDim2.new(1, 0, 0, 30), BorderColor3 = Color3.fromRGB(0, 0, 0), BackgroundColor3 = Color3.fromRGB(39, 39, 39),})
 				local KeybindLabel = AddInstance("TextLabel", { Parent = KeybindFrame, Name = [[KeybindLabel]], TextWrapped = false, BorderSizePixel = 0, BackgroundColor3 = Color3.fromRGB(255, 255, 255), AnchorPoint = Vector2.new(0, 0.5), TextSize = 16, Size = UDim2.new(0.5, 0, 1, 0), TextXAlignment = Enum.TextXAlignment.Left, BorderColor3 = Color3.fromRGB(0, 0, 0), Text = Meta.title, Font = Enum.Font.GothamMedium, Position = UDim2.new(0, 0, 0.5, 0), TextColor3 = Color3.fromRGB(255, 255, 255), BackgroundTransparency = 1,})
 				local KeybindBox = AddInstance("ImageLabel", { Parent = KeybindFrame, Name = [[InputBox]], AnchorPoint = Vector2.new(1, 0.5), Image = [[rbxassetid://114222904430574]], Selectable = true, BorderSizePixel = 0, Size = UDim2.new(0, 24, 0, 24), ScaleType = Enum.ScaleType.Fit, BorderColor3 = Color3.fromRGB(0, 0, 0), Position = UDim2.new(1, 0, 0.5, 0), BackgroundTransparency = 1, BackgroundColor3 = Color3.fromRGB(255, 255, 255),})
-				local KeybindButton = AddInstance("TextButton", { Parent = KeybindBox, Name = [[Hitbox]], TextScaled = true; Text = `{Meta.default or '...'}`; BorderSizePixel = 0, BackgroundColor3 = Color3.fromRGB(255, 255, 255), TextSize = 14, Size = UDim2.new(1, 0, 1, 0), BorderColor3 = Color3.fromRGB(0, 0, 0), FontFace = Font.new('rbxasset://fonts/families/GothamSSm.json', Enum.FontWeight.SemiBold, Enum.FontStyle.Normal), TextColor3 = Color3.fromRGB(255, 255, 255), BackgroundTransparency = 1,})
-				AddInstance("UIPadding", { Parent = KeybindFrame, PaddingRight = UDim.new(0, 3), PaddingLeft = UDim.new(0, 10),})
+				--local KeybindButton = AddInstance("TextButton", { Parent = KeybindBox, Name = [[Hitbox]], TextScaled = true; Text = `{Meta.default or '...'}`; BorderSizePixel = 0, BackgroundColor3 = Color3.fromRGB(255, 255, 255), TextSize = 14, Size = UDim2.new(1, 0, 1, 0), BorderColor3 = Color3.fromRGB(0, 0, 0), FontFace = Font.new('rbxasset://fonts/families/GothamSSm.json', Enum.FontWeight.SemiBold, Enum.FontStyle.Normal), TextColor3 = Color3.fromRGB(255, 255, 255), BackgroundTransparency = 1,})
+				local KeybindButton = AddInstance("TextButton", { Parent = KeybindFrame, Name = [[KeybindButton]], AutoButtonColor = false; TextWrapped = false, BorderSizePixel = 0, Text = `{Meta.default or '...'}`; TextScaled = false, BackgroundColor3 = Color3.fromRGB(30, 30, 30), AnchorPoint = Vector2.new(1, 0.5), TextSize = 14, Size = UDim2.new(0, 22, 0, 22), BorderColor3 = Color3.fromRGB(0, 0, 0), FontFace = Font.new('rbxasset://fonts/families/GothamSSm.json', Enum.FontWeight.SemiBold, Enum.FontStyle.Normal), Position = UDim2.new(1, 0, 0.5, 0), TextColor3 = Color3.fromRGB(255, 255, 255),})
+				local UICorner = AddInstance("UICorner", { Parent = KeybindButton, CornerRadius = UDim.new(0, 4),})
+				local UIStroke = AddInstance("UIStroke", { Parent = KeybindButton, ApplyStrokeMode = Enum.ApplyStrokeMode.Border, Thickness = 1.7999999523162842, Color = Color3.fromRGB(53, 53, 53),})
+				AddInstance("UIPadding", { Parent = KeybindFrame, PaddingRight = UDim.new(0, 5), PaddingLeft = UDim.new(0, 10),})
 				AddInstance("UICorner", { Parent = KeybindFrame, CornerRadius = UDim.new(0, 4),})
 				AddInstance("UIStroke", { Parent = KeybindFrame, Thickness = 2, Color = Color3.fromRGB(68, 68, 68),})
 
 				-- $$$$$ Functions + Connections
+				local function ResizeBox()
+					if KeybindButton.TextBounds.X > 22 then
+						KeybindButton.Size = UDim2.new(0, KeybindButton.TextBounds.X + 7, 0, 22)
+					end
+
+					if KeybindButton.TextBounds.X < 22 then
+						KeybindButton.Size = UDim2.new(0, 22, 0, 22)
+					end
+				end
+
 				local Blacklist = {
 					'RightSuper',
 					'LeftSuper',
@@ -433,36 +446,62 @@ function Vigil.new(Name, ...)
 				end)
 
 				InputService.InputBegan:Connect(function(Input)
+					if game:GetService('UserInputService'):GetFocusedTextBox() then 
+						return
+					end
+
 					if EditingKeybind then
 						KeybindButton.TextColor3 = Color3.new(0.784, 0.784, 0.784)
 
-						if table.find(Blacklist, tostring(Input.KeyCode):gsub('Enum.KeyCode.', '')) then
-							Keybind.Key = nil
-							KeybindButton.Text = '...'
-							--KeybindButton.Size = UDim2.new(0, 30, 1, 0)	
+						if Input.UserInputType == Enum.UserInputType.Keyboard then
+							if table.find(Blacklist, tostring(Input.KeyCode):gsub('Enum.KeyCode.', '')) then
+								Keybind.Key = nil
+								KeybindButton.Text = '...'
+								EditingKeybind = false
+								return
+							end
+
+							Keybind.Type = 'Keyboard'
+							Keybind.Key = Input.KeyCode
+							KeybindButton.Text = tostring(Input.KeyCode):gsub('Enum.KeyCode.', '')
+							Meta.on_update(Keybind.Key)
+
+							ResizeBox()
+
+							EditingKeybind = false 
+							return
+						elseif Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.MouseButton2 then
+							Keybind.Key = Input.UserInputType
+							Keybind.Type = 'MouseInput'
+							KeybindButton.Text = tostring(Input.UserInputType):gsub('Enum.UserInputType.', '')
+							Meta.on_update(Keybind.Key)
+
+							ResizeBox()
+
 							EditingKeybind = false
 							return
 						end
-
-						Keybind.Key = Input.KeyCode
-						KeybindButton.Text = tostring(Input.KeyCode):gsub('Enum.KeyCode.', '')
-						Meta.on_update(Keybind.Key)
-
-						--if KeybindButton.TextBounds.X > 30 then
-						--	KeybindButton.Size = UDim2.new(0, KeybindButton.TextBounds.X + 6, 1, 0)	
-						--end
-
-						--if KeybindButton.TextBounds.X < 30 then
-						--	KeybindButton.Size = UDim2.new(0, 30, 1, 0)	
-						--end
-
-						EditingKeybind = false 
-						return
 					end
 
 					if Keybind.Key == nil then return end
 
-					if Input.KeyCode == Keybind.Key then
+					if Keybind.Type == 'Keyboard' and Input.KeyCode == Keybind.Key then
+						if Meta.mode == 'hold' then
+							Keybind.Pressed = true
+							Meta.on_press(Keybind.Key)
+							--while Keybind.Pressed do task.wait()
+							--end
+						elseif Meta.mode == 'toggle' then
+							Keybind.Pressed = not Keybind.Pressed
+							while Keybind.Pressed do task.wait()
+								Meta.on_press(Keybind.Key)
+							end
+						elseif Meta.mode == 'click' then
+							Meta.on_press(Keybind.Key)
+						end
+					end
+
+					if Keybind.Type == 'MouseInput' and Input.UserInputType == Keybind.Key then
 						if Meta.mode == 'hold' then
 							Keybind.Pressed = true
 							Meta.on_press(Keybind.Key)
@@ -480,12 +519,17 @@ function Vigil.new(Name, ...)
 				end)
 
 				InputService.InputEnded:Connect(function(Input)
+					if game:GetService('UserInputService'):GetFocusedTextBox() then
+						return
+					end
+
 					if Keybind.Key == nil then return end
 
-					if Input.KeyCode == Keybind.Key and Meta.mode == 'hold' then
+					if Keybind.Type == 'Keyboard' and Input.KeyCode == Keybind.Key and Meta.mode == 'hold' or Keybind.Type == 'MouseInput' and Input.UserInputType == Keybind.Key and Meta.mode == 'hold' then
 						Keybind.Pressed = false
 						Meta.on_release(Keybind.Key)
 					end
+
 				end)
 			end
 
@@ -531,29 +575,29 @@ function Vigil.new(Name, ...)
 				SliderFill.Size = UDim2.new((Slider.Value - min) / (max - min), 0, 1, 0)
 				--SliderValueLabel.Text = tostring(Slider.Value):sub(1,4)
 
-                local function update_value()
-                    local bar_size_x = SliderBar.AbsoluteSize.X
-                    local mouse_x = math.clamp(Mouse.X - SliderBar.AbsolutePosition.X, 0, bar_size_x)
+				local function update_value()
+					local bar_size_x = SliderBar.AbsoluteSize.X
+					local mouse_x = math.clamp(Mouse.X - SliderBar.AbsolutePosition.X, 0, bar_size_x)
 
-                    local new_value = ((mouse_x / bar_size_x) * (max - min)) + min
+					local new_value = ((mouse_x / bar_size_x) * (max - min)) + min
 
-                    if Meta.decimals then
-                        Slider.Value = new_value
-                        SliderValueLabel.Text = string.format("%.2f%s", Slider.Value, Meta.suffix)
-                    else
-                        Slider.Value = math.floor(new_value)
-                        SliderValueLabel.Text = `{tostring(Slider.Value)}{Meta.suffix}`
-                    end
+					if Meta.decimals then
+						Slider.Value = new_value
+						SliderValueLabel.Text = string.format("%.2f%s", Slider.Value, Meta.suffix)
+					else
+						Slider.Value = math.floor(new_value)
+						SliderValueLabel.Text = `{tostring(Slider.Value)}{Meta.suffix}`
+					end
 
-                    local fill_fraction = (Slider.Value - min) / (max - min)
-                    TweenService:Create(
-                        SliderFill,
-                        TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut),
-                        { Size = UDim2.new(fill_fraction, 0, 1, 0) }
-                    ):Play()
+					local fill_fraction = (Slider.Value - min) / (max - min)
+					TweenService:Create(
+						SliderFill,
+						TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut),
+						{ Size = UDim2.new(fill_fraction, 0, 1, 0) }
+					):Play()
 
-                    Meta.callback(Slider.Value)
-                end
+					Meta.callback(Slider.Value)
+				end
 
 				Mouse.Move:Connect(function() if mouse_down then update_value() end end)
 				SliderBar.MouseButton1Down:Connect(function() mouse_down = true update_value() end)
@@ -566,6 +610,8 @@ function Vigil.new(Name, ...)
 						mouse_down = false
 					end
 				end)
+
+				task.spawn(Meta.callback, Slider.Value)
 
 				return Slider
 			end
@@ -637,8 +683,8 @@ function Vigil.new(Name, ...)
 								if Button:IsA('TextButton') then
 									Button.TextColor3 = Color3.fromRGB(164,164,164)
 									Button.FontFace = Font.new(
-										'rbxasset://fonts/families/GothamSSm.json', 
-										Enum.FontWeight.Regular, 
+										'rbxasset://fonts/families/GothamSSm.json',
+										Enum.FontWeight.Regular,
 										Enum.FontStyle.Normal
 									)
 								end
@@ -648,12 +694,12 @@ function Vigil.new(Name, ...)
 							Meta.callback(Dropdown.Selection)
 							OptionButton.TextColor3 = Color3.fromRGB(200, 200, 200)
 							OptionButton.FontFace = Font.new(
-								'rbxasset://fonts/families/GothamSSm.json', 
-								Enum.FontWeight.SemiBold, 
+								'rbxasset://fonts/families/GothamSSm.json',
+								Enum.FontWeight.SemiBold,
 								Enum.FontStyle.Normal
 							)
 						elseif Meta.mode == 'multi' then
-							if OptionButton:GetAttribute('Selected') == nil then 
+							if OptionButton:GetAttribute('Selected') == nil then
 								OptionButton:SetAttribute('Selected', false)
 							end
 
@@ -664,8 +710,8 @@ function Vigil.new(Name, ...)
 								Meta.callback(Dropdown.Selection)
 								OptionButton.TextColor3 = Color3.fromRGB(200, 200, 200)
 								OptionButton.FontFace = Font.new(
-									'rbxasset://fonts/families/GothamSSm.json', 
-									Enum.FontWeight.SemiBold, 
+									'rbxasset://fonts/families/GothamSSm.json',
+									Enum.FontWeight.SemiBold,
 									Enum.FontStyle.Normal
 								)
 							elseif not OptionButton:GetAttribute('Selected') then
@@ -677,8 +723,8 @@ function Vigil.new(Name, ...)
 								Meta.callback(Dropdown.Selection)
 								OptionButton.TextColor3 = Color3.fromRGB(164, 164, 164)
 								OptionButton.FontFace = Font.new(
-									'rbxasset://fonts/families/GothamSSm.json', 
-									Enum.FontWeight.Regular, 
+									'rbxasset://fonts/families/GothamSSm.json',
+									Enum.FontWeight.Regular,
 									Enum.FontStyle.Normal
 								)
 							end
@@ -695,7 +741,7 @@ function Vigil.new(Name, ...)
 				-- $$$$$ Functions + Connections
 				DropdownLabel.FocusLost:Connect(function()
 					--DropdownLabel.Text = Meta.title
-					
+
 					--task.wait()
 					--for _, Option in OptionFrame:GetChildren() do
 					--	if Option:IsA('TextButton') then
@@ -713,8 +759,8 @@ function Vigil.new(Name, ...)
 								if Button:IsA('TextButton') then
 									Button.TextColor3 = Color3.fromRGB(164,164,164)
 									Button.FontFace = Font.new(
-										'rbxasset://fonts/families/GothamSSm.json', 
-										Enum.FontWeight.Regular, 
+										'rbxasset://fonts/families/GothamSSm.json',
+										Enum.FontWeight.Regular,
 										Enum.FontStyle.Normal
 									)
 								end
@@ -724,12 +770,12 @@ function Vigil.new(Name, ...)
 							Meta.callback(Dropdown.Selection)
 							OptionButton.TextColor3 = Color3.fromRGB(200, 200, 200)
 							OptionButton.FontFace = Font.new(
-								'rbxasset://fonts/families/GothamSSm.json', 
-								Enum.FontWeight.SemiBold, 
+								'rbxasset://fonts/families/GothamSSm.json',
+								Enum.FontWeight.SemiBold,
 								Enum.FontStyle.Normal
 							)
 						elseif Meta.mode == 'multi' then
-							if OptionButton:GetAttribute('Selected') == nil then 
+							if OptionButton:GetAttribute('Selected') == nil then
 								OptionButton:SetAttribute('Selected', false)
 							end
 
@@ -740,8 +786,8 @@ function Vigil.new(Name, ...)
 								Meta.callback(Dropdown.Selection)
 								OptionButton.TextColor3 = Color3.fromRGB(200, 200, 200)
 								OptionButton.FontFace = Font.new(
-									'rbxasset://fonts/families/GothamSSm.json', 
-									Enum.FontWeight.SemiBold, 
+									'rbxasset://fonts/families/GothamSSm.json',
+									Enum.FontWeight.SemiBold,
 									Enum.FontStyle.Normal
 								)
 							elseif not OptionButton:GetAttribute('Selected') then
@@ -753,8 +799,8 @@ function Vigil.new(Name, ...)
 								Meta.callback(Dropdown.Selection)
 								OptionButton.TextColor3 = Color3.fromRGB(164, 164, 164)
 								OptionButton.FontFace = Font.new(
-									'rbxasset://fonts/families/GothamSSm.json', 
-									Enum.FontWeight.Regular, 
+									'rbxasset://fonts/families/GothamSSm.json',
+									Enum.FontWeight.Regular,
 									Enum.FontStyle.Normal
 								)
 							end
@@ -765,7 +811,7 @@ function Vigil.new(Name, ...)
 				DropdownHitbox.MouseButton1Click:Connect(function()
 					Dropdown.Dropped = not Dropdown.Dropped
 					OptionFrame.Visible = Dropdown.Dropped
-					
+
 					TweenService:Create(
 						DropdownButton,
 						tween_info.new(.2, easing_style.Quad, easing_direction.InOut),
@@ -787,14 +833,14 @@ function Vigil.new(Name, ...)
 						end
 					end
 				end)
-				
+
 				DropdownLabel.Changed:Connect(function()
 					if DropdownLabel.Text == Meta.Title then return end
-					
+
 					for _, Option in OptionFrame:GetChildren() do
 						if Option:IsA('TextButton') and DropdownLabel.Text ~= Meta.title and Dropdown.Dropped then
 							Option.Visible = false
-						
+
 							if Option.Text:match(DropdownLabel.Text) then
 								Option.Visible = true
 							end
@@ -831,8 +877,8 @@ function Vigil.new(Name, ...)
 				-- $$$$$ Functions + Connections
 				if Meta.toggled then
 					Toggle.Value = true
-                    task.spawn(Meta.callback, Toggle.Value)
-					
+					task.spawn(Meta.callback, Toggle.Value)
+
 					TweenService:Create(
 						ToggleCircle,
 						TweenInfo.new(.1, easing_style.Quad, easing_direction.InOut), {
@@ -841,7 +887,7 @@ function Vigil.new(Name, ...)
 						}
 					):Play()
 				end
-				
+
 				ToggleHitbox.MouseButton1Down:Connect(function()
 					TweenService:Create(
 						ToggleFrame,
@@ -877,7 +923,7 @@ function Vigil.new(Name, ...)
 						}
 					):Play()
 
-                    Meta.callback(Toggle.Value)
+					Meta.callback(Toggle.Value)
 				end)
 
 				return Toggle
