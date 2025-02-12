@@ -318,7 +318,7 @@ function Vigil.new(Name, ...)
 				-- $$$$$ Functions + Connections
 				local function ResizeBox(isFocused)
 					task.wait()
-					local textHeight = ButtonLabel.TextBounds[isFocused and "X" or "Y"]
+					local textHeight = ButtonLabel.TextBounds.Y
 					ButtonFrame.Size = UDim2.new(1, 0, 0, textHeight + 10)
 				end
 
