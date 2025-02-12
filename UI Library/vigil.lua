@@ -529,27 +529,31 @@ function Vigil.new(Name, ...)
 
 				Slider.Value = Meta.default
 				SliderFill.Size = UDim2.new((Slider.Value - min) / (max - min), 0, 1, 0)
-				SliderValueLabel.Text = tostring(Slider.Value):sub(1,4)
+				--SliderValueLabel.Text = tostring(Slider.Value):sub(1,4)
 
-				local function update_value()
-					local mouse_x = math.clamp(Mouse.X - SliderBar.AbsolutePosition.X, min, SliderBar.AbsoluteSize.X)
+                local function update_value()
+                    local bar_size_x = SliderBar.AbsoluteSize.X
+                    local mouse_x = math.clamp(Mouse.X - SliderBar.AbsolutePosition.X, 0, bar_size_x)
 
-					if Meta.decimals then
-						Slider.Value = (math.clamp((mouse_x / SliderBar.AbsoluteSize.X) * (max - min) + min, min, max))
-						SliderValueLabel.Text = tostring(Slider.Value):sub(1,4)
-					elseif not Meta.decimals then
-						Slider.Value = math.floor(math.clamp((mouse_x / SliderBar.AbsoluteSize.X) * (max - min) + min, min, max))
-						SliderValueLabel.Text = tostring(Slider.Value)
-					end
+                    local new_value = ((mouse_x / bar_size_x) * (max - min)) + min
 
-					TweenService:Create(
-						SliderFill,
-						TweenInfo.new(0, easing_style.Quad, easing_direction.InOut),
-						{ Size = UDim2.new((Slider.Value - min) / (max - min), 0, 1, 0) }
-					):Play()
+                    if Meta.decimals then
+                        Slider.Value = new_value
+                        SliderValueLabel.Text = string.format("%.2f%s", Slider.Value, Meta.suffix)
+                    else
+                        Slider.Value = math.floor(new_value)
+                        SliderValueLabel.Text = `{tostring(Slider.Value)}{Meta.suffix}`
+                    end
 
-					Meta.callback(Slider.Value)
-				end
+                    local fill_fraction = (Slider.Value - min) / (max - min)
+                    TweenService:Create(
+                        SliderFill,
+                        TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut),
+                        { Size = UDim2.new(fill_fraction, 0, 1, 0) }
+                    ):Play()
+
+                    Meta.callback(Slider.Value)
+                end
 
 				Mouse.Move:Connect(function() if mouse_down then update_value() end end)
 				SliderBar.MouseButton1Down:Connect(function() mouse_down = true update_value() end)
