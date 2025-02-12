@@ -410,10 +410,6 @@ function Vigil.new(Name, ...)
 
 				-- $$$$$ Functions + Connections
 				local function ResizeBox()
-					if Meta.default then
-						KeybindButton.Text = Meta.default.Name
-					end
-
 					if KeybindButton.TextBounds.X > 22 then
 						KeybindButton.Size = UDim2.new(0, KeybindButton.TextBounds.X + 7, 0, 22)
 					end
@@ -422,7 +418,7 @@ function Vigil.new(Name, ...)
 						KeybindButton.Size = UDim2.new(0, 22, 0, 22)
 					end
 				end
-				ResizeBox()
+				task.defer(ResizeBox)
 
 				local Blacklist = {
 					Enum.KeyCode.RightSuper,
@@ -455,7 +451,7 @@ function Vigil.new(Name, ...)
 				end)
 
 				KeybindButton.MouseButton1Click:Connect(function()
-					EditingKeybind = true
+					Keybind.Editing = true
 					KeybindButton.Text = '...'
 					KeybindButton.TextColor3 = Color3.fromRGB(200, 200, 200)
 				end)
@@ -465,14 +461,14 @@ function Vigil.new(Name, ...)
 						return
 					end
 
-					if EditingKeybind then
+					if Keybind.Editing then
 						KeybindButton.TextColor3 = Color3.new(0.784, 0.784, 0.784)
 
 						if Input.UserInputType == Enum.UserInputType.Keyboard then
 							if table.find(Blacklist, Input.KeyCode) then
 								Keybind.Key = nil
 								KeybindButton.Text = '...'
-								EditingKeybind = false
+								Keybind.Editing = false
 								return
 							end
 
@@ -483,12 +479,12 @@ function Vigil.new(Name, ...)
 
 							ResizeBox()
 
-							EditingKeybind = false
+							Keybind.Editing = false
 						elseif Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.MouseButton2 then
 							if table.find(Blacklist, Input.UserInputType) then
 								Keybind.Key = nil
 								KeybindButton.Text = '...'
-								EditingKeybind = false
+								Keybind.Editing = false
 								return
 							end
 
@@ -499,7 +495,7 @@ function Vigil.new(Name, ...)
 
 							ResizeBox()
 
-							EditingKeybind = false
+							Keybind.Editing = false
 						end
 
 						return
