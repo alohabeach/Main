@@ -211,12 +211,24 @@ function Vigil.new(Name, ...)
 		end
 	end)
 	
-	function Window:toggle(v)
-		if v then
-			WindowFrame.Visible = v
-		else
-			WindowFrame.Visible = not WindowFrame.Visible
-		end
+	function Window:toggle()
+        if not game:GetService('UserInputService'):GetFocusedTextBox() then
+            Window.Hidden = not Window.Hidden
+
+            TweenService:Create(
+                WindowFrame,
+                tween_info.new(.25, easing_style.Quad, easing_direction.InOut),
+                { Size = Window.Hidden and UDim2.new(Meta.Size.X.Scale, Meta.Size.X.Offset, 0, 0) or Meta.Size }
+            ):Play()
+
+            TweenService:Create(
+                TitleTextLabel,
+                tween_info.new(.25, easing_style.Quad, easing_direction.InOut),
+                { TextTransparency = Window.Hidden and 1 or 0 }
+            ):Play()
+
+            ContentFrame.Visible = not Window.Hidden
+        end
 	end
 	
 	function Window:addPage(Name, ...)
