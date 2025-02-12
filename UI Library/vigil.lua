@@ -378,7 +378,7 @@ function Vigil.new(Name, ...)
 					mode = 'click';
 					blacklist = {},
 					on_update = function()
-						print('Keybind does not have the "on_update" connection binded.')
+						--print('Keybind does not have the "on_update" connection binded.')
 					end,
 					on_press = function()
 						print('Keybind does not have the "on_press" connection binded.')
@@ -410,6 +410,10 @@ function Vigil.new(Name, ...)
 
 				-- $$$$$ Functions + Connections
 				local function ResizeBox()
+					if Meta.default then
+						KeybindButton.Text = Meta.default.Name
+					end
+
 					if KeybindButton.TextBounds.X > 22 then
 						KeybindButton.Size = UDim2.new(0, KeybindButton.TextBounds.X + 7, 0, 22)
 					end
@@ -536,6 +540,8 @@ function Vigil.new(Name, ...)
 				if Meta.default then
 					task.spawn(Meta.on_update, Meta.default)
 				end
+
+				return Keybind
 			end
 
 			function Section:addSlider(...)
