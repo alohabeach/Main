@@ -963,20 +963,17 @@ function Vigil.new(Name, ...)
 				function Toggle:update(NewMeta)
 					Meta = TableOverwrite(Meta, NewMeta or {})
 					ToggleLabel.Text = Meta.title
+					Toggle.Value = Meta.toggled
 
-					if NewMeta.toggled ~= nil then
-						Toggle.Value = NewMeta.toggled
+					TweenService:Create(
+						ToggleCircle,
+						TweenInfo.new(.1, easing_style.Quad, easing_direction.InOut), {
+							Position = Toggle.Value and UDim2.new(1,0,0.5,0) or UDim2.new(0,0,0.5,0);
+							AnchorPoint = Toggle.Value and Vector2.new(1,0.5) or Vector2.new(0,0.5);
+						}
+					):Play()
 
-						TweenService:Create(
-							ToggleCircle,
-							TweenInfo.new(.1, easing_style.Quad, easing_direction.InOut), {
-								Position = Toggle.Value and UDim2.new(1,0,0.5,0) or UDim2.new(0,0,0.5,0);
-								AnchorPoint = Toggle.Value and Vector2.new(1,0.5) or Vector2.new(0,0.5);
-							}
-						):Play()
-
-						Meta.callback(Toggle.Value)
-					end
+					Meta.callback(Toggle.Value)
 				end
 
 				return Toggle
