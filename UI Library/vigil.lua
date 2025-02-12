@@ -390,8 +390,7 @@ function Vigil.new(Name, ...)
 
 				Meta = TableOverwrite(Meta, ... or {})
 				if Meta.default then Keybind.Key = Meta.default end
-				if Input.UserInputType ~= Enum.UserInputType.Keyboard then Keybind.Type = "MouseInput" end
-				local EditingKeybind = false
+				if Meta.default.EnumType == Enum.UserInputType then Keybind.Type = "MouseInput" end
 
 				-- $$$$$ Instances
 				local KeybindFrame = AddInstance("Frame", { Parent = SectionFrame, Name = [[KeybindFrame]], BorderSizePixel = 0, Size = UDim2.new(1, 0, 0, 30), BorderColor3 = Color3.fromRGB(0, 0, 0), BackgroundColor3 = Color3.fromRGB(39, 39, 39),})
