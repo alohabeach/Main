@@ -318,14 +318,16 @@ function Vigil.new(Name, ...)
 				-- $$$$$ Functions + Connections
 				local function ResizeBox(isFocused)
 					task.wait()
-					local textHeight = ButtonLabel.TextBounds.Y
-					ButtonFrame.Size = UDim2.new(1, 0, 0, textHeight + 10)
+					local textHeight = isFocused and ButtonLabel.TextBounds.X - Label.originalXBounds or ButtonLabel.TextBounds.Y
+					ButtonFrame.Size = UDim2.new(1, 0, 0, textHeight + (isFocused and 30 or 10))
+					Label.originalXBounds = ButtonLabel.TextBounds.X
 				end
 
 				ButtonLabel.Focused:Connect(function() ResizeBox(true) end)
 				ButtonLabel.FocusLost:Connect(ResizeBox)
 
 				function Label:updateText(newText)
+					Label.originalXBounds = ButtonLabel.TextBounds.X
 					ButtonLabel.Text = newText
 					ResizeBox()
 				end
