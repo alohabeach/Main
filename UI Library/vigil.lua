@@ -313,7 +313,7 @@ function Vigil.new(Name, ...)
 				local UICorner = AddInstance("UICorner", { Parent = ButtonFrame, CornerRadius = UDim.new(0, 4),})
 				local UIPadding = AddInstance("UIPadding", { Parent = ButtonFrame, PaddingRight = UDim.new(0, 3), PaddingLeft = UDim.new(0, 10),})
 				local UIStroke = AddInstance("UIStroke", { Parent = ButtonFrame, ApplyStrokeMode = Enum.ApplyStrokeMode.Border, Thickness = 2, Color = Color3.fromRGB(68, 68, 68),})
-				local ButtonLabel = AddInstance("TextBox", { Parent = ButtonFrame, Name = [[ButtonLabel]], RichText = true, TextEditable = false, ClearTextOnFocus = false, TextWrapped = true, BorderSizePixel = 0, BackgroundColor3 = Color3.fromRGB(255, 255, 255), AnchorPoint = Vector2.new(0, 0.5), TextSize = 16, Size = UDim2.new(1, 0, 1, 0), TextXAlignment = Meta.xAlignment, BorderColor3 = Color3.fromRGB(0, 0, 0), Text = Meta.title, Font = Enum.Font.GothamMedium, Position = UDim2.new(0, 0, 0.5, 0), TextColor3 = Color3.fromRGB(255, 255, 255), BackgroundTransparency = 1,})
+				local ButtonLabel = AddInstance("TextLabel", { Parent = ButtonFrame, Name = [[ButtonLabel]], RichText = true, TextWrapped = true, BorderSizePixel = 0, BackgroundColor3 = Color3.fromRGB(255, 255, 255), AnchorPoint = Vector2.new(0, 0.5), TextSize = 16, Size = UDim2.new(1, 0, 1, 0), TextXAlignment = Meta.xAlignment, BorderColor3 = Color3.fromRGB(0, 0, 0), Text = Meta.title, Font = Enum.Font.GothamMedium, Position = UDim2.new(0, 0, 0.5, 0), TextColor3 = Color3.fromRGB(255, 255, 255), BackgroundTransparency = 1,})
 
 				-- $$$$$ Functions + Connections
 				function Label:updateText(newText)
