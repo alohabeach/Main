@@ -316,13 +316,13 @@ function Vigil.new(Name, ...)
 				local ButtonLabel = AddInstance("TextBox", { Parent = ButtonFrame, Name = [[ButtonLabel]], RichText = true, TextEditable = false, ClearTextOnFocus = false, TextWrapped = true, BorderSizePixel = 0, BackgroundColor3 = Color3.fromRGB(255, 255, 255), AnchorPoint = Vector2.new(0, 0.5), TextSize = 16, Size = UDim2.new(1, 0, 1, 0), TextXAlignment = Meta.xAlignment, BorderColor3 = Color3.fromRGB(0, 0, 0), Text = Meta.title, Font = Enum.Font.GothamMedium, Position = UDim2.new(0, 0, 0.5, 0), TextColor3 = Color3.fromRGB(255, 255, 255), BackgroundTransparency = 1,})
 
 				-- $$$$$ Functions + Connections
-				local function ResizeBox()
+				local function ResizeBox(isFocused)
 					task.wait()
-					local textHeight = ButtonLabel.TextBounds.Y
+					local textHeight = ButtonLabel.TextBounds[isFocused and "X" or "Y"]
 					ButtonFrame.Size = UDim2.new(1, 0, 0, textHeight + 10)
 				end
 
-				ButtonLabel.Focused:Connect(ResizeBox)
+				ButtonLabel.Focused:Connect(function() ResizeBox(true) end)
 				ButtonLabel.FocusLost:Connect(ResizeBox)
 
 				function Label:updateText(newText)
