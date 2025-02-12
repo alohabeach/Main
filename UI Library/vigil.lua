@@ -303,6 +303,7 @@ function Vigil.new(Name, ...)
 				-- $$$$$ Metadata
 				local Label, Meta = {}, {
 					title = 'Label';
+					textXAlignment = Enum.TextXAlignment.Left,
 					callback = function()
 						print('Button does not have a callback binded.')
 					end,
@@ -315,7 +316,7 @@ function Vigil.new(Name, ...)
 				local UICorner = AddInstance("UICorner", { Parent = ButtonFrame, CornerRadius = UDim.new(0, 4),})
 				local UIPadding = AddInstance("UIPadding", { Parent = ButtonFrame, PaddingRight = UDim.new(0, 3), PaddingLeft = UDim.new(0, 10),})
 				local UIStroke = AddInstance("UIStroke", { Parent = ButtonFrame, ApplyStrokeMode = Enum.ApplyStrokeMode.Border, Thickness = 2, Color = Color3.fromRGB(68, 68, 68),})
-				local ButtonLabel = AddInstance("TextBox", { Parent = ButtonFrame, Name = [[ButtonLabel]], TextEditable = false, ClearTextOnFocus = false, TextWrapped = true, BorderSizePixel = 0, BackgroundColor3 = Color3.fromRGB(255, 255, 255), AnchorPoint = Vector2.new(0, 0.5), TextSize = 16, Size = UDim2.new(0.5, 0, 1, 0), TextXAlignment = Enum.TextXAlignment.Left, BorderColor3 = Color3.fromRGB(0, 0, 0), Text = Meta.title, Font = Enum.Font.GothamMedium, Position = UDim2.new(0, 0, 0.5, 0), TextColor3 = Color3.fromRGB(255, 255, 255), BackgroundTransparency = 1,})
+				local ButtonLabel = AddInstance("TextBox", { Parent = ButtonFrame, Name = [[ButtonLabel]], TextEditable = false, ClearTextOnFocus = false, TextWrapped = true, BorderSizePixel = 0, BackgroundColor3 = Color3.fromRGB(255, 255, 255), AnchorPoint = Vector2.new(0, 0.5), TextSize = 16, Size = UDim2.new(0.5, 0, 1, 0), TextXAlignment = Meta.textXAlignment, BorderColor3 = Color3.fromRGB(0, 0, 0), Text = Meta.title, Font = Enum.Font.GothamMedium, Position = UDim2.new(0, 0, 0.5, 0), TextColor3 = Color3.fromRGB(255, 255, 255), BackgroundTransparency = 1,})
 
 				-- $$$$$ Functions + Connections
 				function Label:updateText(newText)
@@ -375,6 +376,7 @@ function Vigil.new(Name, ...)
 					title = 'Keybind';
 					default = nil;
 					mode = 'click';
+					blacklist = {},
 					on_update = function()
 						print('Keybind does not have the "on_update" connection binded.')
 					end,
@@ -387,7 +389,8 @@ function Vigil.new(Name, ...)
 				}
 
 				Meta = TableOverwrite(Meta, ... or {})
-				if Meta.default then Keybind.Key = Enum.KeyCode[Meta.default] end
+				if Meta.default then Keybind.Key = Meta.default end
+				if Input.UserInputType ~= Enum.UserInputType.Keyboard then Keybind.Type = "MouseInput" end
 				local EditingKeybind = false
 
 				-- $$$$$ Instances
@@ -395,7 +398,7 @@ function Vigil.new(Name, ...)
 				local KeybindLabel = AddInstance("TextLabel", { Parent = KeybindFrame, Name = [[KeybindLabel]], TextWrapped = false, BorderSizePixel = 0, BackgroundColor3 = Color3.fromRGB(255, 255, 255), AnchorPoint = Vector2.new(0, 0.5), TextSize = 16, Size = UDim2.new(0.5, 0, 1, 0), TextXAlignment = Enum.TextXAlignment.Left, BorderColor3 = Color3.fromRGB(0, 0, 0), Text = Meta.title, Font = Enum.Font.GothamMedium, Position = UDim2.new(0, 0, 0.5, 0), TextColor3 = Color3.fromRGB(255, 255, 255), BackgroundTransparency = 1,})
 				local KeybindBox = AddInstance("ImageLabel", { Parent = KeybindFrame, Name = [[InputBox]], AnchorPoint = Vector2.new(1, 0.5), Image = [[rbxassetid://114222904430574]], Selectable = true, BorderSizePixel = 0, Size = UDim2.new(0, 24, 0, 24), ScaleType = Enum.ScaleType.Fit, BorderColor3 = Color3.fromRGB(0, 0, 0), Position = UDim2.new(1, 0, 0.5, 0), BackgroundTransparency = 1, BackgroundColor3 = Color3.fromRGB(255, 255, 255),})
 				--local KeybindButton = AddInstance("TextButton", { Parent = KeybindBox, Name = [[Hitbox]], TextScaled = true; Text = `{Meta.default or '...'}`; BorderSizePixel = 0, BackgroundColor3 = Color3.fromRGB(255, 255, 255), TextSize = 14, Size = UDim2.new(1, 0, 1, 0), BorderColor3 = Color3.fromRGB(0, 0, 0), FontFace = Font.new('rbxasset://fonts/families/GothamSSm.json', Enum.FontWeight.SemiBold, Enum.FontStyle.Normal), TextColor3 = Color3.fromRGB(255, 255, 255), BackgroundTransparency = 1,})
-				local KeybindButton = AddInstance("TextButton", { Parent = KeybindFrame, Name = [[KeybindButton]], AutoButtonColor = false; TextWrapped = false, BorderSizePixel = 0, Text = `{Meta.default or '...'}`; TextScaled = false, BackgroundColor3 = Color3.fromRGB(30, 30, 30), AnchorPoint = Vector2.new(1, 0.5), TextSize = 14, Size = UDim2.new(0, 22, 0, 22), BorderColor3 = Color3.fromRGB(0, 0, 0), FontFace = Font.new('rbxasset://fonts/families/GothamSSm.json', Enum.FontWeight.SemiBold, Enum.FontStyle.Normal), Position = UDim2.new(1, 0, 0.5, 0), TextColor3 = Color3.fromRGB(255, 255, 255),})
+				local KeybindButton = AddInstance("TextButton", { Parent = KeybindFrame, Name = [[KeybindButton]], AutoButtonColor = false; TextWrapped = false, BorderSizePixel = 0, Text = `{Meta.default and Meta.default.Name or '...'}`; TextScaled = false, BackgroundColor3 = Color3.fromRGB(30, 30, 30), AnchorPoint = Vector2.new(1, 0.5), TextSize = 14, Size = UDim2.new(0, 22, 0, 22), BorderColor3 = Color3.fromRGB(0, 0, 0), FontFace = Font.new('rbxasset://fonts/families/GothamSSm.json', Enum.FontWeight.SemiBold, Enum.FontStyle.Normal), Position = UDim2.new(1, 0, 0.5, 0), TextColor3 = Color3.fromRGB(255, 255, 255),})
 				local UICorner = AddInstance("UICorner", { Parent = KeybindButton, CornerRadius = UDim.new(0, 4),})
 				local UIStroke = AddInstance("UIStroke", { Parent = KeybindButton, ApplyStrokeMode = Enum.ApplyStrokeMode.Border, Thickness = 1.7999999523162842, Color = Color3.fromRGB(53, 53, 53),})
 				AddInstance("UIPadding", { Parent = KeybindFrame, PaddingRight = UDim.new(0, 5), PaddingLeft = UDim.new(0, 10),})
@@ -412,16 +415,21 @@ function Vigil.new(Name, ...)
 						KeybindButton.Size = UDim2.new(0, 22, 0, 22)
 					end
 				end
+				ResizeBox()
 
 				local Blacklist = {
-					'RightSuper',
-					'LeftSuper',
-					'BackSlash',
-					'Backspace',
-					'Unknown',
-					'Return',
-					'Escape',
+					Enum.KeyCode.RightSuper,
+					Enum.KeyCode.LeftSuper,
+					Enum.KeyCode.BackSlash,
+					Enum.KeyCode.Backspace,
+					Enum.KeyCode.Unknown,
+					Enum.KeyCode.Return,
+					Enum.KeyCode.Escape,
 				}
+
+				for _, Key in pairs(Meta.blacklist) do
+					table.insert(Blacklist, Key)
+				end
 
 				KeybindButton.MouseButton1Down:Connect(function()
 					TweenService:Create(
@@ -446,7 +454,7 @@ function Vigil.new(Name, ...)
 				end)
 
 				InputService.InputBegan:Connect(function(Input)
-					if game:GetService('UserInputService'):GetFocusedTextBox() then 
+					if game:GetService('UserInputService'):GetFocusedTextBox() then
 						return
 					end
 
@@ -454,7 +462,7 @@ function Vigil.new(Name, ...)
 						KeybindButton.TextColor3 = Color3.new(0.784, 0.784, 0.784)
 
 						if Input.UserInputType == Enum.UserInputType.Keyboard then
-							if table.find(Blacklist, tostring(Input.KeyCode):gsub('Enum.KeyCode.', '')) then
+							if table.find(Blacklist, Input.KeyCode) then
 								Keybind.Key = nil
 								KeybindButton.Text = '...'
 								EditingKeybind = false
@@ -463,29 +471,36 @@ function Vigil.new(Name, ...)
 
 							Keybind.Type = 'Keyboard'
 							Keybind.Key = Input.KeyCode
-							KeybindButton.Text = tostring(Input.KeyCode):gsub('Enum.KeyCode.', '')
-							Meta.on_update(Keybind.Key)
-
-							ResizeBox()
-
-							EditingKeybind = false 
-							return
-						elseif Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.MouseButton2 then
-							Keybind.Key = Input.UserInputType
-							Keybind.Type = 'MouseInput'
-							KeybindButton.Text = tostring(Input.UserInputType):gsub('Enum.UserInputType.', '')
+							KeybindButton.Text = Input.KeyCode.Name
 							Meta.on_update(Keybind.Key)
 
 							ResizeBox()
 
 							EditingKeybind = false
-							return
+						elseif Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.MouseButton2 then
+							if table.find(Blacklist, Input.UserInputType) then
+								Keybind.Key = nil
+								KeybindButton.Text = '...'
+								EditingKeybind = false
+								return
+							end
+
+							Keybind.Key = Input.UserInputType
+							Keybind.Type = 'MouseInput'
+							KeybindButton.Text = Input.UserInputType.Name
+							Meta.on_update(Keybind.Key)
+
+							ResizeBox()
+
+							EditingKeybind = false
 						end
+
+						return
 					end
 
 					if Keybind.Key == nil then return end
 
-					if Keybind.Type == 'Keyboard' and Input.KeyCode == Keybind.Key then
+					if (Keybind.Type == 'Keyboard' and Input.KeyCode == Keybind.Key) or (Keybind.Type == 'MouseInput' and Input.UserInputType == Keybind.Key) then
 						if Meta.mode == 'hold' then
 							Keybind.Pressed = true
 							Meta.on_press(Keybind.Key)
@@ -493,25 +508,7 @@ function Vigil.new(Name, ...)
 							--end
 						elseif Meta.mode == 'toggle' then
 							Keybind.Pressed = not Keybind.Pressed
-							while Keybind.Pressed do task.wait()
-								Meta.on_press(Keybind.Key)
-							end
-						elseif Meta.mode == 'click' then
-							Meta.on_press(Keybind.Key)
-						end
-					end
-
-					if Keybind.Type == 'MouseInput' and Input.UserInputType == Keybind.Key then
-						if Meta.mode == 'hold' then
-							Keybind.Pressed = true
-							Meta.on_press(Keybind.Key)
-							--while Keybind.Pressed do task.wait()
-							--end
-						elseif Meta.mode == 'toggle' then
-							Keybind.Pressed = not Keybind.Pressed
-							while Keybind.Pressed do task.wait()
-								Meta.on_press(Keybind.Key)
-							end
+							Meta.on_press(Keybind.Pressed)
 						elseif Meta.mode == 'click' then
 							Meta.on_press(Keybind.Key)
 						end
@@ -525,12 +522,17 @@ function Vigil.new(Name, ...)
 
 					if Keybind.Key == nil then return end
 
-					if Keybind.Type == 'Keyboard' and Input.KeyCode == Keybind.Key and Meta.mode == 'hold' or Keybind.Type == 'MouseInput' and Input.UserInputType == Keybind.Key and Meta.mode == 'hold' then
-						Keybind.Pressed = false
-						Meta.on_release(Keybind.Key)
+					if (Keybind.Type == 'Keyboard' and Input.KeyCode == Keybind.Key) or (Keybind.Type == 'MouseInput' and Input.UserInputType == Keybind.Key) then
+						if Meta.mode == 'hold' then
+							Keybind.Pressed = false
+							Meta.on_release(Keybind.Key)
+						end
 					end
-
 				end)
+
+				if Meta.default then
+					task.spawn(Meta.on_update, Meta.default)
+				end
 			end
 
 			function Section:addSlider(...)
@@ -611,7 +613,9 @@ function Vigil.new(Name, ...)
 					end
 				end)
 
-				task.spawn(Meta.callback, Slider.Value)
+				if Meta.default then
+					task.spawn(Meta.callback, Meta.default)
+				end
 
 				return Slider
 			end
@@ -643,6 +647,10 @@ function Vigil.new(Name, ...)
 					Textbox.Value = TextInputBox.Text
 					Meta.callback(Textbox.Value)
 				end)
+
+				if Meta.default then
+					task.spawn(Meta.callback, Meta.default)
+				end
 
 				return Textbox
 			end
@@ -690,8 +698,7 @@ function Vigil.new(Name, ...)
 								end
 							end
 
-							Dropdown.Selection[1] = Option
-							Meta.callback(Dropdown.Selection)
+							Meta.callback(Option)
 							OptionButton.TextColor3 = Color3.fromRGB(200, 200, 200)
 							OptionButton.FontFace = Font.new(
 								'rbxasset://fonts/families/GothamSSm.json',
@@ -718,6 +725,7 @@ function Vigil.new(Name, ...)
 								for i, __ in Dropdown.Selection do
 									if __ == Option then
 										table.remove(Dropdown.Selection, i)
+										break
 									end
 								end
 								Meta.callback(Dropdown.Selection)
@@ -766,8 +774,7 @@ function Vigil.new(Name, ...)
 								end
 							end
 
-							Dropdown.Selection[1] = Option
-							Meta.callback(Dropdown.Selection)
+							Meta.callback(Option)
 							OptionButton.TextColor3 = Color3.fromRGB(200, 200, 200)
 							OptionButton.FontFace = Font.new(
 								'rbxasset://fonts/families/GothamSSm.json',
@@ -794,6 +801,7 @@ function Vigil.new(Name, ...)
 								for i, __ in Dropdown.Selection do
 									if __ == Option then
 										table.remove(Dropdown.Selection, i)
+										break
 									end
 								end
 								Meta.callback(Dropdown.Selection)
@@ -847,6 +855,12 @@ function Vigil.new(Name, ...)
 						end
 					end
 				end)
+
+				if Meta.default then
+					task.spawn(function()
+						Meta.callback(Meta.mode == "single" and Meta.default or { Meta.default })
+					end)
+				end
 
 				return Dropdown
 			end
