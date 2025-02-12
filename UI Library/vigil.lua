@@ -827,7 +827,7 @@ function Vigil.new(Name, ...)
 				-- $$$$$ Functions + Connections
 				if Meta.toggled then
 					Toggle.Value = true
-					Meta.callback(Toggle.Value)
+                    task.spawn(Meta.callback, Toggle.Value)
 					
 					TweenService:Create(
 						ToggleCircle,
@@ -864,7 +864,6 @@ function Vigil.new(Name, ...)
 
 				ToggleHitbox.MouseButton1Click:Connect(function()
 					Toggle.Value = not Toggle.Value
-					Meta.callback(Toggle.Value)
 
 					TweenService:Create(
 						ToggleCircle,
@@ -873,6 +872,8 @@ function Vigil.new(Name, ...)
 							AnchorPoint = Toggle.Value and Vector2.new(1,0.5) or Vector2.new(0,0.5);
 						}
 					):Play()
+
+                    Meta.callback(Toggle.Value)
 				end)
 
 				return Toggle
