@@ -807,7 +807,9 @@ function Vigil.new(Name, ...)
 				Dropdown:updateList(Meta.list)
 
 				setmetatable(Meta.list, {
-					__newindex = function(tbl)
+					__newindex = function(tbl, key, value)
+						print('added new property to list')
+						tbl[key] = value
 						Dropdown:updateList(tbl)
 					end
 				})
