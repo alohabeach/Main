@@ -691,7 +691,7 @@ function Vigil.new(Name, ...)
 
 				-- $$$$$ Instances
 				local DropdownFrame = AddInstance("Frame", { Parent = SectionFrame, AutomaticSize = Enum.AutomaticSize.Y, Name = [[DropdownFrame]], Active = true, BorderSizePixel = 0, Size = UDim2.new(1, 0, 0, 30), BorderColor3 = Color3.fromRGB(0, 0, 0), BackgroundColor3 = Color3.fromRGB(39, 39, 39),})
-				local OptionFrame = AddInstance("Frame", { Parent = DropdownFrame, AutomaticSize = Enum.AutomaticSize.Y, Name = [[OptionFrame]], Visible = false; BorderSizePixel = 0, Size = UDim2.new(1, 0, 0, 0), BorderColor3 = Color3.fromRGB(0, 0, 0), LayoutOrder = 1, Position = UDim2.new(0, 0, 0, 30), BackgroundTransparency = 1, BackgroundColor3 = Color3.fromRGB(255, 255, 255),})
+				local OptionFrame = AddInstance("Frame", { Parent = DropdownFrame, AutomaticSize = Enum.AutomaticSize.Y, Name = [[OptionFrame]]; BorderSizePixel = 0, Size = UDim2.new(1, 0, 0, 0), BorderColor3 = Color3.fromRGB(0, 0, 0), LayoutOrder = 1, Position = UDim2.new(0, 0, 0, 30), BackgroundTransparency = 1, BackgroundColor3 = Color3.fromRGB(255, 255, 255),})
 				local TopbarFrame = AddInstance("Frame", { Parent = DropdownFrame, Name = [[TopbarFrame]], BorderSizePixel = 0, Size = UDim2.new(1, 0, 0, 30), BorderColor3 = Color3.fromRGB(0, 0, 0), BackgroundTransparency = 1, BackgroundColor3 = Color3.fromRGB(255, 255, 255),})
 				local DropdownButton = AddInstance("ImageButton", { Parent = TopbarFrame, Name = [[DropdownButton]], BackgroundTransparency = 1, AnchorPoint = Vector2.new(1, 0), Image = [[rbxassetid://76471184936187]], BorderSizePixel = 0, Size = UDim2.new(0, 8, 0, 8), BorderColor3 = Color3.fromRGB(0, 0, 0), Position = UDim2.new(1, 0, 0, 11), BackgroundColor3 = Color3.fromRGB(255, 255, 255),})
 				local DropdownLabel = AddInstance("TextBox", { Parent = TopbarFrame, PlaceholderText = Meta.title, PlaceholderColor3 = Color3.fromRGB(255,255,255), ZIndex = 100, Active = true, Selectable = true, Name = [[DropdownLabel]], TextWrapped = false, BorderSizePixel = 0, BackgroundColor3 = Color3.fromRGB(255, 255, 255), TextSize = 16, Size = UDim2.new(0.5, 0, 0, 30), TextXAlignment = Enum.TextXAlignment.Left, BorderColor3 = Color3.fromRGB(0, 0, 0), Text = Meta.title, Font = Enum.Font.GothamMedium, TextColor3 = Color3.fromRGB(255, 255, 255), BackgroundTransparency = 1,})
@@ -704,7 +704,7 @@ function Vigil.new(Name, ...)
 
 				-- $$$$$ Populate Dropdown
 				for Index, Option in Meta.list do
-					local OptionButton = AddInstance("TextButton", { Parent = OptionFrame, Name = [[OptionButton]], TextYAlignment = Enum.TextYAlignment.Top; TextWrapped = false, BorderSizePixel = 0, BackgroundColor3 = Color3.fromRGB(255, 255, 255), TextSize = 14, Size = UDim2.new(1, 0, 0, 20), TextXAlignment = Enum.TextXAlignment.Left, BorderColor3 = Color3.fromRGB(0, 0, 0), Text = Option, Font = Enum.Font.Gotham, TextColor3 = Color3.fromRGB(164, 164, 164), BackgroundTransparency = 1,})
+					local OptionButton = AddInstance("TextButton", { Parent = OptionFrame, Name = [[OptionButton]], TextYAlignment = Enum.TextYAlignment.Top; TextWrapped = false, BorderSizePixel = 0, BackgroundColor3 = Color3.fromRGB(255, 255, 255), TextSize = 14, TextTransparency = 1, Size = UDim2.new(1, 0, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, BorderColor3 = Color3.fromRGB(0, 0, 0), Text = Option, Font = Enum.Font.Gotham, TextColor3 = Color3.fromRGB(164, 164, 164), BackgroundTransparency = 1,})
 
 					if OptionButton.Text == Meta.default then
 						OptionButton.TextColor3 = Color3.fromRGB(200, 200, 200)
