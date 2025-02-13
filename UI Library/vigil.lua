@@ -797,7 +797,7 @@ function Vigil.new(Name, ...)
 					TweenService:Create(
 						DropdownButton,
 						tween_info.new(.2, easing_style.Quad, easing_direction.InOut),
-						{ Rotation = Dropdown.Dropped and 90 or 0 }
+						{ Rotation = Dropdown.Dropped and 0 or 90 }
 					):Play()
 
 					for _, Button in OptionFrame:GetChildren() do
