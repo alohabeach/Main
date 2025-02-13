@@ -856,35 +856,24 @@ function Vigil.new(Name, ...)
 
 				DropdownHitbox.MouseButton1Click:Connect(function()
 					Dropdown.Dropped = not Dropdown.Dropped
-					if Dropdown.Dropped then
-						OptionFrame.Visible = true
-					end
 
-					local tween = TweenService:Create(
+					TweenService:Create(
 						DropdownButton,
 						tween_info.new(.2, easing_style.Quad, easing_direction.InOut),
 						{ Rotation = Dropdown.Dropped and 90 or 0 }
-					)
-					tween:Play()
+					):Play()
 
-					for _, Button in OptionFrame:GetChildren() do
-						if Button:IsA('TextButton') then
-							Button.Size = UDim2.new(1, 0, 0, 0)
-							Button.TextTransparency = 1
+					for _, Button in ipairs(OptionFrame:GetChildren()) do
+						if Button:IsA("TextButton") then
+							local sizeGoal = UDim2.new(1, 0, 0, Dropdown.Dropped and 20 or 0)
+							local transparencyGoal = Dropdown.Dropped and 0 or 1
 
 							TweenService:Create(
 								Button,
-								tween_info.new(.45, easing_style.Quart), {
-									Size = UDim2.new(1, 0, 0, 20),
-									TextTransparency = 0,
-								}
+								TweenInfo.new(0.45, Enum.EasingStyle.Quart, Enum.EasingDirection.Out),
+								{ Size = sizeGoal, TextTransparency = transparencyGoal }
 							):Play()
 						end
-					end
-
-					if not Dropdown.Dropped then
-						tween.Completed:Wait()
-						OptionFrame.Visible = false
 					end
 				end)
 
