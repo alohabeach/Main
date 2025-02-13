@@ -705,6 +705,16 @@ function Vigil.new(Name, ...)
 				-- $$$$$ Populate Dropdown
 				for Index, Option in Meta.list do
 					local OptionButton = AddInstance("TextButton", { Parent = OptionFrame, Name = [[OptionButton]], TextYAlignment = Enum.TextYAlignment.Top; TextWrapped = false, BorderSizePixel = 0, BackgroundColor3 = Color3.fromRGB(255, 255, 255), TextSize = 14, Size = UDim2.new(1, 0, 0, 20), TextXAlignment = Enum.TextXAlignment.Left, BorderColor3 = Color3.fromRGB(0, 0, 0), Text = Option, Font = Enum.Font.Gotham, TextColor3 = Color3.fromRGB(164, 164, 164), BackgroundTransparency = 1,})
+					
+					if Option.Text == Meta.default then
+						OptionButton.TextColor3 = Color3.fromRGB(200, 200, 200)
+						OptionButton.FontFace = Font.new(
+							'rbxasset://fonts/families/GothamSSm.json',
+							Enum.FontWeight.SemiBold,
+							Enum.FontStyle.Normal
+						)
+					end
+					
 					OptionButton.MouseButton1Click:Connect(function()
 						if Meta.mode == 'single' then
 							for _, Button in OptionFrame:GetChildren() do
@@ -718,13 +728,14 @@ function Vigil.new(Name, ...)
 								end
 							end
 
-							Meta.callback(Option)
 							OptionButton.TextColor3 = Color3.fromRGB(200, 200, 200)
 							OptionButton.FontFace = Font.new(
 								'rbxasset://fonts/families/GothamSSm.json',
 								Enum.FontWeight.SemiBold,
 								Enum.FontStyle.Normal
 							)
+
+							Meta.callback(Option)
 						elseif Meta.mode == 'multi' then
 							if OptionButton:GetAttribute('Selected') == nil then
 								OptionButton:SetAttribute('Selected', false)
@@ -733,28 +744,31 @@ function Vigil.new(Name, ...)
 							OptionButton:SetAttribute('Selected', not OptionButton:GetAttribute('Selected'))
 
 							if OptionButton:GetAttribute('Selected') then
-								table.insert(Dropdown.Selection, Option)
-								Meta.callback(Dropdown.Selection)
 								OptionButton.TextColor3 = Color3.fromRGB(200, 200, 200)
 								OptionButton.FontFace = Font.new(
 									'rbxasset://fonts/families/GothamSSm.json',
 									Enum.FontWeight.SemiBold,
 									Enum.FontStyle.Normal
 								)
-							elseif not OptionButton:GetAttribute('Selected') then
-								for i, __ in Dropdown.Selection do
-									if __ == Option then
-										table.remove(Dropdown.Selection, i)
-										break
-									end
-								end
+
+								table.insert(Dropdown.Selection, Option)
 								Meta.callback(Dropdown.Selection)
+							elseif not OptionButton:GetAttribute('Selected') then
 								OptionButton.TextColor3 = Color3.fromRGB(164, 164, 164)
 								OptionButton.FontFace = Font.new(
 									'rbxasset://fonts/families/GothamSSm.json',
 									Enum.FontWeight.Regular,
 									Enum.FontStyle.Normal
 								)
+
+								for i, __ in Dropdown.Selection do
+									if __ == Option then
+										table.remove(Dropdown.Selection, i)
+										break
+									end
+								end
+
+								Meta.callback(Dropdown.Selection)
 							end
 
 							if #Dropdown.Selection > 0 then
@@ -794,13 +808,14 @@ function Vigil.new(Name, ...)
 								end
 							end
 
-							Meta.callback(Option)
 							OptionButton.TextColor3 = Color3.fromRGB(200, 200, 200)
 							OptionButton.FontFace = Font.new(
 								'rbxasset://fonts/families/GothamSSm.json',
 								Enum.FontWeight.SemiBold,
 								Enum.FontStyle.Normal
 							)
+
+							Meta.callback(Option)
 						elseif Meta.mode == 'multi' then
 							if OptionButton:GetAttribute('Selected') == nil then
 								OptionButton:SetAttribute('Selected', false)
@@ -809,28 +824,31 @@ function Vigil.new(Name, ...)
 							OptionButton:SetAttribute('Selected', not OptionButton:GetAttribute('Selected'))
 
 							if OptionButton:GetAttribute('Selected') then
-								table.insert(Dropdown.Selection, Option)
-								Meta.callback(Dropdown.Selection)
 								OptionButton.TextColor3 = Color3.fromRGB(200, 200, 200)
 								OptionButton.FontFace = Font.new(
 									'rbxasset://fonts/families/GothamSSm.json',
 									Enum.FontWeight.SemiBold,
 									Enum.FontStyle.Normal
 								)
-							elseif not OptionButton:GetAttribute('Selected') then
-								for i, __ in Dropdown.Selection do
-									if __ == Option then
-										table.remove(Dropdown.Selection, i)
-										break
-									end
-								end
+
+								table.insert(Dropdown.Selection, Option)
 								Meta.callback(Dropdown.Selection)
+							elseif not OptionButton:GetAttribute('Selected') then
 								OptionButton.TextColor3 = Color3.fromRGB(164, 164, 164)
 								OptionButton.FontFace = Font.new(
 									'rbxasset://fonts/families/GothamSSm.json',
 									Enum.FontWeight.Regular,
 									Enum.FontStyle.Normal
 								)
+
+								for i, __ in Dropdown.Selection do
+									if __ == Option then
+										table.remove(Dropdown.Selection, i)
+										break
+									end
+								end
+
+								Meta.callback(Dropdown.Selection)
 							end
 						end
 					end)
