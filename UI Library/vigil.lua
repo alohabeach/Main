@@ -705,8 +705,8 @@ function Vigil.new(Name, ...)
 				-- $$$$$ Populate Dropdown
 				for Index, Option in Meta.list do
 					local OptionButton = AddInstance("TextButton", { Parent = OptionFrame, Name = [[OptionButton]], TextYAlignment = Enum.TextYAlignment.Top; TextWrapped = false, BorderSizePixel = 0, BackgroundColor3 = Color3.fromRGB(255, 255, 255), TextSize = 14, Size = UDim2.new(1, 0, 0, 20), TextXAlignment = Enum.TextXAlignment.Left, BorderColor3 = Color3.fromRGB(0, 0, 0), Text = Option, Font = Enum.Font.Gotham, TextColor3 = Color3.fromRGB(164, 164, 164), BackgroundTransparency = 1,})
-					
-					if Option.Text == Meta.default then
+
+					if OptionButton.Text == Meta.default then
 						OptionButton.TextColor3 = Color3.fromRGB(200, 200, 200)
 						OptionButton.FontFace = Font.new(
 							'rbxasset://fonts/families/GothamSSm.json',
@@ -714,7 +714,7 @@ function Vigil.new(Name, ...)
 							Enum.FontStyle.Normal
 						)
 					end
-					
+
 					OptionButton.MouseButton1Click:Connect(function()
 						if Meta.mode == 'single' then
 							for _, Button in OptionFrame:GetChildren() do
