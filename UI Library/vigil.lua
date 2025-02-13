@@ -838,7 +838,9 @@ function Vigil.new(Name, ...)
 
 				DropdownHitbox.MouseButton1Click:Connect(function()
 					Dropdown.Dropped = not Dropdown.Dropped
-					OptionFrame.Visible = Dropdown.Dropped
+					if Dropdown.Dropped then
+						OptionFrame.Visible = true
+					end
 
 					TweenService:Create(
 						DropdownButton,
@@ -860,6 +862,10 @@ function Vigil.new(Name, ...)
 							):Play()
 						end
 					end
+
+					if not Dropdown.Dropped then
+						OptionFrame.Visible = false
+					end
 				end)
 
 				DropdownLabel.Changed:Connect(function()
@@ -869,7 +875,7 @@ function Vigil.new(Name, ...)
 						if Option:IsA('TextButton') and DropdownLabel.Text ~= Meta.title and Dropdown.Dropped then
 							Option.Visible = false
 
-							if Option.Text:match(DropdownLabel.Text) then
+							if Option.Text:lower():match(DropdownLabel.Text:lower()) then
 								Option.Visible = true
 							end
 						end
