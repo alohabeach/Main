@@ -806,15 +806,6 @@ function Vigil.new(Name, ...)
 
 				Dropdown:updateList(Meta.list)
 
-				print(Meta.list)
-				setmetatable(Meta.list, {
-					__newindex = function(tbl, key, value)
-						print('added new property to list')
-						rawset(tbl, key, value)
-						Dropdown:updateList(tbl)
-					end
-				})
-
 				DropdownHitbox.MouseButton1Click:Connect(function()
 					Dropdown.Dropped = not Dropdown.Dropped
 
