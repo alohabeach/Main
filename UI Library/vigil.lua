@@ -677,7 +677,7 @@ function Vigil.new(Name, ...)
 
 			function Section:addDropdown(...)
 				-- $$$$$ Metadata
-				local Dropdown, Meta = { Selection = {}; Dropped = false }, {
+				local Dropdown, Meta = { Selection = {}, Buttons = {}; Dropped = false }, {
 					title = 'Dropdown';
 					default = nil;
 					mode = 'single';
@@ -703,8 +703,9 @@ function Vigil.new(Name, ...)
 				AddInstance("UIPadding", { Parent = DropdownFrame, PaddingRight = UDim.new(0, 11), PaddingLeft = UDim.new(0, 10),})
 
 				-- $$$$$ Populate Dropdown
-				for Index, Option in Meta.list do
+				local function CreateOption(Option)
 					local OptionButton = AddInstance("TextButton", { Parent = OptionFrame, Name = [[OptionButton]], TextYAlignment = Enum.TextYAlignment.Top; TextWrapped = false, BorderSizePixel = 0, BackgroundColor3 = Color3.fromRGB(255, 255, 255), TextSize = 14, TextTransparency = 1, Size = UDim2.new(1, 0, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, BorderColor3 = Color3.fromRGB(0, 0, 0), Text = Option, Font = Enum.Font.Gotham, TextColor3 = Color3.fromRGB(164, 164, 164), BackgroundTransparency = 1,})
+					table.insert(Dropdown.Buttons, OptionButton)
 
 					if OptionButton.Text == Meta.default then
 						OptionButton.TextColor3 = Color3.fromRGB(200, 200, 200)
@@ -792,67 +793,24 @@ function Vigil.new(Name, ...)
 					--end
 				end)
 
-				function Dropdown:addOption(Option)
-					table.insert(Meta.list, Option)
-					local OptionButton = AddInstance("TextButton", { Parent = OptionFrame, Name = [[OptionButton]],  TextYAlignment = Enum.TextYAlignment.Top; TextWrapped = false, BorderSizePixel = 0, BackgroundColor3 = Color3.fromRGB(255, 255, 255), TextSize = 14, Size = UDim2.new(1, 0, 0, 15), TextXAlignment = Enum.TextXAlignment.Left, BorderColor3 = Color3.fromRGB(0, 0, 0), Text = [[Option1]], Font = Enum.Font.Gotham, TextColor3 = Color3.fromRGB(164, 164, 164), BackgroundTransparency = 1,})
-					OptionButton.MouseButton1Click:Connect(function()
-						if Meta.mode == 'single' then
-							for _, Button in OptionFrame:GetChildren() do
-								if Button:IsA('TextButton') then
-									Button.TextColor3 = Color3.fromRGB(164,164,164)
-									Button.FontFace = Font.new(
-										'rbxasset://fonts/families/GothamSSm.json',
-										Enum.FontWeight.Regular,
-										Enum.FontStyle.Normal
-									)
-								end
-							end
+				function Dropdown:updateList(newList)
+					Meta.list = newList
+					for _, OptionButton in pairs(Dropdown.Buttons) do
+						OptionButton:Destroy()
+					end
 
-							OptionButton.TextColor3 = Color3.fromRGB(200, 200, 200)
-							OptionButton.FontFace = Font.new(
-								'rbxasset://fonts/families/GothamSSm.json',
-								Enum.FontWeight.SemiBold,
-								Enum.FontStyle.Normal
-							)
-
-							Meta.callback(Option)
-						elseif Meta.mode == 'multi' then
-							if OptionButton:GetAttribute('Selected') == nil then
-								OptionButton:SetAttribute('Selected', false)
-							end
-
-							OptionButton:SetAttribute('Selected', not OptionButton:GetAttribute('Selected'))
-
-							if OptionButton:GetAttribute('Selected') then
-								OptionButton.TextColor3 = Color3.fromRGB(200, 200, 200)
-								OptionButton.FontFace = Font.new(
-									'rbxasset://fonts/families/GothamSSm.json',
-									Enum.FontWeight.SemiBold,
-									Enum.FontStyle.Normal
-								)
-
-								table.insert(Dropdown.Selection, Option)
-								Meta.callback(Dropdown.Selection)
-							elseif not OptionButton:GetAttribute('Selected') then
-								OptionButton.TextColor3 = Color3.fromRGB(164, 164, 164)
-								OptionButton.FontFace = Font.new(
-									'rbxasset://fonts/families/GothamSSm.json',
-									Enum.FontWeight.Regular,
-									Enum.FontStyle.Normal
-								)
-
-								for i, __ in Dropdown.Selection do
-									if __ == Option then
-										table.remove(Dropdown.Selection, i)
-										break
-									end
-								end
-
-								Meta.callback(Dropdown.Selection)
-							end
-						end
-					end)
+					for _, Option in ipairs(newList) do
+						CreateOption(Option)
+					end
 				end
+
+				Dropdown:updateList(Meta.list)
+
+				setmetatable(Meta.list, {
+					__newindex = function(tbl)
+						Dropdown:updateList(tbl)
+					end
+				})
 
 				DropdownHitbox.MouseButton1Click:Connect(function()
 					Dropdown.Dropped = not Dropdown.Dropped
