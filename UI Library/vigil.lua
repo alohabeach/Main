@@ -793,22 +793,7 @@ function Vigil.new(Name, ...)
 					--end
 				end)
 
-				function Dropdown:updateList(newList)
-					Meta.list = newList
-					for _, OptionButton in pairs(Dropdown.Buttons) do
-						OptionButton:Destroy()
-					end
-
-					for _, Option in ipairs(newList) do
-						CreateOption(Option)
-					end
-				end
-
-				Dropdown:updateList(Meta.list)
-
-				DropdownHitbox.MouseButton1Click:Connect(function()
-					Dropdown.Dropped = not Dropdown.Dropped
-
+				local function Animate()
 					TweenService:Create(
 						DropdownButton,
 						tween_info.new(.2, easing_style.Quad, easing_direction.InOut),
@@ -826,6 +811,26 @@ function Vigil.new(Name, ...)
 							):Play()
 						end
 					end
+				end
+
+				function Dropdown:updateList(newList)
+					Meta.list = newList
+					for _, OptionButton in pairs(Dropdown.Buttons) do
+						OptionButton:Destroy()
+					end
+
+					for _, Option in ipairs(newList) do
+						CreateOption(Option)
+					end
+
+					Animate()
+				end
+
+				Dropdown:updateList(Meta.list)
+
+				DropdownHitbox.MouseButton1Click:Connect(function()
+					Dropdown.Dropped = not Dropdown.Dropped
+					Animate()
 				end)
 
 				DropdownLabel.Changed:Connect(function()
