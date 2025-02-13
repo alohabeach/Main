@@ -794,21 +794,31 @@ function Vigil.new(Name, ...)
 				end)
 
 				local function Animate(instantAnimation)
-					TweenService:Create(
-						DropdownButton,
-						tween_info.new(instantAnimation and 0 or .2, easing_style.Quad, easing_direction.InOut),
-						{ Rotation = Dropdown.Dropped and 0 or 90 }
-					):Play()
+					if instantAnimation then
+						DropdownButton.Rotation = Dropdown.Dropped and 0 or 90
+						for _, Button in OptionFrame:GetChildren() do
+							if Button:IsA('TextButton') then
+								Button.Size = UDim2.new(1, 0, 0, Dropdown.Dropped and 20 or 0)
+								Button.TextTransparency = Dropdown.Dropped and 0 or 1
+							end
+						end
+					else
+						TweenService:Create(
+							DropdownButton,
+							tween_info.new(.2, easing_style.Quad, easing_direction.InOut),
+							{ Rotation = Dropdown.Dropped and 0 or 90 }
+						):Play()
 
-					for _, Button in OptionFrame:GetChildren() do
-						if Button:IsA('TextButton') then
-							TweenService:Create(
-								Button,
-								tween_info.new(instantAnimation and 0 or .45, easing_style.Quart), {
-									Size = UDim2.new(1, 0, 0, Dropdown.Dropped and 20 or 0),
-									TextTransparency = Dropdown.Dropped and 0 or 1
-								}
-							):Play()
+						for _, Button in OptionFrame:GetChildren() do
+							if Button:IsA('TextButton') then
+								TweenService:Create(
+									Button,
+									tween_info.new(.45, easing_style.Quart), {
+										Size = UDim2.new(1, 0, 0, Dropdown.Dropped and 20 or 0),
+										TextTransparency = Dropdown.Dropped and 0 or 1
+									}
+								):Play()
+							end
 						end
 					end
 				end
