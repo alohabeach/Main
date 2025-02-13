@@ -860,11 +860,12 @@ function Vigil.new(Name, ...)
 						OptionFrame.Visible = true
 					end
 
-					TweenService:Create(
+					local tween = TweenService:Create(
 						DropdownButton,
 						tween_info.new(.2, easing_style.Quad, easing_direction.InOut),
 						{ Rotation = Dropdown.Dropped and 90 or 0 }
-					):Play()
+					)
+					tween:Play()
 
 					for _, Button in OptionFrame:GetChildren() do
 						if Button:IsA('TextButton') then
@@ -882,6 +883,7 @@ function Vigil.new(Name, ...)
 					end
 
 					if not Dropdown.Dropped then
+						tween.Completed:Wait()
 						OptionFrame.Visible = false
 					end
 				end)
