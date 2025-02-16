@@ -813,7 +813,7 @@ function Vigil.new(Name, ...)
 							if Button:IsA('TextButton') then
 								TweenService:Create(
 									Button,
-									tween_info.new(.45, easing_style.Quart), {
+									tween_info.new(.45, easing_style.Quad), {
 										Size = UDim2.new(1, 0, 0, Dropdown.Dropped and 20 or 0),
 										TextTransparency = Dropdown.Dropped and 0 or 1
 									}
