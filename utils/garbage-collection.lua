@@ -34,19 +34,40 @@ function garbageCollection:attemptCollection(maxAttempts, garbageInfo)
 
                     if details.constants and #details.constants > 0 then
                         local allConstantsMatch = true
-                        for _, constant in ipairs(details.constants) do
-                            if not table.find(constants, constant) then
+
+                        for _, constantToFind in ipairs(details.constants) do
+                            local foundCurrentConstant = false
+
+                            for _, constant in ipairs(constants) do
+                                if constantToFind == constant then
+                                    foundCurrentConstant = true
+                                    break
+                                end
+                            end
+
+                            if not foundCurrentConstant then
                                 allConstantsMatch = false
                                 break
                             end
                         end
+
                         if not allConstantsMatch then continue end
                     end
 
                     if details.upvalues and #details.upvalues > 0 then
                         local allUpvaluesMatch = true
-                        for _, upvalue in ipairs(details.upvalues) do
-                            if not table.find(upvalues, upvalue) then
+
+                        for _, upvalueToFind in ipairs(details.upvalues) do
+                            local foundCurrentUpvalue = false
+
+                            for _, upvalue in ipairs(upvalues) do
+                                if upvalueToFind == upvalue then
+                                    foundCurrentUpvalue = true
+                                    break
+                                end
+                            end
+
+                            if not foundCurrentUpvalue then
                                 allUpvaluesMatch = false
                                 break
                             end
