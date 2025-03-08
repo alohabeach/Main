@@ -85,13 +85,15 @@ function garbageCollection:attemptCollection(maxAttempts, garbageInfo)
 
                     local function check(recursiveGarbage, recursiveInfo)
                         for key, typeCheck in pairs(recursiveInfo) do
-                            if type(rawget(recursiveGarbage, key)) == "table" then
+                            if type(typeCheck) == "table" and type(rawget(recursiveGarbage, key)) == "table" then
                                 check(rawget(recursiveGarbage, key), typeCheck)
                             elseif type(rawget(recursiveGarbage, key)) ~= typeCheck then
                                 allRawGetsMatch = false
-                                return
+                                break
                             end
                         end
+
+                        if not allRawGetsMatch then return end
                     end
 
                     check(garbage, info)
