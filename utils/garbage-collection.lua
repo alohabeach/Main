@@ -83,18 +83,18 @@ function garbageCollection:attemptCollection(maxAttempts, garbageInfo)
                 for name, info in pairs(garbageInfo.tables) do
                     local allRawGetsMatch = true
 
-                    local function check(tbl)
-                        for key, typeCheck in pairs(tbl) do
-                            if type(rawget(garbage, key) == "table") then
-                                check(tbl[key])
-                            elseif type(rawget(garbage, key)) ~= typeCheck then
+                    local function check(recursiveGarbage, recursiveInfo)
+                        for key, typeCheck in pairs(recursiveInfo) do
+                            if type(rawget(recursiveGarbage, key)) == "table" then
+                                check(rawget(recursiveGarbage, key), typeCheck)
+                            elseif type(rawget(recursiveGarbage, key)) ~= typeCheck then
                                 allRawGetsMatch = false
                                 return
                             end
                         end
                     end
 
-                    check(info)
+                    check(garbage, info)
 
                     if not allRawGetsMatch then continue end
 
