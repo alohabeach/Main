@@ -82,12 +82,20 @@ function garbageCollection:attemptCollection(maxAttempts, garbageInfo)
             elseif type(garbage) == "table" then
                 for name, info in pairs(garbageInfo.tables) do
                     local allRawGetsMatch = true
-                    for key, typeCheck in pairs(info) do
-                        if not rawget(garbage, key) or type(rawget(garbage, key)) ~= typeCheck then
-                            allRawGetsMatch = false
-                            break
+
+                    local function check(tbl)
+                        for key, typeCheck in pairs(tbl) do
+                            if type(rawget(garbage, key) == "table") then
+                                check(tbl[key])
+                            elseif type(rawget(garbage, key)) ~= typeCheck then
+                                allRawGetsMatch = false
+                                return
+                            end
                         end
                     end
+
+                    check(info)
+
                     if not allRawGetsMatch then continue end
 
                     getgenv()[name] = garbage
