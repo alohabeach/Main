@@ -248,8 +248,7 @@ function Vigil.new(Name, ...)
 			PageFrame = PageFrame;
 		}
 
-		-- $$$ Functions + Connections
-		PageButton.MouseButton1Click:Connect(function()
+		function Page:open()
 			for _, Page in Window.Pages do
 				Page.PageFrame.Visible = false
 				Page.PageFrame.Size = UDim2.new(1,0,0,0)
@@ -286,6 +285,11 @@ function Vigil.new(Name, ...)
 				TweenInfo.new(.25, easing_style.Quad, easing_direction.InOut),
 				{ Size = UDim2.new(1,0,1,0) }
 			):Play()
+		end
+
+		-- $$$ Functions + Connections
+		PageButton.MouseButton1Click:Connect(function()
+			Page:open()
 		end)
 
 		function Page:addSection(SectionName)
