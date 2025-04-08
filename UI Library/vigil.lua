@@ -231,6 +231,15 @@ function Vigil.new(Name, ...)
 		end
 	end
 
+	function Window:setPosition(NewPosition)
+		assert(typeof(NewPosition) == "Udim2", "Invalid argument #1, expected 'Udim2' got " .. typeof(NewPosition))
+		WindowFrame.Position = NewPosition
+	end
+
+	function Window:getPosition()
+		return WindowFrame.Position
+	end
+
 	function Window:addPage(Name, ...)
 		-- $$$ Metadata
 		local Page, Meta = {}, {
