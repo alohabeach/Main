@@ -446,7 +446,7 @@ function Vigil.new(Name, ...)
 						KeybindButton.Size = UDim2.new(0, 22, 0, 22)
 					end
 				end
-				task.defer(ResizeBox)
+				task.delay(1, ResizeBox)
 
 				local Blacklist = {
 					Enum.KeyCode.RightSuper,
