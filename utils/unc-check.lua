@@ -92,6 +92,8 @@ local function test(testNames)
 
     repeat task.wait() until running == 0
 
+    pcall(function() delfolder(".tests") end)
+
     local rate = math.round(passes / (passes + fails) * 100)
     local outOf = passes .. " out of " .. (passes + fails)
 
