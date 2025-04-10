@@ -125,3 +125,17 @@ local function isTargetBlocked(target, filterList)
     -- return if there are parts blocking the target
     return #filtered > 0
 end
+
+-- recursively clones a table and all its elements
+local function deepClone(original)
+    if type(original) ~= "table" then
+        return original
+    end
+    
+    local copy = {}
+    for key, value in pairs(original) do
+        copy[deepClone(key)] = deepClone(value)
+    end
+    
+    return copy
+end
