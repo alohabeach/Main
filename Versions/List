@@ -1,7 +1,0 @@
-Versions = {
-  JailbreakAutoRob = "1.1.0",
-  Jailbreak = "1.0.0 beta",
-  BloxburgAutoFarm = "1.0.0 beta"
-}
-
-return Versions

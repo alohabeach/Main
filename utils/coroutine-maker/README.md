@@ -42,6 +42,7 @@ end)
 local myThread = thread:new("RenderStepped", nil, function()
     print("Rendering!")
 end)
+
 myThread:setEnabled(true)
 ```
 
@@ -61,6 +62,7 @@ myThread:setEnabled(true)
 local myThread = thread:new("Stepped", nil, function()
     print("Stepped event!")
 end)
+
 myThread:setEnabled(true):destroy()
 ```
 
@@ -104,4 +106,3 @@ In this example:
 1. A coroutine thread is created with a 0.5-second wait interval.
 2. The thread is enabled.
 3. The thread is destroyed, cleaning up resources.
-

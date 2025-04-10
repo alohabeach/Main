@@ -11,9 +11,9 @@ end
 
 
 --- Garbage Collection ---
-local garbageCollection = {}
+local GarbageCollection = {}
 
-function garbageCollection:attemptCollection(maxAttempts, garbageInfo)
+function GarbageCollection:attemptCollection(maxAttempts, garbageInfo)
     local failedCollections
 
     for _ = 0, maxAttempts or 1 do
@@ -122,4 +122,4 @@ function garbageCollection:attemptCollection(maxAttempts, garbageInfo)
     end
 end
 
-return garbageCollection
+return GarbageCollection
