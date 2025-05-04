@@ -19,6 +19,11 @@ end
 --- Univsersal Naming Convention Check ---
 local BASE_FOLDER = "Aloha Configs"
 local UNC_TEST_PATH = string.format("%s/unc-check.txt", BASE_FOLDER)
+
+if not isfolder(BASE_FOLDER) then
+    makefolder(BASE_FOLDER)
+end
+
 writefile(UNC_TEST_PATH, "UNC Environment Check\n✅ - Pass, ⛔ - Fail, ⏺️ - No test, ⚠️ - Missing aliases\n\n")
 
 local passes, fails, undefined = 0, 0, 0
