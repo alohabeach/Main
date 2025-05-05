@@ -37,6 +37,8 @@ window.UIPadding_3 = Instance.new("UIPadding")
 window.ForgotPassword = Instance.new("TextButton")
 window.SignUp = Instance.new("TextButton")
 window.SignUp_2 = Instance.new("TextLabel")
+window.Close = Instance.new("ImageButton")
+window.UIAspectRatioConstraint_3 = Instance.new("UIAspectRatioConstraint")
 
 -- Properties:
 
@@ -260,6 +262,18 @@ window.SignUp_2.TextScaled = true
 window.SignUp_2.TextSize = 14.000
 window.SignUp_2.TextWrapped = true
 
+window.Close.Name = "Close"
+window.Close.Parent = window.LoadingFrame
+window.Close.BackgroundTransparency = 1.000
+window.Close.Position = UDim2.new(0.873276711, 0, 0.0385925099, 0)
+window.Close.Size = UDim2.new(0, 34, 0, 34)
+window.Close.Image = "rbxassetid://8445470984"
+window.Close.ImageRectOffset = Vector2.new(304, 304)
+window.Close.ImageRectSize = Vector2.new(96, 96)
+
+window.UIAspectRatioConstraint_3.Parent = window.Close
+window.UIAspectRatioConstraint_3.DominantAxis = Enum.DominantAxis.Height
+
 -- Interactive Styling:
 local tweenInfo = TweenInfo.new(0.15, Enum.EasingStyle.Quad, Enum.EasingDirection.In)
 
@@ -307,6 +321,15 @@ window.SignUp.MouseButton1Click:Connect(function()
 	})
 	
 	setclipboard("https://cheapkeys.cc/signup")
+end)
+
+window.Close.MouseButton1Click:Connect(function()
+	services.TweenService:Create(window.Cover, TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { BackgroundTransparency = 0 }):Play()
+	task.wait(0.4)
+	window.LoadingFrame:TweenSize(UDim2.new(0, 0, 0, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.7)
+	task.wait(0.7)
+
+	window.Loading:Destroy()
 end)
 
 -- Load-In Animation:
