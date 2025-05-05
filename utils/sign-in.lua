@@ -36,6 +36,7 @@ window.UIStroke_3 = Instance.new("UIStroke")
 window.UIPadding_3 = Instance.new("UIPadding")
 window.ForgotPassword = Instance.new("TextButton")
 window.SignUp = Instance.new("TextButton")
+window.SignUp_2 = Instance.new("TextLabel")
 
 -- Properties:
 
@@ -215,8 +216,8 @@ window.ForgotPassword.AnchorPoint = Vector2.new(0.5, 0.5)
 window.ForgotPassword.BackgroundTransparency = 1.000
 window.ForgotPassword.BorderColor3 = Color3.fromRGB(0, 0, 0)
 window.ForgotPassword.BorderSizePixel = 0
-window.ForgotPassword.Position = UDim2.new(0.499999851, 0, 0.739839017, 0)
-window.ForgotPassword.Size = UDim2.new(0.341, 0, 0.046, 0)
+window.ForgotPassword.Position = UDim2.new(0.704445958, 0, 0.739839017, 0)
+window.ForgotPassword.Size = UDim2.new(0.341108143, 0, 0.0460000001, 0)
 window.ForgotPassword.Font = Enum.Font.SourceSans
 window.ForgotPassword.Text = "Forgot Password?"
 window.ForgotPassword.RichText = true
@@ -232,16 +233,32 @@ window.SignUp.AnchorPoint = Vector2.new(0.5, 0.5)
 window.SignUp.BackgroundTransparency = 1.000
 window.SignUp.BorderColor3 = Color3.fromRGB(0, 0, 0)
 window.SignUp.BorderSizePixel = 0
-window.SignUp.Position = UDim2.new(0.499999851, 0, 0.93137908, 0)
-window.SignUp.Size = UDim2.new(0.6, 0, 0.0460000001, 0)
+window.SignUp.Position = UDim2.new(0.721704364, 0, 0.93137908, 0)
+window.SignUp.Size = UDim2.new(0.156591237, 0, 0.0460000001, 0)
 window.SignUp.Font = Enum.Font.SourceSans
-window.SignUp.Text = "Don't have an account? <u>Sign Up</u>."
-window.SignUp.RichText = true
+window.SignUp.Text = ""
 window.SignUp.TextColor3 = Color3.fromRGB(167, 167, 167)
 window.SignUp.TextScaled = true
 window.SignUp.TextSize = 14.000
 window.SignUp.TextStrokeColor3 = Color3.fromRGB(167, 167, 167)
 window.SignUp.TextWrapped = true
+
+window.SignUp_2.Name = "SignUp"
+window.SignUp_2.Parent = window.LoadingFrame
+window.SignUp_2.AnchorPoint = Vector2.new(0.5, 0.5)
+window.SignUp_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+window.SignUp_2.BackgroundTransparency = 1.000
+window.SignUp_2.BorderColor3 = Color3.fromRGB(0, 0, 0)
+window.SignUp_2.BorderSizePixel = 0
+window.SignUp_2.Position = UDim2.new(0.5, 0, 0.930999994, 0)
+window.SignUp_2.Size = UDim2.new(0.600000024, 0, 0.0460000001, 0)
+window.SignUp_2.Font = Enum.Font.SourceSans
+window.SignUp_2.Text = "Don't haved an account? <u>Sign Up.</u>"
+window.SignUp_2.RichText = true
+window.SignUp_2.TextColor3 = Color3.fromRGB(167, 167, 167)
+window.SignUp_2.TextScaled = true
+window.SignUp_2.TextSize = 14.000
+window.SignUp_2.TextWrapped = true
 
 -- Interactive Styling:
 local tweenInfo = TweenInfo.new(0.15, Enum.EasingStyle.Quad, Enum.EasingDirection.In)
