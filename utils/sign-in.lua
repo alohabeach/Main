@@ -98,6 +98,7 @@ window.username_box.PlaceholderColor3 = Color3.fromRGB(178, 178, 178)
 window.username_box.PlaceholderText = "Username"
 window.username_box.Text = ""
 window.username_box.TextColor3 = Color3.fromRGB(255, 255, 255)
+window.username_box.TextScaled = true
 window.username_box.TextSize = 15.000
 window.username_box.TextWrapped = true
 window.username_box.TextXAlignment = Enum.TextXAlignment.Left
@@ -112,6 +113,8 @@ window.UIStroke_2.Parent = window.username_box
 
 window.UIPadding.Parent = window.username_box
 window.UIPadding.PaddingLeft = UDim.new(0, 10)
+window.UIPadding.PaddingBottom = UDim.new(0, 4)
+window.UIPadding.PaddingTop = UDim.new(0, 4)
 
 window.SignIn.Name = "SignIn"
 window.SignIn.Parent = window.LoadingFrame
@@ -143,6 +146,7 @@ window.Description.Size = UDim2.new(0.75000006, 0, 0.0818955973, 0)
 window.Description.Font = Enum.Font.SourceSans
 window.Description.Text = "Enter your Cheap Keys username and password below to login."
 window.Description.TextColor3 = Color3.fromRGB(167, 167, 167)
+window.Description.TextScaled = true
 window.Description.TextSize = 16.000
 window.Description.TextWrapped = true
 window.Description.TextXAlignment = Enum.TextXAlignment.Left
@@ -185,6 +189,7 @@ window.password_box.Font = Enum.Font.SourceSans
 window.password_box.PlaceholderColor3 = Color3.fromRGB(178, 178, 178)
 window.password_box.Text = ""
 window.password_box.TextColor3 = Color3.fromRGB(255, 255, 255)
+window.password_box.TextScaled = true
 window.password_box.TextSize = 15.000
 window.password_box.TextWrapped = true
 window.password_box.TextXAlignment = Enum.TextXAlignment.Left
@@ -199,6 +204,8 @@ window.UIStroke_3.Parent = window.password_box
 
 window.UIPadding_3.Parent = window.password_box
 window.UIPadding_3.PaddingLeft = UDim.new(0, 10)
+window.UIPadding_3.PaddingBottom = UDim.new(0, 4)
+window.UIPadding_3.PaddingTop = UDim.new(0, 4)
 
 window.ForgotPassword.Name = "ForgotPassword"
 window.ForgotPassword.Parent = window.LoadingFrame
