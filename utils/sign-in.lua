@@ -112,9 +112,9 @@ window.UIStroke_2.Transparency = 0.48
 window.UIStroke_2.Parent = window.username_box
 
 window.UIPadding.Parent = window.username_box
-window.UIPadding.PaddingLeft = UDim.new(0, 10)
-window.UIPadding.PaddingBottom = UDim.new(0, 4)
-window.UIPadding.PaddingTop = UDim.new(0, 4)
+window.UIPadding.PaddingLeft = UDim.new(0.035, 0)
+window.UIPadding.PaddingBottom = UDim.new(0.035, 10)
+window.UIPadding.PaddingTop = UDim.new(0.035, 10)
 
 window.SignIn.Name = "SignIn"
 window.SignIn.Parent = window.LoadingFrame
@@ -203,9 +203,9 @@ window.UIStroke_3.Transparency = 0.48
 window.UIStroke_3.Parent = window.password_box
 
 window.UIPadding_3.Parent = window.password_box
-window.UIPadding_3.PaddingLeft = UDim.new(0, 10)
-window.UIPadding_3.PaddingBottom = UDim.new(0, 4)
-window.UIPadding_3.PaddingTop = UDim.new(0, 4)
+window.UIPadding_3.PaddingLeft = UDim.new(0.035, 0)
+window.UIPadding_3.PaddingBottom = UDim.new(0.035, 10)
+window.UIPadding_3.PaddingTop = UDim.new(0.035, 10)
 
 window.ForgotPassword.Name = "ForgotPassword"
 window.ForgotPassword.Parent = window.LoadingFrame
