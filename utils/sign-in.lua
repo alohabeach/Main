@@ -100,6 +100,7 @@ window.username_box.Text = ""
 window.username_box.TextColor3 = Color3.fromRGB(255, 255, 255)
 window.username_box.TextScaled = true
 window.username_box.TextSize = 15.000
+window.username_box.ClearTextOnFocus = false
 window.username_box.TextWrapped = true
 window.username_box.TextXAlignment = Enum.TextXAlignment.Left
 
@@ -191,6 +192,7 @@ window.password_box.Text = ""
 window.password_box.TextColor3 = Color3.fromRGB(255, 255, 255)
 window.password_box.TextScaled = true
 window.password_box.TextSize = 15.000
+window.password_box.ClearTextOnFocus = false
 window.password_box.TextWrapped = true
 window.password_box.TextXAlignment = Enum.TextXAlignment.Left
 
