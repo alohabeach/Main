@@ -18,27 +18,41 @@ Notifications.icons = {
     info = {
         assetId = "rbxassetid://8445471499",
         rectOffset = Vector2.new(304, 104),
+        rectSize = Vector2.new(96, 96),
     },
     check = {
         assetId = "rbxassetid://8445471173",
         rectOffset = Vector2.new(404, 604),
+        rectSize = Vector2.new(96, 96),
     },
     error = {
         assetId = "rbxassetid://8445470559",
         rectOffset = Vector2.new(404, 504),
+        rectSize = Vector2.new(96, 96),
     },
     bell = {
         assetId = "rbxassetid://8445471332",
         rectOffset = Vector2.new(4, 504),
+        rectSize = Vector2.new(96, 96),
     },
     link = {
         assetId = "rbxassetid://8445470392",
         rectOffset = Vector2.new(104, 404),
+        rectSize = Vector2.new(96, 96),
     },
+    warn = {
+        assetId = "rbxassetid://6764432408",
+        rectOffset = Vector2.new(0, 900),
+        rectSize = Vector2.new(50, 50),
+    }
 }
 
-function Notifications:new(message: string, icon: "info" | "check"? | "error"? | "bell"?)
-    icon = self.icons[icon] or self.icons.info
+function Notifications:new(message: string, iconName: string?)
+    assert(type(self) == "table", "Expected ':' not '.' calling member function new")
+    assert(type(message) == "string", "invalid argument #2 to 'new' (string expected, got " .. typeof(message) .. ")")
+    assert(iconName == nil or type(iconName) == "string", "invalid argument #3 to 'new' (string or nil expected, got " .. typeof(iconName) .. ")")
+
+    icon = self.icons[iconName] or self.icons.info
 
     local newNotif = {}
 
@@ -80,7 +94,7 @@ function Notifications:new(message: string, icon: "info" | "check"? | "error"? |
     newNotif.Icon.Size = UDim2.new(0.0604347773, 0, 0.47319147, 0)
     newNotif.Icon.Image = icon.assetId
     newNotif.Icon.ImageRectOffset = icon.rectOffset
-    newNotif.Icon.ImageRectSize = Vector2.new(96, 96)
+    newNotif.Icon.ImageRectSize = icon.rectSize
     newNotif.Icon.ImageTransparency = 1
     
     newNotif.UIAspectRatioConstraint.Parent = newNotif.Icon
