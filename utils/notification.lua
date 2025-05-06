@@ -15,6 +15,8 @@ local Notifications = {}
 Notifications.list = {}
 
 function Notifications:new(message: string)
+    self.debounce = true
+
     local newNotif = {}
 
     newNotif.Notification = Instance.new("ScreenGui")
@@ -233,6 +235,9 @@ function Notifications:new(message: string)
             notif:destroy(true)
         end
     end
+
+    task.wait(0.3)
+    self.debounce = false
 end
 
 return Notifications
