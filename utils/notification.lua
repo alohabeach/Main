@@ -10,11 +10,11 @@ local services = setmetatable({}, {
 
 
 
-local notifications = {}
+local Notifications = {}
 
-notifications.list = {}
+Notifications.list = {}
 
-function notifications:new(message: string)
+function Notifications:new(message: string)
     local newNotif = {}
 
     newNotif.Notification = Instance.new("ScreenGui")
@@ -236,4 +236,4 @@ function notifications:new(message: string)
     end
 end
 
-return notifications
+return Notifications
