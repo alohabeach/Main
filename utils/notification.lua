@@ -236,7 +236,7 @@ function Notifications:new(message: string)
         end
     end
 
-    task.wait(0.3)
+    task.wait(0.4)
     self.debounce = false
 end
 
