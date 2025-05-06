@@ -93,7 +93,6 @@ function Notifications:new(message: string)
     newNotif.mouseLeaveDetection.Size = UDim2.new(0.150529161, 0, 0.201000005, 0)
     newNotif.mouseLeaveDetection.ZIndex = 5
     
-    newNotif.mouseIsOn = false
     newNotif.lifetime = 4.5
 
 
@@ -127,7 +126,7 @@ function Notifications:new(message: string)
         while true do
             task.wait(0.5)
     
-            if not notifications.mouseIsOn then
+            if not Notifications.mouseIsOn then
                 newNotif.lifetime -= 0.5
     
                 if newNotif.lifetime <= 0 then
@@ -143,17 +142,17 @@ function Notifications:new(message: string)
     local tweenInfo = TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
 
     newNotif.Frame.MouseEnter:Connect(function()
-        if notifications.mouseIsOn then
+        if Notifications.mouseIsOn then
             return
         end
 
-        local originalPosition = notifications.list[1].Frame.Position
-        local originalSize = notifications.list[1].Frame.Size
+        local originalPosition = Notifications.list[1].Frame.Position
+        local originalSize = Notifications.list[1].Frame.Size
         local lastTargetYScale = originalPosition.Y.Scale * 0.928
 
-        notifications.mouseIsOn = true
+        Notifications.mouseIsOn = true
 
-        for index, notif in ipairs(notifications.list) do
+        for index, notif in ipairs(Notifications.list) do
             if notif.destroying then
                 continue
             end
@@ -175,9 +174,9 @@ function Notifications:new(message: string)
     end)
 
     newNotif.mouseLeaveDetection.MouseLeave:Connect(function()
-        notifications.mouseIsOn = false
+        Notifications.mouseIsOn = false
         
-        for index, notif in ipairs(notifications.list) do
+        for index, notif in ipairs(Notifications.list) do
             if notif.destroying then
                 continue
             end
@@ -196,7 +195,7 @@ function Notifications:new(message: string)
 
     table.insert(self.list, 1, newNotif)
 
-    for index, notif in ipairs(notifications.list) do
+    for index, notif in ipairs(Notifications.list) do
         local targetPosition = notif.Frame.Position
         local targetSize = notif.Frame.Size
 
