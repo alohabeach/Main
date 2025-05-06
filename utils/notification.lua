@@ -15,6 +15,9 @@ local Notifications = {}
 Notifications.list = {}
 
 function Notifications:new(message: string)
+    if self.debounce then
+        return
+    end
     self.debounce = true
 
     local newNotif = {}
@@ -120,8 +123,9 @@ function Notifications:new(message: string)
             BackgroundTransparency = 1,
         }):Play()
 
-        task.wait(0.3)
-        self.Notification:Destroy()
+        task.delay(0.3, function()
+            self.Notification:Destroy()
+        end)
     end
     
     task.spawn(function()
@@ -236,7 +240,7 @@ function Notifications:new(message: string)
         end
     end
 
-    task.wait(0.4)
+    task.wait(0.3)
     self.debounce = false
 end
 
