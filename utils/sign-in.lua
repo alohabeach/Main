@@ -313,13 +313,17 @@ window.SignUp.MouseButton1Click:Connect(function()
 	setclipboard("https://cheapkeys.cc/signup")
 end)
 
-window.Close.MouseButton1Click:Connect(function()
-	services.TweenService:Create(window.Cover, TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { BackgroundTransparency = 0 }):Play()
+function window:close()
+	services.TweenService:Create(self.Cover, TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { BackgroundTransparency = 0 }):Play()
 	task.wait(0.4)
-	window.LoadingFrame:TweenSize(UDim2.new(0, 0, 0, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.7)
+	self.LoadingFrame:TweenSize(UDim2.new(0, 0, 0, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.7)
 	task.wait(0.7)
 
-	window.Loading:Destroy()
+	self.Loading:Destroy()
+end
+
+window.Close.MouseButton1Click:Connect(function()
+	window:close()
 end)
 
 -- Load-In Animation:
