@@ -304,22 +304,12 @@ end)
 -- Button Presses:
 
 window.ForgotPassword.MouseButton1Click:Connect(function()
-	services.StarterGui:SetCore("SendNotification", {
-		Title = "Forgot Password",
-		Text = "Link copied! Open it in your browser.",
-		Duration = 3,
-	})
-	
+	Notifications:new("Link copied! Open it in your browser.")
 	setclipboard("https://cheapkeys.cc/forgot-password")
 end)
 
 window.SignUp.MouseButton1Click:Connect(function()
-	services.StarterGui:SetCore("SendNotification", {
-		Title = "Sign Up",
-		Text = "Link copied! Open it in your browser.",
-		Duration = 3,
-	})
-	
+	Notifications:new("Link copied! Open it in your browser.")
 	setclipboard("https://cheapkeys.cc/signup")
 end)
 
