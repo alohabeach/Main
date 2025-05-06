@@ -15,11 +15,6 @@ local Notifications = {}
 Notifications.list = {}
 
 function Notifications:new(message: string)
-    if self.debounce then
-        return
-    end
-    self.debounce = true
-
     local newNotif = {}
 
     newNotif.Notification = Instance.new("ScreenGui")
@@ -202,8 +197,8 @@ function Notifications:new(message: string)
     table.insert(self.list, 1, newNotif)
 
     for index, notif in ipairs(Notifications.list) do
-        local targetPosition = notif.Frame.Position
-        local targetSize = notif.Frame.Size
+        local targetPosition = notif.currentPosition or notif.Frame.Position
+        local targetSize = notif.currentSize or notif.Frame.Size
 
         if index == 1 then
             services.TweenService:Create(notif.Info, tweenInfo, { ImageTransparency = 0 }):Play()
@@ -217,8 +212,8 @@ function Notifications:new(message: string)
                 BackgroundTransparency = 0,
             }):Play()
         else
-            local position = notif.Frame.Position
-            local size = notif.Frame.Size
+            local position = notif.currentPosition
+            local size = notif.currentSize
 
             services.TweenService:Create(notif.Info, tweenInfo, { ImageTransparency = 1 }):Play()
             services.TweenService:Create(notif.message, tweenInfo, { TextTransparency = 1 }):Play()
@@ -239,9 +234,6 @@ function Notifications:new(message: string)
             notif:destroy(true)
         end
     end
-
-    task.wait(0.3)
-    self.debounce = false
 end
 
 return Notifications
