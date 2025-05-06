@@ -304,12 +304,12 @@ end)
 -- Button Presses:
 
 window.ForgotPassword.MouseButton1Click:Connect(function()
-	Notifications:new("Link copied! Open it in your browser.")
+	Notifications:new("Link copied! Open it in your browser.", "link")
 	setclipboard("https://cheapkeys.cc/forgot-password")
 end)
 
 window.SignUp.MouseButton1Click:Connect(function()
-	Notifications:new("Link copied! Open it in your browser.")
+	Notifications:new("Link copied! Open it in your browser.", "link")
 	setclipboard("https://cheapkeys.cc/signup")
 end)
 
