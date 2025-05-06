@@ -15,14 +15,31 @@ local Notifications = {}
 Notifications.list = {}
 
 Notifications.icons = {
-    info = "rbxassetid://8445471499",
-    check = "rbxassetid://8445471173",
-    error = "rbxassetid://8445470559",
-    bell = "rbxassetid://8445471332",
-    link = "rbxassetid://8445470392",
+    info = {
+        assetId = "rbxassetid://8445471499",
+        rectOffset = Vector2.new(304, 104),
+    },
+    check = {
+        assetId = "rbxassetid://8445471173",
+        rectOffset = Vector2.new(404, 604),
+    },
+    error = {
+        assetId = "rbxassetid://8445470559",
+        rectOffset = Vector2.new(404, 504),
+    },
+    bell = {
+        assetId = "rbxassetid://8445471332",
+        rectOffset = Vector2.new(4, 504),
+    },
+    link = {
+        assetId = "rbxassetid://8445470392",
+        rectOffset = Vector2.new(104, 404),
+    },
 }
 
 function Notifications:new(message: string, icon: "info" | "check"? | "error"? | "bell"?)
+    icon = self.icons[icon] or self.icons.info
+
     local newNotif = {}
 
     newNotif.Notification = Instance.new("ScreenGui")
@@ -61,8 +78,8 @@ function Notifications:new(message: string, icon: "info" | "check"? | "error"? |
     newNotif.Icon.BackgroundTransparency = 1.000
     newNotif.Icon.Position = UDim2.new(-0, 0, 0.5, 0)
     newNotif.Icon.Size = UDim2.new(0.0604347773, 0, 0.47319147, 0)
-    newNotif.Icon.Image = self.icons[icon] or self.icons.info
-    newNotif.Icon.ImageRectOffset = Vector2.new(304, 104)
+    newNotif.Icon.Image = icon.assetId
+    newNotif.Icon.ImageRectOffset = icon.rectOffset
     newNotif.Icon.ImageRectSize = Vector2.new(96, 96)
     newNotif.Icon.ImageTransparency = 1
     
