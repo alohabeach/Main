@@ -14,13 +14,21 @@ local Notifications = {}
 
 Notifications.list = {}
 
-function Notifications:new(message: string)
+Notifications.icons = {
+    info = "rbxassetid://8445471499",
+    check = "rbxassetid://8445471173",
+    error = "rbxassetid://8445470559",
+    bell = "rbxassetid://8445471332",
+    link = "rbxassetid://8445470392",
+}
+
+function Notifications:new(message: string, icon: "info" | "check"? | "error"? | "bell"?)
     local newNotif = {}
 
     newNotif.Notification = Instance.new("ScreenGui")
     newNotif.Frame = Instance.new("Frame")
     newNotif.UICorner = Instance.new("UICorner")
-    newNotif.Info = Instance.new("ImageLabel")
+    newNotif.Icon = Instance.new("ImageLabel")
     newNotif.UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
     newNotif.UIPadding = Instance.new("UIPadding")
     newNotif.UIStroke = Instance.new("UIStroke")
@@ -47,18 +55,18 @@ function Notifications:new(message: string)
     newNotif.UICorner.CornerRadius = UDim.new(0.15, 0)
     newNotif.UICorner.Parent = newNotif.Frame
     
-    newNotif.Info.Name = "Info"
-    newNotif.Info.Parent = newNotif.Frame
-    newNotif.Info.AnchorPoint = Vector2.new(0.5, 0.5)
-    newNotif.Info.BackgroundTransparency = 1.000
-    newNotif.Info.Position = UDim2.new(-0, 0, 0.5, 0)
-    newNotif.Info.Size = UDim2.new(0.0604347773, 0, 0.47319147, 0)
-    newNotif.Info.Image = "rbxassetid://8445471499"
-    newNotif.Info.ImageRectOffset = Vector2.new(304, 104)
-    newNotif.Info.ImageRectSize = Vector2.new(96, 96)
-    newNotif.Info.ImageTransparency = 1
+    newNotif.Icon.Name = "Icon"
+    newNotif.Icon.Parent = newNotif.Frame
+    newNotif.Icon.AnchorPoint = Vector2.new(0.5, 0.5)
+    newNotif.Icon.BackgroundTransparency = 1.000
+    newNotif.Icon.Position = UDim2.new(-0, 0, 0.5, 0)
+    newNotif.Icon.Size = UDim2.new(0.0604347773, 0, 0.47319147, 0)
+    newNotif.Icon.Image = self.icons[icon] or self.icons.info
+    newNotif.Icon.ImageRectOffset = Vector2.new(304, 104)
+    newNotif.Icon.ImageRectSize = Vector2.new(96, 96)
+    newNotif.Icon.ImageTransparency = 1
     
-    newNotif.UIAspectRatioConstraint.Parent = newNotif.Info
+    newNotif.UIAspectRatioConstraint.Parent = newNotif.Icon
     newNotif.UIAspectRatioConstraint.DominantAxis = Enum.DominantAxis.Height
     
     newNotif.UIPadding.Parent = newNotif.Frame
@@ -103,12 +111,12 @@ function Notifications:new(message: string)
         local tweenInfo = TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
 
         if not stationary then
-            services.TweenService:Create(self.Info, tweenInfo, { ImageTransparency = 0 }):Play()
+            services.TweenService:Create(self.Icon, tweenInfo, { ImageTransparency = 0 }):Play()
             services.TweenService:Create(self.message, tweenInfo, { TextTransparency = 0 }):Play()
             task.wait(0.3)
         end
 
-        services.TweenService:Create(self.Info, tweenInfo, { ImageTransparency = 1 }):Play()
+        services.TweenService:Create(self.Icon, tweenInfo, { ImageTransparency = 1 }):Play()
         services.TweenService:Create(self.message, tweenInfo, { TextTransparency = 1 }):Play()
         services.TweenService:Create(self.UIStroke, tweenInfo, { Transparency = 1 }):Play()
 
@@ -161,7 +169,7 @@ function Notifications:new(message: string)
             if index == 1 then
                 lastTargetYScale = originalPosition.Y.Scale * 0.99
             else
-                services.TweenService:Create(notif.Info, tweenInfo, { ImageTransparency = 0 }):Play()
+                services.TweenService:Create(notif.Icon, tweenInfo, { ImageTransparency = 0 }):Play()
                 services.TweenService:Create(notif.message, tweenInfo, { TextTransparency = 0 }):Play()
             end
 
@@ -183,7 +191,7 @@ function Notifications:new(message: string)
             end
 
             if index > 1 then
-                services.TweenService:Create(notif.Info, tweenInfo, { ImageTransparency = 1 }):Play()
+                services.TweenService:Create(notif.Icon, tweenInfo, { ImageTransparency = 1 }):Play()
                 services.TweenService:Create(notif.message, tweenInfo, { TextTransparency = 1 }):Play()
             end
 
@@ -201,7 +209,7 @@ function Notifications:new(message: string)
         local targetSize = notif.currentSize or notif.Frame.Size
 
         if index == 1 then
-            services.TweenService:Create(notif.Info, tweenInfo, { ImageTransparency = 0 }):Play()
+            services.TweenService:Create(notif.Icon, tweenInfo, { ImageTransparency = 0 }):Play()
             services.TweenService:Create(notif.message, tweenInfo, { TextTransparency = 0 }):Play()
             services.TweenService:Create(notif.UIStroke, tweenInfo, { Transparency = 0.36 }):Play()
 
@@ -215,7 +223,7 @@ function Notifications:new(message: string)
             local position = notif.currentPosition
             local size = notif.currentSize
 
-            services.TweenService:Create(notif.Info, tweenInfo, { ImageTransparency = 1 }):Play()
+            services.TweenService:Create(notif.Icon, tweenInfo, { ImageTransparency = 1 }):Play()
             services.TweenService:Create(notif.message, tweenInfo, { TextTransparency = 1 }):Play()
 
             targetPosition = UDim2.new(position.X.Scale, position.X.Offset, position.Y.Scale * 0.988, position.Y.Offset)
