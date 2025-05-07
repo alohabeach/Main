@@ -424,7 +424,7 @@ function window:showLaunchUI(scriptInfo)
 
 	-- Load Each Script Frame:
 
-	window.scriptsFrames = {}
+	window.scriptFrames = {}
 
 	for scriptName, info in pairs(scriptInfo) do
 		local newFrame = {}
@@ -531,7 +531,7 @@ function window:showLaunchUI(scriptInfo)
 		-- Button Presses:
 
 		newFrame.Frame.MouseButton1Click:Connect(function()
-			for _, frame in pairs(window.scriptsFrame) do
+			for _, frame in pairs(window.scriptFrames) do
 				frame.Name = scriptName
 			end
 
@@ -542,7 +542,7 @@ function window:showLaunchUI(scriptInfo)
 			Notifications:new(info.description, "info")
 		end)
 
-		table.insert(window.scriptsFrame, newFrame)
+		table.insert(window.scriptFrames, newFrame)
 	end
 
 	-- Reveal New Contents:
