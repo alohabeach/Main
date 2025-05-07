@@ -500,7 +500,7 @@ function window:showLaunchUI(scriptInfo)
 		newFrame.UIAspectRatioConstraint.Parent = Code
 		newFrame.UIAspectRatioConstraint.DominantAxis = Enum.DominantAxis.Height
 	
-		newFrame.scriptName = "Info"
+		newFrame.Info.Name = "Info"
 		newFrame.Info.Parent = newFrame.Frame_2
 		newFrame.Info.AnchorPoint = Vector2.new(0.5, 0.5)
 		newFrame.Info.BackgroundTransparency = 1.000
