@@ -9,8 +9,11 @@ local services = setmetatable({}, {
 })
 
 
+--- Sign In UI ---
 
 local window = {}
+
+-- Instances:
 
 window.Loading = Instance.new("ScreenGui")
 window.LoadingFrame = Instance.new("Frame")
@@ -331,5 +334,220 @@ end)
 window.LoadingFrame:TweenSize(UDim2.new(0.5, 0, 0.5, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.7)
 task.wait(0.5)
 services.TweenService:Create(window.Cover, TweenInfo.new(0.3, Enum.EasingStyle.Circular, Enum.EasingDirection.In), { BackgroundTransparency = 1 }):Play()
+
+
+--- Launch Script UI ---
+
+function window:showLaunchUI(scriptInfo)
+
+	-- Cover the window:
+
+	services.TweenService:Create(self.Cover, TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { BackgroundTransparency = 0 }):Play()
+	task.wait(0.4)
+
+
+	-- Remove Sign In UI Contents:
+
+	window.ForgotPassword:Destroy()
+	window.SignIn:Destroy()
+	window.SignUp:Destroy()
+	window.SignUp_2:Destroy()
+	window.username_box:Destroy()
+	window.password_box:Destroy()
+	window.Username:Destroy()
+	window.Password:Destroy()
+	window.UICorner_6:Destroy()
+	window.UIStroke_3:Destroy()
+	window.UIPadding_3:Destroy()
+	window.UICorner_3:Destroy()
+	window.UICorner_2:Destroy()
+	window.UIStroke_2:Destroy()
+	window.UIPadding:Destroy()
+
+
+
+	-- Instances:
+
+	window.ScrollingFrame = Instance.new("ScrollingFrame")
+	window.UICorner = Instance.new("UICorner")
+	window.UIStroke = Instance.new("UIStroke")
+	window.UIPadding = Instance.new("UIPadding")
+	window.UIListLayout = Instance.new("UIListLayout")
+	window.Launch = Instance.new("TextButton")
+	window.UICorner_2 = Instance.new("UICorner")
+
+	-- Properties:
+
+	window.ScrollingFrame.Parent = Loader
+	window.ScrollingFrame.Active = true
+	window.ScrollingFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+	window.ScrollingFrame.BackgroundColor3 = Color3.fromRGB(22, 22, 22)
+	window.ScrollingFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	window.ScrollingFrame.BorderSizePixel = 0
+	window.ScrollingFrame.Position = UDim2.new(0.497641504, 0, 0.480091006, 0)
+	window.ScrollingFrame.Size = UDim2.new(0, 282, 0, 173)
+	window.ScrollingFrame.ScrollBarThickness = 0
+
+	window.UICorner.CornerRadius = UDim.new(0.0299999993, 0)
+	window.UICorner.Parent = window.ScrollingFrame
+
+	window.UIStroke.Parent = window.ScrollingFrame
+	window.UIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+	window.UIStroke.Color = Color3.fromRGB(161, 161, 161)
+	window.UIStroke.Transparency = 0.48
+
+	window.UIPadding.Parent = window.ScrollingFrame
+	window.UIPadding.PaddingBottom = UDim.new(0.00999999978, 0)
+	window.UIPadding.PaddingLeft = UDim.new(0.0299999993, 0)
+	window.UIPadding.PaddingRight = UDim.new(0.0299999993, 0)
+	window.UIPadding.PaddingTop = UDim.new(0.00999999978, 0)
+
+	window.UIListLayout.Parent = window.ScrollingFrame
+	window.UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+	window.UIListLayout.Padding = UDim.new(0.00700000022, 0)
+
+	window.Launch.Name = "Launch"
+	window.Launch.Parent = window.Loader
+	window.Launch.AnchorPoint = Vector2.new(0.5, 0)
+	window.Launch.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	window.Launch.Position = UDim2.new(0.499999851, 0, 0.79655242, 0)
+	window.Launch.Size = UDim2.new(0.75000006, 0, 0.0788909867, 0)
+	window.Launch.Font = Enum.Font.SourceSans
+	window.Launch.Text = "Launch"
+	window.Launch.TextColor3 = Color3.fromRGB(0, 0, 0)
+	window.Launch.TextSize = 24.000
+	window.Launch.TextWrapped = true
+
+	window.UICorner_2.CornerRadius = UDim.new(0.200000003, 0)
+	window.UICorner_2.Parent = window.Launch
+
+
+	-- Load Each Script Frame:
+
+	window.scriptsFrames = {}
+
+	for scriptName, info in pairs(scriptInfo) do
+		local newFrame = {}
+
+		newFrame.scriptName = scriptName
+
+		-- Instances:
+
+		newFrame.Frame = Instance.new("TextButton")
+		newFrame.Frame_2 = Instance.new("Frame")
+		newFrame.UIListLayout_2 = Instance.new("UIListLayout")
+		newFrame.Name = Instance.new("TextLabel")
+		newFrame.Code = Instance.new("ImageLabel")
+		newFrame.UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
+		newFrame.Info = Instance.new("ImageLabel")
+		newFrame.UIAspectRatioConstraint_2 = Instance.new("UIAspectRatioConstraint")
+		newFrame.Separator = Instance.new("Frame")
+		newFrame.UIStroke_2  = Instance.new("UIStroke")
+
+		-- Properties:
+
+		newFrame.Frame.Name = "Frame"
+		newFrame.Frame.Parent = window.ScrollingFrame
+		newFrame.Frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+		newFrame.Frame.BackgroundTransparency = 1.000
+		newFrame.Frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		newFrame.Frame.BorderSizePixel = 0
+		newFrame.Frame.Size = UDim2.new(1, 0, 0.0520000011, 0)
+		newFrame.Frame.Font = Enum.Font.SourceSans
+		newFrame.Frame.Text = ""
+		newFrame.Frame.TextColor3 = Color3.fromRGB(0, 0, 0)
+		newFrame.Frame.TextSize = 14.000
+	
+		newFrame.Frame_2.Parent = newFrame.Frame
+		newFrame.Frame_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+		newFrame.Frame_2.BackgroundTransparency = 1.000
+		newFrame.Frame_2.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		newFrame.Frame_2.BorderSizePixel = 0
+		newFrame.Frame_2.Size = UDim2.new(1, 0, 1, 0)
+	
+		newFrame.UIListLayout_2.Parent = newFrame.Frame_2
+		newFrame.UIListLayout_2.FillDirection = Enum.FillDirection.Horizontal
+		newFrame.UIListLayout_2.HorizontalAlignment = Enum.HorizontalAlignment.Center
+		newFrame.UIListLayout_2.SortOrder = Enum.SortOrder.LayoutOrder
+		newFrame.UIListLayout_2.VerticalAlignment = Enum.VerticalAlignment.Center
+	
+		newFrame.Name.Name = "Name"
+		newFrame.Name.Parent = newFrame.Frame_2
+		newFrame.Name.AnchorPoint = Vector2.new(0, 0.5)
+		newFrame.Name.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+		newFrame.Name.BackgroundTransparency = 1.000
+		newFrame.Name.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		newFrame.Name.BorderSizePixel = 0
+		newFrame.Name.LayoutOrder = 1
+		newFrame.Name.Position = UDim2.new(0.218982369, 0, 0.49999997, 0)
+		newFrame.Name.Size = UDim2.new(0.566461384, 0, 0.99999994, 0)
+		newFrame.Name.Font = Enum.Font.SourceSans
+		newFrame.Name.Text = scriptName
+		newFrame.Name.RichText = true
+		newFrame.Name.TextColor3 = Color3.fromRGB(255, 255, 255)
+		newFrame.Name.TextSize = 32.000
+		newFrame.Name.TextWrapped = true
+		newFrame.Name.TextXAlignment = Enum.TextXAlignment.Left
+	
+		newFrame.Code.Name = "Code"
+		newFrame.Code.Parent = newFrame.Frame_2
+		newFrame.Code.BackgroundTransparency = 1.000
+		newFrame.Code.Size = UDim2.new(1, 0, 1, 0)
+		newFrame.Code.Image = "rbxassetid://8445470984"
+		newFrame.Code.ImageRectOffset = Vector2.new(204, 304)
+		newFrame.Code.ImageRectSize = Vector2.new(96, 96)
+	
+		newFrame.UIAspectRatioConstraint.Parent = Code
+		newFrame.UIAspectRatioConstraint.DominantAxis = Enum.DominantAxis.Height
+	
+		newFrame.scriptName = "Info"
+		newFrame.Info.Parent = newFrame.Frame_2
+		newFrame.Info.AnchorPoint = Vector2.new(0.5, 0.5)
+		newFrame.Info.BackgroundTransparency = 1.000
+		newFrame.Info.LayoutOrder = 1
+		newFrame.Info.Position = UDim2.new(0.928323507, 0, 0.477675289, 0)
+		newFrame.Info.Size = UDim2.new(0, 32, 0, 33)
+		newFrame.Info.Image = "rbxassetid://8445471499"
+		newFrame.Info.ImageRectOffset = Vector2.new(204, 304)
+		newFrame.Info.ImageRectSize = Vector2.new(96, 96)
+	
+		newFrame.UIAspectRatioConstraint_2.Parent = Info
+		newFrame.UIAspectRatioConstraint_2.DominantAxis = Enum.DominantAxis.Height
+	
+		newFrame.Separator.Name = "Separator"
+		newFrame.Separator.Parent = newFrame.ScrollingFrame
+		newFrame.Separator.AnchorPoint = Vector2.new(1, 0)
+		newFrame.Separator.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+		newFrame.Separator.BackgroundTransparency = 1.000
+		newFrame.Separator.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		newFrame.Separator.BorderSizePixel = 0
+		newFrame.Separator.Position = UDim2.new(8.01875757e-08, 0, 0.185799062, 0)
+		newFrame.Separator.Size = UDim2.new(1, 0, 0, 0)
+	
+		newFrame.UIStroke_2.Parent = newFrame.Separator
+		newFrame.UIStroke_2.Thickness = 0.5
+		newFrame.UIStroke_2.Transparency = 0.36
+
+		-- Button Presses:
+
+		newFrame.Frame.MouseButton1Click:Connect(function()
+			for _, frame in pairs(window.scriptsFrame) do
+				frame.Name = scriptName
+			end
+
+			newFrame.Name = string.format("</b>%s</b>", scriptName)
+		end)
+
+		newFrame.Info.MouseButton1Click:Connect(function()
+			Notifications:new(info.description, "info")
+		end)
+
+		table.insert(window.scriptsFrame, newFrame)
+	end
+
+	-- Reveal New Contents:
+
+	services.TweenService:Create(window.Cover, TweenInfo.new(0.3, Enum.EasingStyle.Circular, Enum.EasingDirection.In), { BackgroundTransparency = 1 }):Play()
+end
 
 return window
