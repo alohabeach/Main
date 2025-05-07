@@ -118,6 +118,7 @@ function Notifications:new(message: string, iconName: string?)
     newNotif.message.Size = UDim2.new(0.866412938, 0, 1, 0)
     newNotif.message.Font = Enum.Font.SourceSansBold
     newNotif.message.Text = message
+    newNotif.message.RichText = true
     newNotif.message.TextTruncate = Enum.TextTruncate.AtEnd
     newNotif.message.TextColor3 = Color3.fromRGB(255, 255, 255)
     newNotif.message.TextSize = 16.000
@@ -136,7 +137,7 @@ function Notifications:new(message: string, iconName: string?)
     newNotif.lifetime = 4.5
 
 
-    
+
     function newNotif:destroy(stationary)
         self.destroying = true
 
