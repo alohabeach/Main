@@ -11,6 +11,7 @@ local services = setmetatable({}, {
 
 --- Sign In UI ---
 
+getgenv().SIGNING_IN = nil
 local window = {}
 
 -- Instances:
@@ -329,6 +330,7 @@ function window:close()
 	task.wait(0.7)
 
 	self.Loading:Destroy()
+	getgenv().SIGNING_IN = nil
 end
 
 window.Close.MouseButton1Click:Connect(function()
