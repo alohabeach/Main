@@ -52,7 +52,7 @@ function Notifications:new(message: string, iconName: string?)
     assert(type(message) == "string", "invalid argument #2 to 'new' (string expected, got " .. typeof(message) .. ")")
     assert(iconName == nil or type(iconName) == "string", "invalid argument #3 to 'new' (string or nil expected, got " .. typeof(iconName) .. ")")
 
-    icon = self.icons[iconName] or self.icons.info
+    icon = self.icons[iconName] or self.icons.bell
 
     local newNotif = {}
 
