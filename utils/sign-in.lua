@@ -346,7 +346,7 @@ function window:showLaunchUI(scriptInfo)
 	task.wait(0.4)
 
 
-	-- Remove Sign In UI Contents:
+	-- Remove 'Sign In' UI Contents:
 
 	window.ForgotPassword:Destroy()
 	window.SignIn:Destroy()
@@ -364,7 +364,10 @@ function window:showLaunchUI(scriptInfo)
 	window.UIStroke_2:Destroy()
 	window.UIPadding:Destroy()
 
+	-- Change Some Titles:
 
+	window.Title.Text = "Loader"
+	window.Description.Text = "Select a script from the list below."
 
 	-- Instances:
 
@@ -378,7 +381,7 @@ function window:showLaunchUI(scriptInfo)
 
 	-- Properties:
 
-	window.ScrollingFrame.Parent = Loader
+	window.ScrollingFrame.Parent = window.LoadingFrame
 	window.ScrollingFrame.Active = true
 	window.ScrollingFrame.AnchorPoint = Vector2.new(0.5, 0.5)
 	window.ScrollingFrame.BackgroundColor3 = Color3.fromRGB(22, 22, 22)
