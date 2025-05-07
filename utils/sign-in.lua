@@ -11,7 +11,7 @@ local services = setmetatable({}, {
 
 --- Sign In UI ---
 
-getgenv().SIGNING_IN = nil
+getgenv().SIGNING_IN = true
 local window = {}
 
 -- Instances:
