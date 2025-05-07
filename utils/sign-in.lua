@@ -17,6 +17,7 @@ local window = {}
 
 window.Loading = Instance.new("ScreenGui")
 window.LoadingFrame = Instance.new("Frame")
+window.UIStroke_4 = Instance.new("UIStroke")
 window.Title = Instance.new("TextLabel")
 window.Cover = Instance.new("Frame")
 window.UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
@@ -59,6 +60,11 @@ window.LoadingFrame.BackgroundColor3 = Color3.fromRGB(26, 26, 26)
 window.LoadingFrame.BorderColor3 = Color3.fromRGB(255, 255, 255)
 window.LoadingFrame.ClipsDescendants = true
 window.LoadingFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+
+window.UIStroke_4.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+window.UIStroke_4.Color = Color3.fromRGB(161, 161, 161)
+window.UIStroke_4.Transparency = 0.48
+window.UIStroke_4.Parent = window.LoadingFrame
 
 window.Title.Name = "Title"
 window.Title.Parent = window.LoadingFrame
@@ -367,7 +373,7 @@ function window:showLaunchUI(scriptInfo)
 	-- Change Some Titles:
 
 	window.Title.Text = "Loader"
-	window.Description.Text = "Select a script from the list below."
+	window.Description.Text = "Select a script from the list below to run."
 
 	-- Instances:
 
@@ -388,10 +394,13 @@ function window:showLaunchUI(scriptInfo)
 	window.ScrollingFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	window.ScrollingFrame.BorderSizePixel = 0
 	window.ScrollingFrame.Position = UDim2.new(0.497641504, 0, 0.480091006, 0)
-	window.ScrollingFrame.Size = UDim2.new(0, 282, 0, 173)
+	window.ScrollingFrame.Size = UDim2.new(0.75, 0, 0.394, 0)
 	window.ScrollingFrame.ScrollBarThickness = 0
+	window.ScrollingFrame.ScrollingEnabled = false
 
 	window.UICorner.CornerRadius = UDim.new(0.0299999993, 0)
+	window.UICorner.Parent = window.Cover
+	task.wait()
 	window.UICorner.Parent = window.ScrollingFrame
 
 	window.UIStroke.Parent = window.ScrollingFrame
@@ -410,7 +419,7 @@ function window:showLaunchUI(scriptInfo)
 	window.UIListLayout.Padding = UDim.new(0.00700000022, 0)
 
 	window.Launch.Name = "Launch"
-	window.Launch.Parent = window.Loader
+	window.Launch.Parent = window.LoadingFrame
 	window.Launch.AnchorPoint = Vector2.new(0.5, 0)
 	window.Launch.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 	window.Launch.Position = UDim2.new(0.499999851, 0, 0.79655242, 0)
@@ -437,7 +446,6 @@ function window:showLaunchUI(scriptInfo)
 		-- Instances:
 
 		newFrame.Frame = Instance.new("TextButton")
-		newFrame.Frame_2 = Instance.new("Frame")
 		newFrame.UIListLayout_2 = Instance.new("UIListLayout")
 		newFrame.Name = Instance.new("TextLabel")
 		newFrame.Code = Instance.new("ImageLabel")
@@ -461,21 +469,16 @@ function window:showLaunchUI(scriptInfo)
 		newFrame.Frame.TextColor3 = Color3.fromRGB(0, 0, 0)
 		newFrame.Frame.TextSize = 14.000
 	
-		newFrame.Frame_2.Parent = newFrame.Frame
-		newFrame.Frame_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-		newFrame.Frame_2.BackgroundTransparency = 1.000
-		newFrame.Frame_2.BorderColor3 = Color3.fromRGB(0, 0, 0)
-		newFrame.Frame_2.BorderSizePixel = 0
-		newFrame.Frame_2.Size = UDim2.new(1, 0, 1, 0)
-	
-		newFrame.UIListLayout_2.Parent = newFrame.Frame_2
+		newFrame.UIListLayout_2.Parent = newFrame.Frame
+		newFrame.UIListLayout_2.Padding = UDim.new(0.007, 0)
 		newFrame.UIListLayout_2.FillDirection = Enum.FillDirection.Horizontal
 		newFrame.UIListLayout_2.HorizontalAlignment = Enum.HorizontalAlignment.Center
+		newFrame.UIListLayout_2.HorizontalFlex = Enum.UIFlexAlignment.SpaceBetween
 		newFrame.UIListLayout_2.SortOrder = Enum.SortOrder.LayoutOrder
 		newFrame.UIListLayout_2.VerticalAlignment = Enum.VerticalAlignment.Center
 	
 		newFrame.Name.Name = "Name"
-		newFrame.Name.Parent = newFrame.Frame_2
+		newFrame.Name.Parent = newFrame.Frame
 		newFrame.Name.AnchorPoint = Vector2.new(0, 0.5)
 		newFrame.Name.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 		newFrame.Name.BackgroundTransparency = 1.000
@@ -493,18 +496,18 @@ function window:showLaunchUI(scriptInfo)
 		newFrame.Name.TextXAlignment = Enum.TextXAlignment.Left
 	
 		newFrame.Code.Name = "Code"
-		newFrame.Code.Parent = newFrame.Frame_2
+		newFrame.Code.Parent = newFrame.Frame
 		newFrame.Code.BackgroundTransparency = 1.000
 		newFrame.Code.Size = UDim2.new(1, 0, 1, 0)
 		newFrame.Code.Image = "rbxassetid://8445470984"
 		newFrame.Code.ImageRectOffset = Vector2.new(204, 304)
 		newFrame.Code.ImageRectSize = Vector2.new(96, 96)
 	
-		newFrame.UIAspectRatioConstraint.Parent = Code
+		newFrame.UIAspectRatioConstraint.Parent = newFrame.Code
 		newFrame.UIAspectRatioConstraint.DominantAxis = Enum.DominantAxis.Height
 	
 		newFrame.Info.Name = "Info"
-		newFrame.Info.Parent = newFrame.Frame_2
+		newFrame.Info.Parent = newFrame.Frame
 		newFrame.Info.AnchorPoint = Vector2.new(0.5, 0.5)
 		newFrame.Info.BackgroundTransparency = 1.000
 		newFrame.Info.LayoutOrder = 1
@@ -514,20 +517,20 @@ function window:showLaunchUI(scriptInfo)
 		newFrame.Info.ImageRectOffset = Vector2.new(204, 304)
 		newFrame.Info.ImageRectSize = Vector2.new(96, 96)
 	
-		newFrame.UIAspectRatioConstraint_2.Parent = Info
+		newFrame.UIAspectRatioConstraint_2.Parent = newFrame.Info
 		newFrame.UIAspectRatioConstraint_2.DominantAxis = Enum.DominantAxis.Height
 	
 		newFrame.Separator.Name = "Separator"
-		newFrame.Separator.Parent = newFrame.ScrollingFrame
+		newFrame.Separator.Parent = window.ScrollingFrame
 		newFrame.Separator.AnchorPoint = Vector2.new(1, 0)
 		newFrame.Separator.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-		newFrame.Separator.BackgroundTransparency = 1.000
+		newFrame.Separator.BackgroundTransparency = 1
 		newFrame.Separator.BorderColor3 = Color3.fromRGB(0, 0, 0)
 		newFrame.Separator.BorderSizePixel = 0
-		newFrame.Separator.Position = UDim2.new(8.01875757e-08, 0, 0.185799062, 0)
 		newFrame.Separator.Size = UDim2.new(1, 0, 0, 0)
 	
 		newFrame.UIStroke_2.Parent = newFrame.Separator
+		newFrame.UIStroke_2.Color = Color3.new(1, 1, 1)
 		newFrame.UIStroke_2.Thickness = 0.5
 		newFrame.UIStroke_2.Transparency = 0.36
 
@@ -535,10 +538,10 @@ function window:showLaunchUI(scriptInfo)
 
 		newFrame.Frame.MouseButton1Click:Connect(function()
 			for _, frame in pairs(window.scriptFrames) do
-				frame.Name = scriptName
+				frame.Name.Text = frame.scriptName
 			end
 
-			newFrame.Name = string.format("</b>%s</b>", scriptName)
+			newFrame.Name.Text = string.format("<b>%s</b>", scriptName)
 		end)
 
 		newFrame.Info.MouseButton1Click:Connect(function()
