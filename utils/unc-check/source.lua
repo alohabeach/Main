@@ -580,6 +580,18 @@ addTest("fireclickdetector", {}, function()
 	fireclickdetector(detector, 50, "MouseHoverEnter")
 end)
 
+addTest("firesignal", {}, function()
+	local button = Instance.new("TextButton")
+	button.Parent = game:GetService("CoreGui")
+	local wasFired = false
+	button.MouseButton1Click:Connect(function()
+		wasFired = true
+	end)
+	firesignal(button.MouseButton1Click)
+	assert(wasFired, "firesignal did not trigger the MouseButton1Click signal as expected")
+	button:Destroy()
+end)
+
 addTest("getcallbackvalue", {}, function()
 	local bindable = Instance.new("BindableFunction")
 	local function getCallbackValueTest()
@@ -843,6 +855,19 @@ addTest("getsenv", {}, function()
 	local env = getsenv(animate)
 	assert(type(env) == "table", "Did not return a table for Character.Animate (a " .. animate.ClassName .. ")")
 	assert(env.script == animate, "The script global is not identical to Character.Animate")
+end)
+
+addTest("getfenv", {}, function()
+	local testEnvironment = { myVar = 42 }
+	local function testFunction()
+		return myVar
+	end
+	setfenv(testFunction, testEnvironment)
+	local env = getfenv(testFunction)
+	assert(typeof(env) == "table", "getfenv did not return a table")
+	assert(env.myVar == 42, "getfenv returned environment missing expected value")
+	env.myVar = 100
+	assert(testFunction() == 100, "Function did not reflect changes in environment")
 end)
 
 addTest("getthreadidentity", {"getidentity", "getthreadcontext"}, function()
