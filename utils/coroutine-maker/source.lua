@@ -31,7 +31,7 @@ function thread:new(threadType, waitTimeSeconds, callback, threadEnded)
 				else
 					local success, errorMessage = pcall(newThread.callback)
 					if not success then
-						warn(errorMessage)
+						task.spawn(error, errorMessage)
 					end
 				end
 			end
