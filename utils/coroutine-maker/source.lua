@@ -19,12 +19,13 @@ function thread:new(threadType, waitTimeSeconds, callback, threadEnded)
 
 	if threadType == "coroutine" then
 		newThread.coroutine = coroutine.create(function()
-			while task.wait(newThread.waitTimeSeconds) do
+			while true do
 				if not newThread.enabled then
 					newThread.isRunning = false
 					coroutine.yield()
 				end
 				newThread.isRunning = true
+
 				if threadEnded then
 					task.defer(newThread.callback)
 					threadEnded.Event:Wait()
@@ -34,6 +35,8 @@ function thread:new(threadType, waitTimeSeconds, callback, threadEnded)
 						task.spawn(error, errorMessage)
 					end
 				end
+
+				task.wait(newThread.waitTimeSeconds)
 			end
 		end)
 	else
