@@ -6,6 +6,8 @@ local function customKick(title, message)
     local prompt = game:GetService("CoreGui").RobloxPromptGui.promptOverlay:WaitForChild("ErrorPrompt")
     prompt.TitleFrame.ErrorTitle.Text = title
     prompt.MessageArea.ErrorFrame.ErrorMessage.Text = message
+
+    coroutine.yield()
 end
 
 
