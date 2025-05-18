@@ -595,7 +595,7 @@ addTest("firesignal", {}, function()
 	local completed = false
 	button.Activated:Connect(function()
 		yielded = true
-		task.wait(0.1)
+		task.wait(1)
 		completed = true
 	end)
 	local success, err = pcall(function()
@@ -603,7 +603,7 @@ addTest("firesignal", {}, function()
 	end)
 	assert(success, "firesignal errored when the connected function yielded: " .. tostring(err))
 	assert(yielded, "firesignal did not trigger the yielding connected function")
-	assert(completed, "yielding function did not complete after being triggered by firesignal")
+	assert(not completed, "firesignal should not yield and wait for the connected function to complete")
 	button:Destroy()
 end)
 
