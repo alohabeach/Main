@@ -589,6 +589,19 @@ addTest("firesignal", {}, function()
 	end)
 	firesignal(button.MouseButton1Click)
 	assert(wasFired, "firesignal did not trigger the MouseButton1Click signal as expected")
+	local yielded = false
+	local completed = false
+	button.Activated:Connect(function()
+		yielded = true
+		task.wait(0.1)
+		completed = true
+	end)
+	local success, err = pcall(function()
+		firesignal(button.Activated)
+	end)
+	assert(success, "firesignal errored when the connected function yielded: " .. tostring(err))
+	assert(yielded, "firesignal did not trigger the yielding connected function")
+	assert(completed, "yielding function did not complete after being triggered by firesignal")
 	button:Destroy()
 end)
 
