@@ -765,7 +765,11 @@ end)
 
 addTest("messagebox", {})
 
-addTest("queue_on_teleport", {"queueonteleport"})
+addTest("queue_on_teleport", {"queueonteleport"}, function()
+	local success = pcall(function() queue_on_teleport() end)
+	local success2 = pcall(function() queueonteleport() end)
+	assert(success or success2, "Neither 'queue_on_teleport' nor 'queueonteleport' is defined or callable")
+end)
 
 addTest("request", {"http.request", "http_request"}, function()
 	local response = request({
