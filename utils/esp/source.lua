@@ -141,7 +141,7 @@ function MainESP:GetColor(player, useTeamColor, rainbow, defaultColor)
     end
 end
 
---[[ Position Caching ]]--
+--[[ Distance-Based Culling System ]]--
 local CullingSystem = {
     maxRenderDistance = 2000, -- studs
     nearDistance = 500, -- studs - full detail
@@ -173,6 +173,7 @@ function CullingSystem:GetDetailLevel(distance)
     end
 end
 
+--[[ Position Caching ]]--
 local CacheManager = {
     maxCacheAge = 30, -- seconds
     cleanupInterval = 10, -- seconds
@@ -653,7 +654,7 @@ function MainESP:RemoveESP(value)
     self.Container[value] = nil
 end
 
-local ESPPerf = {
+local ESPPerformance = {
     lastUpdate = 0,
     interval = 1/45, -- Start with reasonable update rate (45 FPS)
     
@@ -678,20 +679,20 @@ local function updateFPSAverage()
     local currentFPS = math.min(1 / Services.Stats.FrameTime, 200)
     
     -- Add new FPS to history
-    table.insert(ESPPerf.fpsHistory, currentFPS)
-    ESPPerf.fpsSum = ESPPerf.fpsSum + currentFPS
+    table.insert(ESPPerformance.fpsHistory, currentFPS)
+    ESPPerformance.fpsSum = ESPPerformance.fpsSum + currentFPS
     
     -- Remove old FPS if history is too large (FIXED: Better cleanup)
-    if #ESPPerf.fpsHistory > ESPPerf.fpsHistorySize then
-		local overflow = #ESPPerf.fpsHistory - ESPPerf.fpsHistorySize
+    if #ESPPerformance.fpsHistory > ESPPerformance.fpsHistorySize then
+		local overflow = #ESPPerformance.fpsHistory - ESPPerformance.fpsHistorySize
 		for _ = 1, overflow do
-			ESPPerf.fpsSum -= table.remove(ESPPerf.fpsHistory, 1)
+			ESPPerformance.fpsSum -= table.remove(ESPPerformance.fpsHistory, 1)
 		end
 	end
     
     -- Calculate average (prevent division by zero)
-    if #ESPPerf.fpsHistory > 0 then
-        ESPPerf.averageFPS = ESPPerf.fpsSum / #ESPPerf.fpsHistory
+    if #ESPPerformance.fpsHistory > 0 then
+        ESPPerformance.averageFPS = ESPPerformance.fpsSum / #ESPPerformance.fpsHistory
     end
 end
 
@@ -705,37 +706,37 @@ local globalRenderConnection = Services.RunService.RenderStepped:Connect(functio
 	CacheManager:CleanupCaches()
     
     -- Optimize every 0.5 seconds for stability
-    if now - ESPPerf.lastOptimize >= 0.5 then
-        local currentAvgFPS = ESPPerf.averageFPS
+    if now - ESPPerformance.lastOptimize >= 0.5 then
+        local currentAvgFPS = ESPPerformance.averageFPS
         
         -- Only adjust if we have enough history for reliable average
-        if #ESPPerf.fpsHistory >= math.min(10, ESPPerf.fpsHistorySize) then
-            if currentAvgFPS < ESPPerf.targetFPS - ESPPerf.stabilityThreshold then
+        if #ESPPerformance.fpsHistory >= math.min(10, ESPPerformance.fpsHistorySize) then
+            if currentAvgFPS < ESPPerformance.targetFPS - ESPPerformance.stabilityThreshold then
 				-- print("reducing interval")
                 -- FPS too low, reduce ESP update rate
-                local adjustment = 1 + ESPPerf.adjustmentRate
-                ESPPerf.interval = math.min(ESPPerf.interval * adjustment, ESPPerf.minInterval)
-            elseif currentAvgFPS > ESPPerf.targetFPS + ESPPerf.stabilityThreshold then
+                local adjustment = 1 + ESPPerformance.adjustmentRate
+                ESPPerformance.interval = math.min(ESPPerformance.interval * adjustment, ESPPerformance.minInterval)
+            elseif currentAvgFPS > ESPPerformance.targetFPS + ESPPerformance.stabilityThreshold then
 				-- print("increasing interval")
                 -- FPS good, can increase ESP update rate
-                local adjustment = 1 - ESPPerf.adjustmentRate
-                ESPPerf.interval = math.max(ESPPerf.interval * adjustment, ESPPerf.maxInterval)
+                local adjustment = 1 - ESPPerformance.adjustmentRate
+                ESPPerformance.interval = math.max(ESPPerformance.interval * adjustment, ESPPerformance.maxInterval)
             end
             -- If FPS is within threshold, don't adjust (stability)
         end
         
-        ESPPerf.lastOptimize = now
+        ESPPerformance.lastOptimize = now
         
         -- Debug output (remove in production)
         -- print(string.format("ESP: Avg FPS: %.1f, Interval: %.3f, Update Rate: %.1f", 
-        --     currentAvgFPS, ESPPerf.interval, 1/ESPPerf.interval))
+        --     currentAvgFPS, ESPPerformance.interval, 1/ESPPerformance.interval))
     end
     
     -- Frame limiting with smooth intervals
-    if now - ESPPerf.lastUpdate < ESPPerf.interval then
+    if now - ESPPerformance.lastUpdate < ESPPerformance.interval then
         return 
     end
-    ESPPerf.lastUpdate = now
+    ESPPerformance.lastUpdate = now
     
     -- Update all players
     for player, playerESP in pairs(MainESP.Container) do
