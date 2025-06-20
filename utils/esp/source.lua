@@ -124,8 +124,7 @@ function MainESP:GetColor(player, useTeamColor, rainbow, defaultColor)
     local cacheKey = player and tostring(player.UserId) or "default"
     
     if useTeamColor and player and player.Team then
-		local brickColor = player.Team.TeamColor
-        return Color3.fromRGB(brickColor.r, brickColor.g, brickColor.b)
+        return player.Team.TeamColor.Color
     elseif rainbow then
         -- Limit rainbow cache updates and add cleanup
         if not self._colorCache[cacheKey] or currentTime - (self._colorCache[cacheKey].time or 0) > 0.033 then
@@ -766,6 +765,7 @@ local globalRenderConnection = Services.RunService.RenderStepped:Connect(functio
                 local character = player.Character
                 local rootPart = character:FindFirstChild("HumanoidRootPart")
                 local head = character:FindFirstChild("Head")
+                local characterSizeHalved = select(2, character:GetBoundingBox()) / 2
                 
                 if not rootPart or not head then
                     MainESP:HidePlayerESP(playerESP)
@@ -774,17 +774,44 @@ local globalRenderConnection = Services.RunService.RenderStepped:Connect(functio
                 
                 local rootPos, onScreen = MainESP:GetCachedPosition(rootPart, "HumanoidRootPart", player, true)
 				local headPos = MainESP:GetCachedPosition(head, "Head", player)
-                local legPos = MainESP.WTVP(rootPart.Position - Vector3.new(0, 3, 0))
+                local topPos = MainESP.WTVP(rootPart.Position + Vector3.new(0, characterSizeHalved.Y, 0))
+                local bottomPos = MainESP.WTVP(rootPart.Position - Vector3.new(0, characterSizeHalved.Y, 0))
                 
                 local color = MainESP:GetColor(player, MainESP.Options.UseTeamColor, MainESP.Options.Rainbow, MainESP.Options.Color)
 
+                local boxWidth = 3000 / rootPos.Z
+                local boxHeight = topPos.Y - bottomPos.Y
+                local boxX = rootPos.X - boxWidth / 2
+                local boxY = rootPos.Y - boxHeight / 2
+                
+                playerESP._BoxDimensions.width = boxWidth
+                playerESP._BoxDimensions.height = boxHeight
+                playerESP._BoxDimensions.x = boxX
+                playerESP._BoxDimensions.y = boxY
+
+                local dims = playerESP._BoxDimensions
+                local infoX
+
 				-- Skip expensive operations for far players
                 if detailLevel == "minimal" then
-                    -- Only show basic info for very far players
+                    -- Name/Distance ESP
                     if MainESP.Options.Name and onScreen then
+                        local dynamicOffsetY = dims.height * 1.1
+                        if not infoX then
+                            infoX = dims.x + dims.width / 2
+                        end
+
                         playerESP.Name.Text = player.DisplayName
-                        playerESP.Name.Position = Vector2.new(headPos.X, headPos.Y)
+                        if MainESP.Options.Distance and onScreen then
+                            playerESP.Name.Text ..= "\n" .. "[" .. tostring(math.round(distance)) .. " studs]"
+                        end
+
+                        playerESP.Name.Position = Vector2.new(infoX, topPos.Y - 25)
                         playerESP.Name.Color = color
+                        playerESP.Name.Font = MainESP.Options.Font
+                        playerESP.Name.Size = MainESP.Options.FontSize
+                        playerESP.Name.Outline = MainESP.Options.TextOutline
+                        playerESP.Name.OutlineColor = Color3.fromRGB(0, 0, 0)
                         playerESP.Name.Visible = true
                     else
                         playerESP.Name.Visible = false
@@ -804,16 +831,6 @@ local globalRenderConnection = Services.RunService.RenderStepped:Connect(functio
                 
                 -- Box ESP (full/medium detail)
                 if MainESP.Options.Box and onScreen then
-                    local boxWidth = 2350 / rootPos.Z
-                    local boxHeight = headPos.Y - legPos.Y
-                    local boxX = rootPos.X - boxWidth / 2
-                    local boxY = rootPos.Y - boxHeight / 2
-                    
-                    playerESP._BoxDimensions.width = boxWidth
-                    playerESP._BoxDimensions.height = boxHeight
-                    playerESP._BoxDimensions.x = boxX
-                    playerESP._BoxDimensions.y = boxY
-                    
                     playerESP.Box.Size = Vector2.new(boxWidth, boxHeight)
                     playerESP.Box.Position = Vector2.new(boxX, boxY)
                     playerESP.Box.Color = color
@@ -825,6 +842,7 @@ local globalRenderConnection = Services.RunService.RenderStepped:Connect(functio
 
 				local dims = playerESP._BoxDimensions
                 
+                -- Health ESP (full detail)
 				if MainESP.Options.Health and onScreen and playerESP.Box.Visible and detailLevel == "full" then
 					local health, maxHealth = MainESP.GetHealth(player)
 					local healthPerc = health / maxHealth
@@ -834,7 +852,7 @@ local globalRenderConnection = Services.RunService.RenderStepped:Connect(functio
 					local offsetX = dims.width * 0.150
 
 					playerESP.Health.Size = Vector2.new(healthWidth, healthHeight)
-					playerESP.Health.Position = Vector2.new(dims.x - offsetX, dims.y + dims.height - healthHeight)
+					playerESP.Health.Position = Vector2.new(dims.x - offsetX, dims.y)
 					playerESP.Health.Color = Color3.fromHSV(healthPerc * 0.3, 1, 1)
 					playerESP.Health.Filled = true
 					playerESP.Health.Visible = true
@@ -842,7 +860,7 @@ local globalRenderConnection = Services.RunService.RenderStepped:Connect(functio
 					playerESP.Health.Visible = false
 				end
                 
-                -- Tracer ESP
+                -- Tracer ESP (full detail)
                 if MainESP.Options.Tracer and rootPos.Z > 0 and detailLevel == "full" then
                     playerESP.Tracer.From = MainESP.TracerOrigins[MainESP.Options.TracerOrigin]
                     playerESP.Tracer.To = Vector2.new(rootPos.X, rootPos.Y)
@@ -853,12 +871,14 @@ local globalRenderConnection = Services.RunService.RenderStepped:Connect(functio
                     playerESP.Tracer.Visible = false
                 end
                 
-                -- Name ESP
+                -- Name ESP (full/medium detail)
                 if MainESP.Options.Name and onScreen then
-					local dynamicOffsetY = dims.height * 1.3
-
+                    if not infoX then
+                        infoX = dims.x + dims.width / 2
+                    end
+                    
                     playerESP.Name.Text = player.DisplayName
-                    playerESP.Name.Position = Vector2.new(headPos.X, dims.y + dynamicOffsetY)
+                    playerESP.Name.Position = Vector2.new(infoX, topPos.Y - 25)
                     playerESP.Name.Color = color
                     playerESP.Name.Font = MainESP.Options.Font
                     playerESP.Name.Size = MainESP.Options.FontSize
@@ -869,12 +889,15 @@ local globalRenderConnection = Services.RunService.RenderStepped:Connect(functio
                     playerESP.Name.Visible = false
                 end
                 
-                -- Distance ESP
-				if MainESP.Options.Distance and onScreen and playerESP.Box.Visible then
+                -- Distance ESP (full/medium detail)
+				if MainESP.Options.Distance and onScreen then
 					local dynamicOffsetY = dims.height * 0.1
+                    if not infoX then
+                        infoX = dims.x + dims.width / 2
+                    end
 
 					playerESP.Distance.Text = "[" .. tostring(math.round(distance)) .. " studs]"
-					playerESP.Distance.Position = Vector2.new(dims.x + dims.width / 2, dims.y - dynamicOffsetY)
+					playerESP.Distance.Position = Vector2.new(infoX, dims.y - dynamicOffsetY)
 					playerESP.Distance.Color = color
 					playerESP.Distance.Font = MainESP.Options.Font
 					playerESP.Distance.Size = MainESP.Options.FontSize
@@ -885,8 +908,8 @@ local globalRenderConnection = Services.RunService.RenderStepped:Connect(functio
 					playerESP.Distance.Visible = false
 				end
                 
-                -- Direction ESP
-                if MainESP.Options.Direction and onScreen then
+                -- Direction ESP (full detail)
+                if MainESP.Options.Direction and onScreen and detailLevel == "full" then
                     local offset = MainESP.WTVP((head.CFrame * CFrame.new(0, 0, -head.Size.Z)).Position)
                     playerESP.Direction.From = Vector2.new(headPos.X, headPos.Y)
                     playerESP.Direction.To = Vector2.new(offset.X, offset.Y)
@@ -897,8 +920,8 @@ local globalRenderConnection = Services.RunService.RenderStepped:Connect(functio
                     playerESP.Direction.Visible = false
                 end
                 
-                -- Skeleton ESP
-                MainESP:UpdateSkeleton(playerESP, player, onScreen)
+                -- Skeleton ESP (full detail)
+                MainESP:UpdateSkeleton(playerESP, player, onScreen and detailLevel == "full")
                 
             else
                 MainESP:HidePlayerESP(playerESP)
