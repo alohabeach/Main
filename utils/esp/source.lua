@@ -130,7 +130,7 @@ function MainESP:GetColor(player, useTeamColor, rainbow, defaultColor)
         if not self._colorCache[cacheKey] or currentTime - (self._colorCache[cacheKey].time or 0) > 0.033 then
             -- Only update rainbow color every ~30ms instead of every frame
             self._colorCache[cacheKey] = {
-                color = Color3.fromHSV((currentTime * 0.5) % 1, 1, 1),
+                color = Color3.fromHSV(currentTime * 35 % 255/255, 1, 1),
                 time = currentTime
             }
         end
