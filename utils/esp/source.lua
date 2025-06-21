@@ -763,7 +763,7 @@ local globalRenderConnection = Services.RunService.RenderStepped:Connect(functio
                MainESP:PlayerAlive(player) and player.Character then
                 
                 local character = player.Character
-                local rootPart = character:FindFirstChild("HumanoidRootPart")
+                local rootPart = character:FindFirstChild("UpperTorso") or character:FindFirstChild("Torso")
                 local head = character:FindFirstChild("Head")
                 local characterSizeHalved = select(2, character:GetBoundingBox()) / 2
                 
@@ -772,7 +772,7 @@ local globalRenderConnection = Services.RunService.RenderStepped:Connect(functio
                     continue
                 end
                 
-                local rootPos, onScreen = MainESP:GetCachedPosition(rootPart, "HumanoidRootPart", player, true)
+                local rootPos, onScreen = MainESP:GetCachedPosition(rootPart, "RootPart", player, true)
 				local headPos = MainESP:GetCachedPosition(head, "Head", player)
                 local topPos = MainESP.WTVP(rootPart.Position + Vector3.new(0, characterSizeHalved.Y, 0))
                 local bottomPos = MainESP.WTVP(rootPart.Position - Vector3.new(0, characterSizeHalved.Y, 0))
@@ -862,8 +862,16 @@ local globalRenderConnection = Services.RunService.RenderStepped:Connect(functio
                 
                 -- Tracer ESP (full detail)
                 if MainESP.Options.Tracer and rootPos.Z > 0 and detailLevel == "full" then
+                    local upperTorso, neckPos = character:FindFirstChild("UpperTorso")
+                    if upperTorso then
+                        local upperTorsoPos = MainESP:GetCachedPosition(upperTorso, "UpperTorso", player)
+                        neckPos = Vector2.new(upperTorsoPos.X, (headPos.Y + upperTorsoPos.Y) / 2)
+                    else
+                        neckPos = Vector2.new(rootPos.X, (headPos.Y + rootPos.Y) / 2)
+                    end
+
                     playerESP.Tracer.From = MainESP.TracerOrigins[MainESP.Options.TracerOrigin]
-                    playerESP.Tracer.To = Vector2.new(rootPos.X, rootPos.Y)
+                    playerESP.Tracer.To = Vector2.new(neckPos.X, neckPos.Y)
                     playerESP.Tracer.Color = color
                     playerESP.Tracer.Thickness = MainESP.Options.TracerThickness
                     playerESP.Tracer.Visible = true

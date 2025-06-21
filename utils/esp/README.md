@@ -47,15 +47,9 @@ A high-performance, feature-rich ESP (Extra Sensory Perception) system for Roblo
 
 ## 🚀 Installation
 
-### Method 1: Direct Script Execution
+### Load The Module
 ```lua
--- Copy and paste the entire ESP script into your executor
--- The script will automatically initialize and start tracking players
-```
-
-### Method 2: Loadstring
-```lua
-loadstring(game:HttpGet("https://raw.githubusercontent.com/alohabeach/Main/refs/heads/master/utils/esp/source.lua"))()
+local MainESP = loadstring(game:HttpGet("https://raw.githubusercontent.com/alohabeach/Main/refs/heads/master/utils/esp/source.lua"))()
 ```
 
 ## 🎯 Quick Start
