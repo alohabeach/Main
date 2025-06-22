@@ -766,9 +766,14 @@ end)
 addTest("messagebox", {})
 
 addTest("queue_on_teleport", {"queueonteleport"}, function()
-	local success = pcall(function() queue_on_teleport() end)
-	local success2 = pcall(function() queueonteleport() end)
-	assert(success or success2, "Neither 'queue_on_teleport' nor 'queueonteleport' is defined or callable")
+	local queue_on_teleport = queue_on_teleport or queueonteleport
+	assert(type(queue_on_teleport) == "function", "Neither 'queue_on_teleport' nor 'queueonteleport' function is available in the current environment")
+
+	local success, err1 = pcall(function() queue_on_teleport("") end)
+	local success2 = pcall(function() queue_on_teleport() end)
+	
+	assert(success, string.format("Function should accept empty string but threw error: %s", err1 or "unknown error"))
+	assert(not success2, string.format("Function should reject nil/missing arguments but succeeded unexpectedly (expected error but got none)"))
 end)
 
 addTest("request", {"http.request", "http_request"}, function()
