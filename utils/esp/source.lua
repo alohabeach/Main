@@ -1,3 +1,5 @@
+if not game:IsLoaded() or not game.Loaded then game.Loaded:Wait() end
+
 local Camera = workspace.CurrentCamera
 local LocalPlayer = game:GetService("Players").LocalPlayer
 local Services = {
@@ -1015,12 +1017,6 @@ if CompatibilityFuncs[game.PlaceId] then
 end
 
 --[[ Player Management ]]--
-for _, player in pairs(Services.Players:GetPlayers()) do
-    if player ~= LocalPlayer then
-        MainESP:CreateESP(player)
-    end
-end
-
 Services.Players.PlayerAdded:Connect(function(player)
     MainESP:CreateESP(player)
 end)
@@ -1028,5 +1024,11 @@ end)
 Services.Players.PlayerRemoving:Connect(function(player)
     MainESP:RemoveESP(player.Name)
 end)
+
+for _, player in pairs(Services.Players:GetPlayers()) do
+    if player ~= LocalPlayer then
+        MainESP:CreateESP(player)
+    end
+end
 
 return MainESP
