@@ -973,6 +973,12 @@ local CompatibilityFuncs = {
             return player.NRPBS.Health.Value, 100
         end
     end,
+
+    [6172932937] = function() -- Energy Assault
+		MainESP.GetHealth = function(Player)
+			return Player.health.Value, 100
+		end
+	end,
     
     [142823291] = function() -- Murder Mystery 2
         local murderTeam = Instance.new("Team")
@@ -1009,6 +1015,22 @@ local CompatibilityFuncs = {
             end
         end)
     end,
+
+    [893973440] = function() -- Flee the Facility
+		local beast = Instance.new("Team", game:GetService("Teams"))
+		beast.Name = "Beast"
+		beast.TeamColor = BrickColor.new(255, 0, 0)
+
+		game:GetService("RunService").Heartbeat:Connect(function()
+			for _, player in pairs(Services.Players:GetPlayers()) do
+				if player.Character and player.Character:FindFirstChild("Hammer") then
+					player.Team = beast
+				else
+					player.Team = nil
+				end
+			end
+		end)
+	end,
 }
 
 -- Apply game-specific compatibility
