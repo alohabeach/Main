@@ -760,9 +760,7 @@ local globalRenderConnection = Services.RunService.RenderStepped:Connect(functio
             local detailLevel = CullingSystem:GetDetailLevel(distance)
 
             -- Move the entire player update logic here
-            if MainESP.Options.Enabled and 
-               (not MainESP.Options.TeamCheck or not player.Team or LocalPlayer.Team ~= player.Team) and 
-               MainESP:PlayerAlive(player) and player.Character then
+            if MainESP.Options.Enabled and MainESP:PlayerAlive(player) and player.Character and (not MainESP.Options.TeamCheck or LocalPlayer.Team ~= player.Team) then
                 
                 local character = player.Character
                 local rootPart = character:FindFirstChild("UpperTorso") or character:FindFirstChild("Torso")
