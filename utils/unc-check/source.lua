@@ -201,12 +201,36 @@ addTest("checkcaller", {}, function()
 end)
 
 addTest("clonefunction", {}, function()
-	local function cloneFuncTest()
-		return "success"
+	do
+		local function cloneFuncTest()
+			return "success"
+		end
+		local copy = clonefunction(cloneFuncTest)
+
+		assert(cloneFuncTest() == copy(), "Clone returned a different result")
+		assert(cloneFuncTest ~= copy, "Clone is the same function as original")
 	end
-	local copy = clonefunction(cloneFuncTest)
-	assert(cloneFuncTest() == copy(), "The clone should return the same value as the original")
-	assert(test ~= copy, "The clone should not be equal to the original")
+
+	local success, errorMessage = pcall(function()
+		local module = game:GetService("CoreGui").RobloxGui.Modules.Common.CommonUtil
+		local cloneFuncTest = getrenv().require(module).GetDeviceMemoryTier
+		assert(typeof(cloneFuncTest) == "function" and #getupvalues(cloneFuncTest) > 0, "No function with upvalues found")
+
+		local copy = clonefunction(cloneFuncTest)
+		local originalUpvalues = getupvalues(cloneFuncTest)
+		local clonedUpvalues = getupvalues(copy)
+
+		assert(#originalUpvalues == #clonedUpvalues, "Clone has a different number of upvalues")
+
+		for i = 1, #originalUpvalues do
+			assert(originalUpvalues[i] == clonedUpvalues[i], "Clone upvalues don't match original upvalues")
+		end
+
+		setupvalue(copy, 1, function() end)
+		assert(getupvalue(cloneFuncTest, 1) ~= getupvalue(copy, 1), "Changing clone upvalues affected the original")
+	end)
+
+	assert(success, "Upvalue test failed: " .. (errorMessage or ""))
 end)
 
 addTest("getcallingscript", {})
