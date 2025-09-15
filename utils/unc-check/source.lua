@@ -471,10 +471,10 @@ end)
 
 addTest("debug.setconstant", {}, function()
 	local function setConstantTest()
-		return "fail"
+		return "constant1"
 	end
-	debug.setconstant(setConstantTest, 1, "success")
-	assert(setConstantTest() == "success", "debug.setconstant did not set the first constant")
+	debug.setconstant(setConstantTest, 1, 10)
+	assert(setConstantTest() == 10, "debug.setconstant did not set the first constant")
 end)
 
 addTest("debug.setstack", {}, function()
@@ -485,15 +485,11 @@ addTest("debug.setstack", {}, function()
 end)
 
 addTest("debug.setupvalue", {}, function()
-	local function upvalue()
-		return "fail"
-	end
+	local upvalue = function() end
 	local function setUpValueTest()
-		return upvalue()
+		return upvalue
 	end
-	debug.setupvalue(setUpValueTest, 1, function()
-		return "success"
-	end)
+	debug.setupvalue(setUpValueTest, 1, "success")
 	assert(setUpValueTest() == "success", "debug.setupvalue did not set the first upvalue")
 end)
 
