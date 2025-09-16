@@ -226,7 +226,7 @@ addTest("clonefunction", {}, function()
 			assert(originalUpvalues[i] == clonedUpvalues[i], "Clone upvalues don't match original upvalues")
 		end
 
-		setupvalue(copy, 1, function() end)
+		setupvalue(copy, 1, {})
 		assert(getupvalue(cloneFuncTest, 1) ~= getupvalue(copy, 1), "Changing clone upvalues affected the original")
 	end)
 
@@ -485,11 +485,15 @@ addTest("debug.setstack", {}, function()
 end)
 
 addTest("debug.setupvalue", {}, function()
-	local upvalue = function() end
-	local function setUpValueTest()
-		return upvalue
+	local function upvalue()
+		return "fail"
 	end
-	debug.setupvalue(setUpValueTest, 1, "success")
+	local function setUpValueTest()
+		return upvalue()
+	end
+	debug.setupvalue(setUpValueTest, 1, function()
+		return "success"
+	end)
 	assert(setUpValueTest() == "success", "debug.setupvalue did not set the first upvalue")
 end)
 
