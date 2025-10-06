@@ -40,7 +40,7 @@ function GarbageCollection:attemptCollection(maxAttempts, garbageInfo)
                         for _, constantToFind in ipairs(details.constants) do
                             local foundCurrentConstant = false
 
-                            for _, constant in ipairs(constants) do
+                            for _, constant in pairs(constants) do
                                 if constantToFind == constant then
                                     foundCurrentConstant = true
                                     break
@@ -62,7 +62,7 @@ function GarbageCollection:attemptCollection(maxAttempts, garbageInfo)
                         for _, upvalueToFind in ipairs(details.upvalues) do
                             local foundCurrentUpvalue = false
 
-                            for _, upvalue in ipairs(upvalues) do
+                            for _, upvalue in pairs(upvalues) do
                                 if upvalueToFind == upvalue then
                                     foundCurrentUpvalue = true
                                     break
