@@ -26,4 +26,5 @@ getgenv().queue_on_teleport = queue_on_teleport or queueonteleport
 getgenv().setclipboard = setclipboard or toclipboard
 getgenv().getscriptbytecode = getscriptbytecode or dumpstring
 getgenv().getthreadidentity = getthreadidentity or getidentity or getthreadcontext
+getgenv().gethiddenproperty = gethiddenproperty or nil
 pcall(function() getgenv().debug.traceback = debug.traceback or (getrenv and getrenv().debug.traceback) end)
