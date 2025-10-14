@@ -312,6 +312,93 @@ function Vigil.new(Name, ...)
 
 			-- $$$$ Functions + Connections
 
+			function Section:addCheckpoints(...)
+				-- $$$$$ Metadata
+				local Checkpoints, Meta = {
+					lastCheckpoint = "";
+					lastLabel = nil;
+					occurances = 1;
+				}, {
+					xAlignment = Enum.TextXAlignment.Left;
+					maxHeight = 150;
+				}
+
+				Meta = TableOverwrite(Meta, ... or {})
+
+				-- $$$$$ Instances
+				local CheckpointsFrame = AddInstance("Frame", { Parent = SectionFrame, Name = [[CheckpointsFrame]], BorderSizePixel = 0, Size = UDim2.new(1, 0, 0, Meta.maxHeight), BorderColor3 = Color3.fromRGB(0, 0, 0), BackgroundColor3 = Color3.fromRGB(39, 39, 39),})
+				local CheckpointsScroll = AddInstance("ScrollingFrame", { Parent = CheckpointsFrame, Name = [[CheckpointsScroll]], ScrollingDirection = Enum.ScrollingDirection.Y, BorderSizePixel = 0, CanvasSize = UDim2.new(0, 0, 0, 0), BackgroundColor3 = Color3.fromRGB(255, 255, 255), Size = UDim2.new(1, 0, 1, 0), ScrollBarImageColor3 = Color3.fromRGB(101, 101, 101), AutomaticCanvasSize = Enum.AutomaticSize.Y, BorderColor3 = Color3.fromRGB(0, 0, 0), ScrollBarThickness = 6, BackgroundTransparency = 1, Selectable = false,})
+				AddInstance("UIListLayout", { Parent = CheckpointsScroll, Padding = UDim.new(0, 5), SortOrder = Enum.SortOrder.LayoutOrder,})
+				AddInstance("UIPadding", { Parent = CheckpointsScroll, PaddingTop = UDim.new(0, 5), PaddingBottom = UDim.new(0, 5), PaddingLeft = UDim.new(0, 10), PaddingRight = UDim.new(0, 10)})
+				AddInstance("UICorner", { Parent = CheckpointsFrame, CornerRadius = UDim.new(0, 4),})
+				AddInstance("UIStroke", { Parent = CheckpointsFrame, Thickness = 2, Color = Color3.fromRGB(68, 68, 68),})
+
+				-- $$$$$ Functions + Connections
+				local ColorVariants = {
+					default = Color3.fromRGB(200, 200, 200),
+					success = Color3.fromRGB(100, 220, 120),
+					destructive = Color3.fromRGB(240, 100, 100),
+					warning = Color3.fromRGB(255, 200, 80),
+					info = Color3.fromRGB(100, 180, 255),
+					muted = Color3.fromRGB(140, 140, 140),
+				}
+
+				function Checkpoints:add(newCheckpoint, colorVariant)
+					colorVariant = colorVariant or "default"
+					local textColor = ColorVariants[colorVariant] or ColorVariants.default
+
+					if newCheckpoint ~= Checkpoints.lastCheckpoint then
+						Checkpoints.occurances = 1
+
+						local CheckpointLabel = AddInstance("TextLabel", {
+							Parent = CheckpointsScroll,
+							Name = [[CheckpointLabel]],
+							TextWrapped = true,
+							BorderSizePixel = 0,
+							TextYAlignment = Enum.TextYAlignment.Top,
+							BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+							TextSize = 14,
+							Size = UDim2.new(1, 0, 0, 18),
+							AutomaticSize = Enum.AutomaticSize.Y,
+							TextXAlignment = Meta.xAlignment,
+							BorderColor3 = Color3.fromRGB(0, 0, 0),
+							Text = newCheckpoint,
+							Font = Enum.Font.Gotham,
+							TextColor3 = textColor,
+							BackgroundTransparency = 1,
+						})
+
+						Checkpoints.lastLabel = CheckpointLabel
+						Checkpoints.lastCheckpoint = newCheckpoint
+
+						CheckpointsScroll.CanvasPosition = Vector2.new(0, CheckpointsScroll.AbsoluteCanvasSize.Y)
+					else
+						Checkpoints.occurances += 1
+
+						if Checkpoints.lastLabel then
+							local occurancesMessage = string.format(" (%dx)", Checkpoints.occurances)
+							Checkpoints.lastLabel.Text = newCheckpoint .. occurancesMessage
+
+							CheckpointsScroll.CanvasPosition = Vector2.new(0, CheckpointsScroll.AbsoluteCanvasSize.Y)
+						end
+					end
+				end
+
+				function Checkpoints:clear()
+					for _, child in ipairs(CheckpointsScroll:GetChildren()) do
+						if child:IsA("TextLabel") then
+							child:Destroy()
+						end
+					end
+
+					Checkpoints.lastCheckpoint = ""
+					Checkpoints.lastLabel = nil
+					Checkpoints.occurances = 1
+				end
+
+				return Checkpoints
+			end
+
 			function Section:addLabel(...)
 				-- $$$$$ Metadata
 				local Label, Meta = {}, {

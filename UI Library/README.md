@@ -61,6 +61,34 @@ local section = page:addSection("Main Section")
 
 ### Section Methods
 
+- **Add Checkpoints**
+```lua
+  local checkpoints = section:addCheckpoints({
+    title = "Status Log",
+    xAlignment = Enum.TextXAlignment.Left,
+    maxHeight = 150, -- optional, defaults to 150
+  })
+  
+  -- Add checkpoint messages with color variants
+  checkpoints:add("Connection established", "success")
+  checkpoints:add("Warning: Low memory", "warning")
+  checkpoints:add("Error: Failed to load", "destructive")
+  checkpoints:add("Player joined", "info")
+  checkpoints:add("Background task", "muted")
+  checkpoints:add("Normal message") -- defaults to white
+  
+  -- Clear all checkpoints
+  checkpoints:clear()
+```
+
+  - **Color Variants:**
+    - `default` - White
+    - `success` - Green
+    - `destructive` - Red
+    - `warning` - Yellow/Orange
+    - `info` - Blue
+    - `muted` - Gray
+
 - **Add Label**
   ```lua
   section:addLabel({
