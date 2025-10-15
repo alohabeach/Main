@@ -23,6 +23,8 @@ local easing_direction = Enum.EasingDirection
 
 -- $ FUNCTIONS
 function AddInstance(class : string, properties : {})
+	pcall(function() setthreadidentity(8) end)
+
 	local i
 
 	local madeInstance, errorMessage = pcall(function()
