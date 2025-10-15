@@ -346,44 +346,46 @@ function Vigil.new(Name, ...)
 				}
 
 				function Checkpoints:add(newCheckpoint, colorVariant)
-					colorVariant = colorVariant or "default"
-					local textColor = ColorVariants[colorVariant] or ColorVariants.default
+					pcall(function()
+						colorVariant = colorVariant or "default"
+						local textColor = ColorVariants[colorVariant] or ColorVariants.default
 
-					if newCheckpoint ~= Checkpoints.lastCheckpoint then
-						Checkpoints.occurances = 1
+						if newCheckpoint ~= Checkpoints.lastCheckpoint then
+							Checkpoints.occurances = 1
 
-						local CheckpointLabel = AddInstance("TextLabel", {
-							Parent = CheckpointsScroll,
-							Name = [[CheckpointLabel]],
-							TextWrapped = true,
-							BorderSizePixel = 0,
-							TextYAlignment = Enum.TextYAlignment.Top,
-							BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-							TextSize = 14,
-							Size = UDim2.new(1, 0, 0, 18),
-							AutomaticSize = Enum.AutomaticSize.Y,
-							TextXAlignment = Meta.xAlignment,
-							BorderColor3 = Color3.fromRGB(0, 0, 0),
-							Text = newCheckpoint,
-							Font = Enum.Font.Gotham,
-							TextColor3 = textColor,
-							BackgroundTransparency = 1,
-						})
+							local CheckpointLabel = AddInstance("TextLabel", {
+								Parent = CheckpointsScroll,
+								Name = [[CheckpointLabel]],
+								TextWrapped = true,
+								BorderSizePixel = 0,
+								TextYAlignment = Enum.TextYAlignment.Top,
+								BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+								TextSize = 14,
+								Size = UDim2.new(1, 0, 0, 18),
+								AutomaticSize = Enum.AutomaticSize.Y,
+								TextXAlignment = Meta.xAlignment,
+								BorderColor3 = Color3.fromRGB(0, 0, 0),
+								Text = newCheckpoint,
+								Font = Enum.Font.Gotham,
+								TextColor3 = textColor,
+								BackgroundTransparency = 1,
+							})
 
-						Checkpoints.lastLabel = CheckpointLabel
-						Checkpoints.lastCheckpoint = newCheckpoint
-
-						CheckpointsScroll.CanvasPosition = Vector2.new(0, CheckpointsScroll.AbsoluteCanvasSize.Y)
-					else
-						Checkpoints.occurances += 1
-
-						if Checkpoints.lastLabel then
-							local occurancesMessage = string.format(" (%dx)", Checkpoints.occurances)
-							Checkpoints.lastLabel.Text = newCheckpoint .. occurancesMessage
+							Checkpoints.lastLabel = CheckpointLabel
+							Checkpoints.lastCheckpoint = newCheckpoint
 
 							CheckpointsScroll.CanvasPosition = Vector2.new(0, CheckpointsScroll.AbsoluteCanvasSize.Y)
+						else
+							Checkpoints.occurances += 1
+
+							if Checkpoints.lastLabel then
+								local occurancesMessage = string.format(" (%dx)", Checkpoints.occurances)
+								Checkpoints.lastLabel.Text = newCheckpoint .. occurancesMessage
+
+								CheckpointsScroll.CanvasPosition = Vector2.new(0, CheckpointsScroll.AbsoluteCanvasSize.Y)
+							end
 						end
-					end
+					end)
 				end
 
 				function Checkpoints:clear()
