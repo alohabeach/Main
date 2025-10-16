@@ -489,11 +489,9 @@ addTest("debug.setupvalue", {}, function()
 		return "fail"
 	end
 	local function setUpValueTest()
-		return upvalue()
+		return upvalue
 	end
-	debug.setupvalue(setUpValueTest, 1, function()
-		return "success"
-	end)
+	debug.setupvalue(setUpValueTest, 1, "success")
 	assert(setUpValueTest() == "success", "debug.setupvalue did not set the first upvalue")
 end)
 
