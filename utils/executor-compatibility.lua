@@ -26,5 +26,26 @@ getgenv().queue_on_teleport = queue_on_teleport or queueonteleport
 getgenv().setclipboard = setclipboard or toclipboard
 getgenv().getscriptbytecode = getscriptbytecode or dumpstring
 getgenv().getthreadidentity = getthreadidentity or getidentity or getthreadcontext
-getgenv().gethiddenproperty = gethiddenproperty or nil
+
+getgenv().gethiddenproperty = gethiddenproperty or function(object, property)
+    assert(typeof(object) == "Instance", string.format("Invalid argument #1 Instance expected, got '%s'", typeof(object)))
+    assert(type(property) == "string", string.format("Invalid argument #2 string expected, got '%s'", type(property)))
+
+    local success, result = pcall(function()
+        return object[property]
+    end)
+    if success then
+        return result, false
+    end
+
+    success, result = pcall(function()
+        return game:GetService("UGCValidationService"):GetPropertyValue(object, property)
+    end)
+    assert(success, string.format("%s is not a valid property name", property))
+
+    return result, true
+end
+getgenv().sethiddenproperty = sethiddenproperty or nil
+
+
 pcall(function() getgenv().debug.traceback = debug.traceback or (getrenv and getrenv().debug.traceback) end)
