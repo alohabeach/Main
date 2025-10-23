@@ -437,6 +437,7 @@ function Vigil.new(Name, ...)
 				end
 
 				task.defer(function()
+					task.wait()
 					Label:updateText(Meta.title)
 				end)
 
