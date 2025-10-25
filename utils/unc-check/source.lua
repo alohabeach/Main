@@ -737,15 +737,24 @@ addTest("hookmetamethod", {}, function()
 end)
 
 addTest("getnamecallmethod", {}, function()
+	local rawMetatable = getrawmetatable(game)
+	local originalNamecall = rawMetatable.__namecall
+
 	local method
-	local ref
-	ref = hookmetamethod(game, "__namecall", function(...)
+
+	setreadonly(rawMetatable, false)
+	rawMetatable.__namecall = newcclosure(function(self, ...)
 		if not method then
 			method = getnamecallmethod()
 		end
-		return ref(...)
+		return originalNamecall(self, ...)
 	end)
+
 	game:GetService("Lighting")
+
+	rawMetatable.__namecall = originalNamecall
+	setreadonly(rawMetatable, true)
+
 	assert(method == "GetService", "Did not get the correct method (GetService)")
 end)
 
