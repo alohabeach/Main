@@ -1,13 +1,8 @@
-local services = setmetatable({}, {
-	__index = function(_, serviceName)
-		local success, service = pcall(function()
-			return cloneref(game:GetService(serviceName))
-		end)
-
-		return success and service or nil
-	end
-})
-
+local Services = {
+    RunService = game:GetService("RunService"),
+    Players = game:GetService("Players"),
+    TweenService = game:GetService("TweenService"),
+}
 
 
 local Notifications = {}
@@ -68,8 +63,8 @@ function Notifications:new(message: string, iconName: string?)
     
     newNotif.Notification.Name = "Notification"
     newNotif.Notification.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-    if services.RunService:IsStudio() then
-        newNotif.Notification.Parent = services.Players.LocalPlayer:WaitForChild("PlayerGui")
+    if Services.RunService:IsStudio() then
+        newNotif.Notification.Parent = Services.Players.LocalPlayer:WaitForChild("PlayerGui")
     else
         newNotif.Notification.Parent = gethui and gethui() or game.CoreGui
     end
@@ -144,17 +139,17 @@ function Notifications:new(message: string, iconName: string?)
         local tweenInfo = TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
 
         if not stationary then
-            services.TweenService:Create(self.Icon, tweenInfo, { ImageTransparency = 0 }):Play()
-            services.TweenService:Create(self.message, tweenInfo, { TextTransparency = 0 }):Play()
+            Services.TweenService:Create(self.Icon, tweenInfo, { ImageTransparency = 0 }):Play()
+            Services.TweenService:Create(self.message, tweenInfo, { TextTransparency = 0 }):Play()
             task.wait(0.3)
         end
 
-        services.TweenService:Create(self.Icon, tweenInfo, { ImageTransparency = 1 }):Play()
-        services.TweenService:Create(self.message, tweenInfo, { TextTransparency = 1 }):Play()
-        services.TweenService:Create(self.UIStroke, tweenInfo, { Transparency = 1 }):Play()
+        Services.TweenService:Create(self.Icon, tweenInfo, { ImageTransparency = 1 }):Play()
+        Services.TweenService:Create(self.message, tweenInfo, { TextTransparency = 1 }):Play()
+        Services.TweenService:Create(self.UIStroke, tweenInfo, { Transparency = 1 }):Play()
 
         local position = self.Frame.Position
-        services.TweenService:Create(self.Frame, tweenInfo, {
+        Services.TweenService:Create(self.Frame, tweenInfo, {
             Position = not stationary and UDim2.new(position.X.Scale, position.X.Offset, position.Y.Scale * 1.05, position.Y.Offset) or nil,
             BackgroundTransparency = 1,
         }):Play()
@@ -202,11 +197,11 @@ function Notifications:new(message: string, iconName: string?)
             if index == 1 then
                 lastTargetYScale = originalPosition.Y.Scale * 0.99
             else
-                services.TweenService:Create(notif.Icon, tweenInfo, { ImageTransparency = 0 }):Play()
-                services.TweenService:Create(notif.message, tweenInfo, { TextTransparency = 0 }):Play()
+                Services.TweenService:Create(notif.Icon, tweenInfo, { ImageTransparency = 0 }):Play()
+                Services.TweenService:Create(notif.message, tweenInfo, { TextTransparency = 0 }):Play()
             end
 
-            services.TweenService:Create(notif.Frame, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+            Services.TweenService:Create(notif.Frame, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
                 Position = UDim2.new(originalPosition.X.Scale, originalPosition.X.Offset, lastTargetYScale, originalPosition.Y.Offset),
                 Size = originalSize,
             }):Play()
@@ -224,11 +219,11 @@ function Notifications:new(message: string, iconName: string?)
             end
 
             if index > 1 then
-                services.TweenService:Create(notif.Icon, tweenInfo, { ImageTransparency = 1 }):Play()
-                services.TweenService:Create(notif.message, tweenInfo, { TextTransparency = 1 }):Play()
+                Services.TweenService:Create(notif.Icon, tweenInfo, { ImageTransparency = 1 }):Play()
+                Services.TweenService:Create(notif.message, tweenInfo, { TextTransparency = 1 }):Play()
             end
 
-            services.TweenService:Create(notif.Frame, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+            Services.TweenService:Create(notif.Frame, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
                 Position = notif.currentPosition,
                 Size = notif.currentSize,
             }):Play()
@@ -242,13 +237,13 @@ function Notifications:new(message: string, iconName: string?)
         local targetSize = notif.currentSize or notif.Frame.Size
 
         if index == 1 then
-            services.TweenService:Create(notif.Icon, tweenInfo, { ImageTransparency = 0 }):Play()
-            services.TweenService:Create(notif.message, tweenInfo, { TextTransparency = 0 }):Play()
-            services.TweenService:Create(notif.UIStroke, tweenInfo, { Transparency = 0.36 }):Play()
+            Services.TweenService:Create(notif.Icon, tweenInfo, { ImageTransparency = 0 }):Play()
+            Services.TweenService:Create(notif.message, tweenInfo, { TextTransparency = 0 }):Play()
+            Services.TweenService:Create(notif.UIStroke, tweenInfo, { Transparency = 0.36 }):Play()
 
             targetPosition = UDim2.new(0.899999993, 0, 0.955, 0)
 
-            services.TweenService:Create(notif.Frame, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+            Services.TweenService:Create(notif.Frame, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
                 Position = targetPosition,
                 BackgroundTransparency = 0,
             }):Play()
@@ -256,13 +251,13 @@ function Notifications:new(message: string, iconName: string?)
             local position = notif.currentPosition
             local size = notif.currentSize
 
-            services.TweenService:Create(notif.Icon, tweenInfo, { ImageTransparency = 1 }):Play()
-            services.TweenService:Create(notif.message, tweenInfo, { TextTransparency = 1 }):Play()
+            Services.TweenService:Create(notif.Icon, tweenInfo, { ImageTransparency = 1 }):Play()
+            Services.TweenService:Create(notif.message, tweenInfo, { TextTransparency = 1 }):Play()
 
             targetPosition = UDim2.new(position.X.Scale, position.X.Offset, position.Y.Scale * 0.988, position.Y.Offset)
             targetSize = UDim2.new(size.X.Scale * 0.93, size.X.Offset, size.Y.Scale, size.Y.Offset)
 
-            services.TweenService:Create(notif.Frame, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+            Services.TweenService:Create(notif.Frame, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
                 Position = targetPosition,
                 Size = targetSize,
             }):Play()

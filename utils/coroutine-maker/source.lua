@@ -103,32 +103,32 @@ end
 
 function thread._checkArgs(args, expected)
 	for index = 1, #expected do
-		local argType, matched = type(args[index])
+		local value = args[index]
+		local argType = typeof(value)
+		local expectations = expected[index]
 
-		for _, expectation in pairs(expected[index]) do
-			if argType == expectation then
-				matched = true
+		local valid = false
+		for i = 1, #expectations do
+			if argType == expectations[i] then
+				valid = true
 				break
 			end
 		end
 
-		if not matched then
-			local expectedString = table.concat(expected[index], " or ")
-			expectedString:sub(1, expectedString:len() - 1)
+		if not valid then
+			local expectedString = table.concat(expectations, " or ")
 
-			local secondStack = debug.traceback():split("\n")[2]
-			local func = secondStack:find("function")
-			func = func and secondStack:sub(func + 9, #secondStack)
+			local funcName = debug.info(2, "n") or "unknown"
 
-			return error(
-				("%s argument #%d%s (%s expected%s)"):format(
-					argType == "nil" and "missing" or "invalid",
-					index,
-					func and " to '" .. func .. "'" or "",
-					table.concat(expected[index], " or "),
-					argType ~= "nil" and ", got " .. argType or ""
-				)
-			)
+			error((
+				"%s argument #%d to '%s' (%s expected%s)"
+			):format(
+				argType == "nil" and "missing" or "invalid",
+				index,
+				funcName,
+				expectedString,
+				argType ~= "nil" and ", got " .. argType or ""
+			), 2)
 		end
 	end
 end

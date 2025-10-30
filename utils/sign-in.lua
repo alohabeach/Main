@@ -1,12 +1,9 @@
-local services = setmetatable({}, {
-	__index = function(_, serviceName)
-		local success, service = pcall(function()
-			return cloneref(game:GetService(serviceName))
-		end)
-
-		return success and service or nil
-	end
-})
+-- Services --
+local Services = {
+	RunService = cloneref(game:GetService("RunService")),
+	Players = cloneref(game:GetService("Players")),
+	TweenService = cloneref(game:GetService("TweenService")),
+}
 
 
 --- Sign In UI ---
@@ -48,8 +45,8 @@ window.UIAspectRatioConstraint_3 = Instance.new("UIAspectRatioConstraint")
 -- Properties:
 
 window.Loading.Name = "Loading"
-if services.RunService:IsStudio() then
-	window.Loading.Parent = services.Players.LocalPlayer:WaitForChild("PlayerGui")
+if Services.RunService:IsStudio() then
+	window.Loading.Parent = Services.Players.LocalPlayer:WaitForChild("PlayerGui")
 else
 	window.Loading.Parent = gethui and gethui() or game.CoreGui
 end
@@ -288,19 +285,19 @@ window.UIAspectRatioConstraint_3.DominantAxis = Enum.DominantAxis.Height
 local tweenInfo = TweenInfo.new(0.15, Enum.EasingStyle.Quad, Enum.EasingDirection.In)
 
 window.username_box.Focused:Connect(function()
-	services.TweenService:Create(window.UIStroke_2, tweenInfo, { Thickness = 2.5 }):Play()
+	Services.TweenService:Create(window.UIStroke_2, tweenInfo, { Thickness = 2.5 }):Play()
 end)
 
 window.username_box.FocusLost:Connect(function()
-	services.TweenService:Create(window.UIStroke_2, tweenInfo, { Thickness = 1 }):Play()
+	Services.TweenService:Create(window.UIStroke_2, tweenInfo, { Thickness = 1 }):Play()
 end)
 
 window.password_box.Focused:Connect(function()
-	services.TweenService:Create(window.UIStroke_3, tweenInfo, { Thickness = 2.5 }):Play()
+	Services.TweenService:Create(window.UIStroke_3, tweenInfo, { Thickness = 2.5 }):Play()
 end)
 
 window.password_box.FocusLost:Connect(function()
-	services.TweenService:Create(window.UIStroke_3, tweenInfo, { Thickness = 1 }):Play()
+	Services.TweenService:Create(window.UIStroke_3, tweenInfo, { Thickness = 1 }):Play()
 end)
 
 window.ForgotPassword.MouseEnter:Connect(function()
@@ -324,7 +321,7 @@ window.SignUp.MouseButton1Click:Connect(function()
 end)
 
 function window:close()
-	services.TweenService:Create(self.Cover, TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { BackgroundTransparency = 0 }):Play()
+	Services.TweenService:Create(self.Cover, TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { BackgroundTransparency = 0 }):Play()
 	task.wait(0.4)
 	self.LoadingFrame:TweenSize(UDim2.new(0, 0, 0, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.7)
 	task.wait(0.7)
@@ -341,7 +338,7 @@ end)
 
 window.LoadingFrame:TweenSize(UDim2.new(0.5, 0, 0.5, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.7)
 task.wait(0.5)
-services.TweenService:Create(window.Cover, TweenInfo.new(0.3, Enum.EasingStyle.Circular, Enum.EasingDirection.In), { BackgroundTransparency = 1 }):Play()
+Services.TweenService:Create(window.Cover, TweenInfo.new(0.3, Enum.EasingStyle.Circular, Enum.EasingDirection.In), { BackgroundTransparency = 1 }):Play()
 
 
 --- Launch Script UI ---
@@ -350,7 +347,7 @@ function window:showLaunchUI(scriptInfo)
 
 	-- Cover the window:
 
-	services.TweenService:Create(self.Cover, TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { BackgroundTransparency = 0 }):Play()
+	Services.TweenService:Create(self.Cover, TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { BackgroundTransparency = 0 }):Play()
 	task.wait(0.4)
 
 
@@ -555,7 +552,7 @@ function window:showLaunchUI(scriptInfo)
 
 	-- Reveal New Contents:
 
-	services.TweenService:Create(window.Cover, TweenInfo.new(0.3, Enum.EasingStyle.Circular, Enum.EasingDirection.In), { BackgroundTransparency = 1 }):Play()
+	Services.TweenService:Create(window.Cover, TweenInfo.new(0.3, Enum.EasingStyle.Circular, Enum.EasingDirection.In), { BackgroundTransparency = 1 }):Play()
 end
 
 return window

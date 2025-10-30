@@ -6,14 +6,18 @@ local Services = {
     RunService = game:GetService("RunService"),
     Players = game:GetService("Players"),
 	Stats = game:GetService("Stats"),
+    ReplicatedStorage = game:GetService("ReplicatedStorage"),
 }
+
+local Vector2New = Vector2.new
+local Vector3New = Vector3.new
 
 local MainESP = {
     Container = {},
     TracerOrigins = {
-        Top = Vector2.new(Camera.ViewportSize.X / 2, 0),
-        Middle = Vector2.new(Camera.ViewportSize.X / 2, Camera.ViewportSize.Y / 2),
-        Bottom = Vector2.new(Camera.ViewportSize.X / 2, Camera.ViewportSize.Y),
+        Top = Vector2New(Camera.ViewportSize.X * 0.5, 0),
+        Middle = Vector2New(Camera.ViewportSize.X * 0.5, Camera.ViewportSize.Y * 0.5),
+        Bottom = Vector2New(Camera.ViewportSize.X * 0.5, Camera.ViewportSize.Y),
     },
     Options = {
 		Enabled = false,
@@ -189,25 +193,25 @@ function CacheManager:CleanupCaches()
     
     -- Clean position cache
     local positionKeysToRemove = {}
-    for key, data in pairs(MainESP._positionCache) do
+    for key, data in MainESP._positionCache do
         if now - data.time > self.maxCacheAge then
-            table.insert(positionKeysToRemove, key)
+            positionKeysToRemove[#positionKeysToRemove + 1] = key
         end
     end
     
-    for _, key in pairs(positionKeysToRemove) do
+    for _, key in positionKeysToRemove do
         MainESP._positionCache[key] = nil
     end
     
     -- Clean color cache
     local colorKeysToRemove = {}
-    for key, data in pairs(MainESP._colorCache) do
+    for key, data in MainESP._colorCache do
         if data.time and now - data.time > self.maxCacheAge then
-            table.insert(colorKeysToRemove, key)
+            colorKeysToRemove[#colorKeysToRemove + 1] = key
         end
     end
     
-    for _, key in pairs(colorKeysToRemove) do
+    for _, key in colorKeysToRemove do
         MainESP._colorCache[key] = nil
     end
     
@@ -266,7 +270,7 @@ end
 function MainESP:UpdateSkeleton(playerESP, player, onScreen)
     if not self.Options.Skeleton or not onScreen or not player.Character then
         -- Hide all skeleton lines
-        for _, line in pairs(playerESP.Skeleton) do
+        for _, line in playerESP.Skeleton do
             if line and line.Visible ~= nil then
                 line.Visible = false
             end
@@ -278,7 +282,7 @@ function MainESP:UpdateSkeleton(playerESP, player, onScreen)
     local head = character:FindFirstChild("Head")
     if not head then
         -- Hide all skeleton lines if no head
-        for _, line in pairs(playerESP.Skeleton) do
+        for _, line in playerESP.Skeleton do
             if line and line.Visible ~= nil then
                 line.Visible = false
             end
@@ -323,10 +327,10 @@ function MainESP:UpdateSkeleton(playerESP, player, onScreen)
             local leftFootPos = MainESP:GetCachedPosition(leftFoot, "LeftFoot", player)
             
             -- Calculate neck position (between head and upper torso)
-            local neckPos = Vector2.new(upperTorsoPos.X, (headPos.Y + upperTorsoPos.Y) / 2)
+            local neckPos = Vector2New(upperTorsoPos.X, (headPos.Y + upperTorsoPos.Y) * 0.5)
             
             -- Head to Neck
-            playerESP.Skeleton.HeadToNeck.From = Vector2.new(headPos.X, headPos.Y)
+            playerESP.Skeleton.HeadToNeck.From = Vector2New(headPos.X, headPos.Y)
             playerESP.Skeleton.HeadToNeck.To = neckPos
             playerESP.Skeleton.HeadToNeck.Color = color
             playerESP.Skeleton.HeadToNeck.Thickness = self.Options.SkeletonThickness
@@ -334,72 +338,72 @@ function MainESP:UpdateSkeleton(playerESP, player, onScreen)
             
             -- Neck to Arms
             playerESP.Skeleton.NeckToRightUpperArm.From = neckPos
-            playerESP.Skeleton.NeckToRightUpperArm.To = Vector2.new(rightUpperArmPos.X, rightUpperArmPos.Y)
+            playerESP.Skeleton.NeckToRightUpperArm.To = Vector2New(rightUpperArmPos.X, rightUpperArmPos.Y)
             playerESP.Skeleton.NeckToRightUpperArm.Color = color
             playerESP.Skeleton.NeckToRightUpperArm.Thickness = self.Options.SkeletonThickness
             playerESP.Skeleton.NeckToRightUpperArm.Visible = true
             
             playerESP.Skeleton.NeckToLeftUpperArm.From = neckPos
-            playerESP.Skeleton.NeckToLeftUpperArm.To = Vector2.new(leftUpperArmPos.X, leftUpperArmPos.Y)
+            playerESP.Skeleton.NeckToLeftUpperArm.To = Vector2New(leftUpperArmPos.X, leftUpperArmPos.Y)
             playerESP.Skeleton.NeckToLeftUpperArm.Color = color
             playerESP.Skeleton.NeckToLeftUpperArm.Thickness = self.Options.SkeletonThickness
             playerESP.Skeleton.NeckToLeftUpperArm.Visible = true
             
             -- Upper to Lower Arms
-            playerESP.Skeleton.RightUpperArmToRightLowerArm.From = Vector2.new(rightUpperArmPos.X, rightUpperArmPos.Y)
-            playerESP.Skeleton.RightUpperArmToRightLowerArm.To = Vector2.new(rightLowerArmPos.X, rightLowerArmPos.Y)
+            playerESP.Skeleton.RightUpperArmToRightLowerArm.From = Vector2New(rightUpperArmPos.X, rightUpperArmPos.Y)
+            playerESP.Skeleton.RightUpperArmToRightLowerArm.To = Vector2New(rightLowerArmPos.X, rightLowerArmPos.Y)
             playerESP.Skeleton.RightUpperArmToRightLowerArm.Color = color
             playerESP.Skeleton.RightUpperArmToRightLowerArm.Thickness = self.Options.SkeletonThickness
             playerESP.Skeleton.RightUpperArmToRightLowerArm.Visible = true
             
-            playerESP.Skeleton.LeftUpperArmToLeftLowerArm.From = Vector2.new(leftUpperArmPos.X, leftUpperArmPos.Y)
-            playerESP.Skeleton.LeftUpperArmToLeftLowerArm.To = Vector2.new(leftLowerArmPos.X, leftLowerArmPos.Y)
+            playerESP.Skeleton.LeftUpperArmToLeftLowerArm.From = Vector2New(leftUpperArmPos.X, leftUpperArmPos.Y)
+            playerESP.Skeleton.LeftUpperArmToLeftLowerArm.To = Vector2New(leftLowerArmPos.X, leftLowerArmPos.Y)
             playerESP.Skeleton.LeftUpperArmToLeftLowerArm.Color = color
             playerESP.Skeleton.LeftUpperArmToLeftLowerArm.Thickness = self.Options.SkeletonThickness
             playerESP.Skeleton.LeftUpperArmToLeftLowerArm.Visible = true
             
             -- Neck to Lower Torso
             playerESP.Skeleton.NeckToLowerTorso.From = neckPos
-            playerESP.Skeleton.NeckToLowerTorso.To = Vector2.new(lowerTorsoPos.X, lowerTorsoPos.Y)
+            playerESP.Skeleton.NeckToLowerTorso.To = Vector2New(lowerTorsoPos.X, lowerTorsoPos.Y)
             playerESP.Skeleton.NeckToLowerTorso.Color = color
             playerESP.Skeleton.NeckToLowerTorso.Thickness = self.Options.SkeletonThickness
             playerESP.Skeleton.NeckToLowerTorso.Visible = true
             
             -- Lower Torso to Legs
-            playerESP.Skeleton.LowerTorsoToRightUpperLeg.From = Vector2.new(lowerTorsoPos.X, lowerTorsoPos.Y)
-            playerESP.Skeleton.LowerTorsoToRightUpperLeg.To = Vector2.new(rightUpperLegPos.X, rightUpperLegPos.Y)
+            playerESP.Skeleton.LowerTorsoToRightUpperLeg.From = Vector2New(lowerTorsoPos.X, lowerTorsoPos.Y)
+            playerESP.Skeleton.LowerTorsoToRightUpperLeg.To = Vector2New(rightUpperLegPos.X, rightUpperLegPos.Y)
             playerESP.Skeleton.LowerTorsoToRightUpperLeg.Color = color
             playerESP.Skeleton.LowerTorsoToRightUpperLeg.Thickness = self.Options.SkeletonThickness
             playerESP.Skeleton.LowerTorsoToRightUpperLeg.Visible = true
             
-            playerESP.Skeleton.LowerTorsoToLeftUpperLeg.From = Vector2.new(lowerTorsoPos.X, lowerTorsoPos.Y)
-            playerESP.Skeleton.LowerTorsoToLeftUpperLeg.To = Vector2.new(leftUpperLegPos.X, leftUpperLegPos.Y)
+            playerESP.Skeleton.LowerTorsoToLeftUpperLeg.From = Vector2New(lowerTorsoPos.X, lowerTorsoPos.Y)
+            playerESP.Skeleton.LowerTorsoToLeftUpperLeg.To = Vector2New(leftUpperLegPos.X, leftUpperLegPos.Y)
             playerESP.Skeleton.LowerTorsoToLeftUpperLeg.Color = color
             playerESP.Skeleton.LowerTorsoToLeftUpperLeg.Thickness = self.Options.SkeletonThickness
             playerESP.Skeleton.LowerTorsoToLeftUpperLeg.Visible = true
             
             -- Upper to Lower Legs
-            playerESP.Skeleton.RightUpperLegToRightLowerLeg.From = Vector2.new(rightUpperLegPos.X, rightUpperLegPos.Y)
-            playerESP.Skeleton.RightUpperLegToRightLowerLeg.To = Vector2.new(rightLowerLegPos.X, rightLowerLegPos.Y)
+            playerESP.Skeleton.RightUpperLegToRightLowerLeg.From = Vector2New(rightUpperLegPos.X, rightUpperLegPos.Y)
+            playerESP.Skeleton.RightUpperLegToRightLowerLeg.To = Vector2New(rightLowerLegPos.X, rightLowerLegPos.Y)
             playerESP.Skeleton.RightUpperLegToRightLowerLeg.Color = color
             playerESP.Skeleton.RightUpperLegToRightLowerLeg.Thickness = self.Options.SkeletonThickness
             playerESP.Skeleton.RightUpperLegToRightLowerLeg.Visible = true
             
-            playerESP.Skeleton.LeftUpperLegToLeftLowerLeg.From = Vector2.new(leftUpperLegPos.X, leftUpperLegPos.Y)
-            playerESP.Skeleton.LeftUpperLegToLeftLowerLeg.To = Vector2.new(leftLowerLegPos.X, leftLowerLegPos.Y)
+            playerESP.Skeleton.LeftUpperLegToLeftLowerLeg.From = Vector2New(leftUpperLegPos.X, leftUpperLegPos.Y)
+            playerESP.Skeleton.LeftUpperLegToLeftLowerLeg.To = Vector2New(leftLowerLegPos.X, leftLowerLegPos.Y)
             playerESP.Skeleton.LeftUpperLegToLeftLowerLeg.Color = color
             playerESP.Skeleton.LeftUpperLegToLeftLowerLeg.Thickness = self.Options.SkeletonThickness
             playerESP.Skeleton.LeftUpperLegToLeftLowerLeg.Visible = true
             
             -- Lower Legs to Feet
-            playerESP.Skeleton.RightLowerLegToRightFoot.From = Vector2.new(rightLowerLegPos.X, rightLowerLegPos.Y)
-            playerESP.Skeleton.RightLowerLegToRightFoot.To = Vector2.new(rightFootPos.X, rightFootPos.Y)
+            playerESP.Skeleton.RightLowerLegToRightFoot.From = Vector2New(rightLowerLegPos.X, rightLowerLegPos.Y)
+            playerESP.Skeleton.RightLowerLegToRightFoot.To = Vector2New(rightFootPos.X, rightFootPos.Y)
             playerESP.Skeleton.RightLowerLegToRightFoot.Color = color
             playerESP.Skeleton.RightLowerLegToRightFoot.Thickness = self.Options.SkeletonThickness
             playerESP.Skeleton.RightLowerLegToRightFoot.Visible = true
             
-            playerESP.Skeleton.LeftLowerLegToLeftFoot.From = Vector2.new(leftLowerLegPos.X, leftLowerLegPos.Y)
-            playerESP.Skeleton.LeftLowerLegToLeftFoot.To = Vector2.new(leftFootPos.X, leftFootPos.Y)
+            playerESP.Skeleton.LeftLowerLegToLeftFoot.From = Vector2New(leftLowerLegPos.X, leftLowerLegPos.Y)
+            playerESP.Skeleton.LeftLowerLegToLeftFoot.To = Vector2New(leftFootPos.X, leftFootPos.Y)
             playerESP.Skeleton.LeftLowerLegToLeftFoot.Color = color
             playerESP.Skeleton.LeftLowerLegToLeftFoot.Thickness = self.Options.SkeletonThickness
             playerESP.Skeleton.LeftLowerLegToLeftFoot.Visible = true
@@ -411,14 +415,14 @@ function MainESP:UpdateSkeleton(playerESP, player, onScreen)
                 local rightHandPos = MainESP:GetCachedPosition(rightHand, "RightHand", player)
                 local leftHandPos = MainESP:GetCachedPosition(leftHand, "LeftHand", player)
                 
-                playerESP.Skeleton.RightLowerArmToRightHand.From = Vector2.new(rightLowerArmPos.X, rightLowerArmPos.Y)
-                playerESP.Skeleton.RightLowerArmToRightHand.To = Vector2.new(rightHandPos.X, rightHandPos.Y)
+                playerESP.Skeleton.RightLowerArmToRightHand.From = Vector2New(rightLowerArmPos.X, rightLowerArmPos.Y)
+                playerESP.Skeleton.RightLowerArmToRightHand.To = Vector2New(rightHandPos.X, rightHandPos.Y)
                 playerESP.Skeleton.RightLowerArmToRightHand.Color = color
                 playerESP.Skeleton.RightLowerArmToRightHand.Thickness = self.Options.SkeletonThickness
                 playerESP.Skeleton.RightLowerArmToRightHand.Visible = true
                 
-                playerESP.Skeleton.LeftLowerArmToLeftHand.From = Vector2.new(leftLowerArmPos.X, leftLowerArmPos.Y)
-                playerESP.Skeleton.LeftLowerArmToLeftHand.To = Vector2.new(leftHandPos.X, leftHandPos.Y)
+                playerESP.Skeleton.LeftLowerArmToLeftHand.From = Vector2New(leftLowerArmPos.X, leftLowerArmPos.Y)
+                playerESP.Skeleton.LeftLowerArmToLeftHand.To = Vector2New(leftHandPos.X, leftHandPos.Y)
                 playerESP.Skeleton.LeftLowerArmToLeftHand.Color = color
                 playerESP.Skeleton.LeftLowerArmToLeftHand.Thickness = self.Options.SkeletonThickness
                 playerESP.Skeleton.LeftLowerArmToLeftHand.Visible = true
@@ -429,7 +433,7 @@ function MainESP:UpdateSkeleton(playerESP, player, onScreen)
             end
         else
             -- Hide all if missing parts
-            for _, line in pairs(playerESP.Skeleton) do
+            for _, line in playerESP.Skeleton do
                 if line and line.Visible ~= nil then
                     line.Visible = false
                 end
@@ -452,10 +456,10 @@ function MainESP:UpdateSkeleton(playerESP, player, onScreen)
             local leftLegPos = MainESP:GetCachedPosition(leftLeg, "LeftLeg", player)
             
             -- Calculate neck position (between head and torso)
-            local neckPos = Vector2.new(rootPos.X, (headPos.Y + rootPos.Y) / 2)
+            local neckPos = Vector2New(rootPos.X, (headPos.Y + rootPos.Y) * 0.5)
             
             -- Head to Neck
-            playerESP.Skeleton.HeadToNeck.From = Vector2.new(headPos.X, headPos.Y)
+            playerESP.Skeleton.HeadToNeck.From = Vector2New(headPos.X, headPos.Y)
             playerESP.Skeleton.HeadToNeck.To = neckPos
             playerESP.Skeleton.HeadToNeck.Color = color
             playerESP.Skeleton.HeadToNeck.Thickness = self.Options.SkeletonThickness
@@ -463,33 +467,33 @@ function MainESP:UpdateSkeleton(playerESP, player, onScreen)
             
             -- Neck to Arms
             playerESP.Skeleton.NeckToRightUpperArm.From = neckPos
-            playerESP.Skeleton.NeckToRightUpperArm.To = Vector2.new(rightArmPos.X, rightArmPos.Y)
+            playerESP.Skeleton.NeckToRightUpperArm.To = Vector2New(rightArmPos.X, rightArmPos.Y)
             playerESP.Skeleton.NeckToRightUpperArm.Color = color
             playerESP.Skeleton.NeckToRightUpperArm.Thickness = self.Options.SkeletonThickness
             playerESP.Skeleton.NeckToRightUpperArm.Visible = true
             
             playerESP.Skeleton.NeckToLeftUpperArm.From = neckPos
-            playerESP.Skeleton.NeckToLeftUpperArm.To = Vector2.new(leftArmPos.X, leftArmPos.Y)
+            playerESP.Skeleton.NeckToLeftUpperArm.To = Vector2New(leftArmPos.X, leftArmPos.Y)
             playerESP.Skeleton.NeckToLeftUpperArm.Color = color
             playerESP.Skeleton.NeckToLeftUpperArm.Thickness = self.Options.SkeletonThickness
             playerESP.Skeleton.NeckToLeftUpperArm.Visible = true
             
             -- Neck to Torso
             playerESP.Skeleton.NeckToLowerTorso.From = neckPos
-            playerESP.Skeleton.NeckToLowerTorso.To = Vector2.new(rootPos.X, rootPos.Y)
+            playerESP.Skeleton.NeckToLowerTorso.To = Vector2New(rootPos.X, rootPos.Y)
             playerESP.Skeleton.NeckToLowerTorso.Color = color
             playerESP.Skeleton.NeckToLowerTorso.Thickness = self.Options.SkeletonThickness
             playerESP.Skeleton.NeckToLowerTorso.Visible = true
             
             -- Torso to Legs
-            playerESP.Skeleton.LowerTorsoToRightUpperLeg.From = Vector2.new(rootPos.X, rootPos.Y)
-            playerESP.Skeleton.LowerTorsoToRightUpperLeg.To = Vector2.new(rightLegPos.X, rightLegPos.Y)
+            playerESP.Skeleton.LowerTorsoToRightUpperLeg.From = Vector2New(rootPos.X, rootPos.Y)
+            playerESP.Skeleton.LowerTorsoToRightUpperLeg.To = Vector2New(rightLegPos.X, rightLegPos.Y)
             playerESP.Skeleton.LowerTorsoToRightUpperLeg.Color = color
             playerESP.Skeleton.LowerTorsoToRightUpperLeg.Thickness = self.Options.SkeletonThickness
             playerESP.Skeleton.LowerTorsoToRightUpperLeg.Visible = true
             
-            playerESP.Skeleton.LowerTorsoToLeftUpperLeg.From = Vector2.new(rootPos.X, rootPos.Y)
-            playerESP.Skeleton.LowerTorsoToLeftUpperLeg.To = Vector2.new(leftLegPos.X, leftLegPos.Y)
+            playerESP.Skeleton.LowerTorsoToLeftUpperLeg.From = Vector2New(rootPos.X, rootPos.Y)
+            playerESP.Skeleton.LowerTorsoToLeftUpperLeg.To = Vector2New(leftLegPos.X, leftLegPos.Y)
             playerESP.Skeleton.LowerTorsoToLeftUpperLeg.Color = color
             playerESP.Skeleton.LowerTorsoToLeftUpperLeg.Thickness = self.Options.SkeletonThickness
             playerESP.Skeleton.LowerTorsoToLeftUpperLeg.Visible = true
@@ -505,7 +509,7 @@ function MainESP:UpdateSkeleton(playerESP, player, onScreen)
             playerESP.Skeleton.LeftLowerLegToLeftFoot.Visible = false
         else
             -- Hide all if missing parts
-            for _, line in pairs(playerESP.Skeleton) do
+            for _, line in playerESP.Skeleton do
                 if line and line.Visible ~= nil then
                     line.Visible = false
                 end
@@ -562,7 +566,7 @@ function MainESP:CreateESP(player, object, customName, customPredicate)
                 -- Object Tracer
                 if self.ObjectOptions.Tracer and rootPos.Z > 0 then
                     ObjectESP.Tracer.From = self.TracerOrigins[self.ObjectOptions.TracerOrigin]
-                    ObjectESP.Tracer.To = Vector2.new(rootPos.X, rootPos.Y)
+                    ObjectESP.Tracer.To = Vector2New(rootPos.X, rootPos.Y)
                     ObjectESP.Tracer.Color = color
                     ObjectESP.Tracer.Thickness = self.ObjectOptions.TracerThickness
                     ObjectESP.Tracer.Visible = true
@@ -581,7 +585,7 @@ function MainESP:CreateESP(player, object, customName, customPredicate)
                     end
                     
                     ObjectESP.Info.Text = name .. distance
-                    ObjectESP.Info.Position = Vector2.new(rootPos.X, rootPos.Y)
+                    ObjectESP.Info.Position = Vector2New(rootPos.X, rootPos.Y)
                     ObjectESP.Info.Color = color
                     ObjectESP.Info.Font = self.ObjectOptions.Font
                     ObjectESP.Info.Size = self.ObjectOptions.FontSize
@@ -600,9 +604,9 @@ function MainESP:CreateESP(player, object, customName, customPredicate)
 end
 
 function MainESP:HidePlayerESP(playerESP)
-    for elementName, element in pairs(playerESP) do
+    for elementName, element in playerESP do
         if elementName == "Skeleton" then
-            for _, line in pairs(element) do
+            for _, line in element do
                 line.Visible = false
             end
         elseif elementName ~= "Connections" and elementName ~= "IsPlayer" then
@@ -619,13 +623,13 @@ function MainESP:RemoveESP(value)
     local playerName = type(value) == "userdata" and value.Name or tostring(value)
     
     -- Remove all cache entries for this player
-    for key in pairs(self._colorCache) do
+    for key in self._colorCache do
         if key:find(playerName) then
             self._colorCache[key] = nil
         end
     end
     
-    for key in pairs(self._positionCache) do
+    for key in self._positionCache do
         if key:find(playerName) then
             self._positionCache[key] = nil
         end
@@ -633,7 +637,7 @@ function MainESP:RemoveESP(value)
     
     -- Disconnect connections (only for objects)
     if container.Connections then
-        for _, connection in pairs(container.Connections) do
+        for _, connection in container.Connections do
             if connection and connection.Connected then
                 connection:Disconnect()
             end
@@ -642,9 +646,9 @@ function MainESP:RemoveESP(value)
     end
     
     -- Remove drawing objects safely
-    for elementName, element in pairs(container) do
+    for elementName, element in container do
 		pcall(function()
-			for _, line in pairs(element) do
+			for _, line in element do
 				pcall(function() line:Destroy() end)
 			end
 		end)
@@ -680,7 +684,7 @@ local function updateFPSAverage()
     local currentFPS = math.min(1 / Services.Stats.FrameTime, 200)
     
     -- Add new FPS to history
-    table.insert(ESPPerformance.fpsHistory, currentFPS)
+    ESPPerformance.fpsHistory[#ESPPerformance.fpsHistory + 1] = currentFPS
     ESPPerformance.fpsSum = ESPPerformance.fpsSum + currentFPS
     
     -- Remove old FPS if history is too large (FIXED: Better cleanup)
@@ -697,19 +701,19 @@ local function updateFPSAverage()
     end
 end
 
-local globalRenderConnection = Services.RunService.RenderStepped:Connect(function()
+Services.RunService.RenderStepped:Connect(function()
     local now = tick()
-    
+
     -- Update FPS average every frame
     updateFPSAverage()
 
 	-- Cleanup caches periodically
 	CacheManager:CleanupCaches()
-    
+
     -- Optimize every 0.5 seconds for stability
     if now - ESPPerformance.lastOptimize >= 0.5 then
         local currentAvgFPS = ESPPerformance.averageFPS
-        
+
         -- Only adjust if we have enough history for reliable average
         if #ESPPerformance.fpsHistory >= math.min(10, ESPPerformance.fpsHistorySize) then
             if currentAvgFPS < ESPPerformance.targetFPS - ESPPerformance.stabilityThreshold then
@@ -725,22 +729,22 @@ local globalRenderConnection = Services.RunService.RenderStepped:Connect(functio
             end
             -- If FPS is within threshold, don't adjust (stability)
         end
-        
+
         ESPPerformance.lastOptimize = now
         
         -- Debug output (remove in production)
         -- print(string.format("ESP: Avg FPS: %.1f, Interval: %.3f, Update Rate: %.1f", 
         --     currentAvgFPS, ESPPerformance.interval, 1/ESPPerformance.interval))
     end
-    
+
     -- Frame limiting with smooth intervals
     if now - ESPPerformance.lastUpdate < ESPPerformance.interval then
         return 
     end
     ESPPerformance.lastUpdate = now
-    
+
     -- Update all players
-    for player, playerESP in pairs(MainESP.Container) do
+    for player, playerESP in MainESP.Container do
         if playerESP.IsPlayer then
 			-- Skip if player is invalid or destroyed
             if not player or not player.Parent then
@@ -761,29 +765,29 @@ local globalRenderConnection = Services.RunService.RenderStepped:Connect(functio
 
             -- Move the entire player update logic here
             if MainESP.Options.Enabled and MainESP:PlayerAlive(player) and player.Character and (not MainESP.Options.TeamCheck or LocalPlayer.Team ~= player.Team) then
-                
+
                 local character = player.Character
                 local rootPart = character:FindFirstChild("UpperTorso") or character:FindFirstChild("Torso")
                 local head = character:FindFirstChild("Head")
-                local characterSizeHalved = select(2, character:GetBoundingBox()) / 2
-                
+                local characterSizeHalved = select(2, character:GetBoundingBox()) * 0.5
+
                 if not rootPart or not head then
                     MainESP:HidePlayerESP(playerESP)
                     continue
                 end
-                
+
                 local rootPos, onScreen = MainESP:GetCachedPosition(rootPart, "RootPart", player, true)
 				local headPos = MainESP:GetCachedPosition(head, "Head", player)
-                local topPos = MainESP.WTVP(rootPart.Position + Vector3.new(0, characterSizeHalved.Y, 0))
-                local bottomPos = MainESP.WTVP(rootPart.Position - Vector3.new(0, characterSizeHalved.Y, 0))
-                
+                local topPos = MainESP.WTVP(rootPart.Position + Vector3New(0, characterSizeHalved.Y, 0))
+                local bottomPos = MainESP.WTVP(rootPart.Position - Vector3New(0, characterSizeHalved.Y, 0))
+
                 local color = MainESP:GetColor(player, MainESP.Options.UseTeamColor, MainESP.Options.Rainbow, MainESP.Options.Color)
 
                 local boxWidth = 3000 / rootPos.Z
                 local boxHeight = topPos.Y - bottomPos.Y
-                local boxX = rootPos.X - boxWidth / 2
-                local boxY = rootPos.Y - boxHeight / 2
-                
+                local boxX = rootPos.X - boxWidth * 0.5
+                local boxY = rootPos.Y - boxHeight * 0.5
+
                 playerESP._BoxDimensions.width = boxWidth
                 playerESP._BoxDimensions.height = boxHeight
                 playerESP._BoxDimensions.x = boxX
@@ -798,7 +802,7 @@ local globalRenderConnection = Services.RunService.RenderStepped:Connect(functio
                     if MainESP.Options.Name and onScreen then
                         local dynamicOffsetY = dims.height * 1.1
                         if not infoX then
-                            infoX = dims.x + dims.width / 2
+                            infoX = dims.x + dims.width * 0.5
                         end
 
                         playerESP.Name.Text = player.DisplayName
@@ -806,7 +810,7 @@ local globalRenderConnection = Services.RunService.RenderStepped:Connect(functio
                             playerESP.Name.Text ..= "\n" .. "[" .. tostring(math.round(distance)) .. " studs]"
                         end
 
-                        playerESP.Name.Position = Vector2.new(infoX, topPos.Y - 25)
+                        playerESP.Name.Position = Vector2New(infoX, topPos.Y - 25)
                         playerESP.Name.Color = color
                         playerESP.Name.Font = MainESP.Options.Font
                         playerESP.Name.Size = MainESP.Options.FontSize
@@ -816,23 +820,23 @@ local globalRenderConnection = Services.RunService.RenderStepped:Connect(functio
                     else
                         playerESP.Name.Visible = false
                     end
-                    
+
                     -- Hide other elements
                     playerESP.Box.Visible = false
                     playerESP.Health.Visible = false
                     playerESP.Distance.Visible = false
                     playerESP.Direction.Visible = false
                     playerESP.Tracer.Visible = false
-                    for _, line in pairs(playerESP.Skeleton) do
+                    for _, line in playerESP.Skeleton do
                         line.Visible = false
                     end
                     continue
                 end
-                
+
                 -- Box ESP (full/medium detail)
                 if MainESP.Options.Box and onScreen then
-                    playerESP.Box.Size = Vector2.new(boxWidth, boxHeight)
-                    playerESP.Box.Position = Vector2.new(boxX, boxY)
+                    playerESP.Box.Size = Vector2New(boxWidth, boxHeight)
+                    playerESP.Box.Position = Vector2New(boxX, boxY)
                     playerESP.Box.Color = color
                     playerESP.Box.Thickness = MainESP.Options.BoxThickness
                     playerESP.Box.Visible = true
@@ -841,7 +845,7 @@ local globalRenderConnection = Services.RunService.RenderStepped:Connect(functio
                 end
 
 				local dims = playerESP._BoxDimensions
-                
+
                 -- Health ESP (full detail)
 				if MainESP.Options.Health and onScreen and playerESP.Box.Visible and detailLevel == "full" then
 					local health, maxHealth = MainESP.GetHealth(player)
@@ -851,42 +855,42 @@ local globalRenderConnection = Services.RunService.RenderStepped:Connect(functio
 					local healthHeight = dims.height * healthPerc
 					local offsetX = dims.width * 0.150
 
-					playerESP.Health.Size = Vector2.new(healthWidth, healthHeight)
-					playerESP.Health.Position = Vector2.new(dims.x - offsetX, dims.y)
+					playerESP.Health.Size = Vector2New(healthWidth, healthHeight)
+					playerESP.Health.Position = Vector2New(dims.x - offsetX, dims.y)
 					playerESP.Health.Color = Color3.fromHSV(healthPerc * 0.3, 1, 1)
 					playerESP.Health.Filled = true
 					playerESP.Health.Visible = true
 				else
 					playerESP.Health.Visible = false
 				end
-                
+
                 -- Tracer ESP (full detail)
                 if MainESP.Options.Tracer and rootPos.Z > 0 and detailLevel == "full" then
                     local upperTorso, neckPos = character:FindFirstChild("UpperTorso")
                     if upperTorso then
                         local upperTorsoPos = MainESP:GetCachedPosition(upperTorso, "UpperTorso", player)
-                        neckPos = Vector2.new(upperTorsoPos.X, (headPos.Y + upperTorsoPos.Y) / 2)
+                        neckPos = Vector2New(upperTorsoPos.X, (headPos.Y + upperTorsoPos.Y) * 0.5)
                     else
-                        neckPos = Vector2.new(rootPos.X, (headPos.Y + rootPos.Y) / 2)
+                        neckPos = Vector2New(rootPos.X, (headPos.Y + rootPos.Y) * 0.5)
                     end
 
                     playerESP.Tracer.From = MainESP.TracerOrigins[MainESP.Options.TracerOrigin]
-                    playerESP.Tracer.To = Vector2.new(neckPos.X, neckPos.Y)
+                    playerESP.Tracer.To = Vector2New(neckPos.X, neckPos.Y)
                     playerESP.Tracer.Color = color
                     playerESP.Tracer.Thickness = MainESP.Options.TracerThickness
                     playerESP.Tracer.Visible = true
                 else
                     playerESP.Tracer.Visible = false
                 end
-                
+
                 -- Name ESP (full/medium detail)
                 if MainESP.Options.Name and onScreen then
                     if not infoX then
-                        infoX = dims.x + dims.width / 2
+                        infoX = dims.x + dims.width * 0.5
                     end
-                    
+
                     playerESP.Name.Text = player.DisplayName
-                    playerESP.Name.Position = Vector2.new(infoX, topPos.Y - 25)
+                    playerESP.Name.Position = Vector2New(infoX, topPos.Y - 25)
                     playerESP.Name.Color = color
                     playerESP.Name.Font = MainESP.Options.Font
                     playerESP.Name.Size = MainESP.Options.FontSize
@@ -896,16 +900,16 @@ local globalRenderConnection = Services.RunService.RenderStepped:Connect(functio
                 else
                     playerESP.Name.Visible = false
                 end
-                
+
                 -- Distance ESP (full/medium detail)
 				if MainESP.Options.Distance and onScreen then
 					local dynamicOffsetY = dims.height * 0.1
                     if not infoX then
-                        infoX = dims.x + dims.width / 2
+                        infoX = dims.x + dims.width * 0.5
                     end
 
 					playerESP.Distance.Text = "[" .. tostring(math.round(distance)) .. " studs]"
-					playerESP.Distance.Position = Vector2.new(infoX, dims.y - dynamicOffsetY)
+					playerESP.Distance.Position = Vector2New(infoX, dims.y - dynamicOffsetY)
 					playerESP.Distance.Color = color
 					playerESP.Distance.Font = MainESP.Options.Font
 					playerESP.Distance.Size = MainESP.Options.FontSize
@@ -915,19 +919,19 @@ local globalRenderConnection = Services.RunService.RenderStepped:Connect(functio
 				else
 					playerESP.Distance.Visible = false
 				end
-                
+
                 -- Direction ESP (full detail)
                 if MainESP.Options.Direction and onScreen and detailLevel == "full" then
                     local offset = MainESP.WTVP((head.CFrame * CFrame.new(0, 0, -head.Size.Z)).Position)
-                    playerESP.Direction.From = Vector2.new(headPos.X, headPos.Y)
-                    playerESP.Direction.To = Vector2.new(offset.X, offset.Y)
+                    playerESP.Direction.From = Vector2New(headPos.X, headPos.Y)
+                    playerESP.Direction.To = Vector2New(offset.X, offset.Y)
                     playerESP.Direction.Color = color
                     playerESP.Direction.Thickness = MainESP.Options.DirectionThickness
                     playerESP.Direction.Visible = true
                 else
                     playerESP.Direction.Visible = false
                 end
-                
+
                 -- Skeleton ESP (full detail)
                 MainESP:UpdateSkeleton(playerESP, player, onScreen and detailLevel == "full")
                 
@@ -939,101 +943,102 @@ local globalRenderConnection = Services.RunService.RenderStepped:Connect(functio
 end)
 
 --[[ Game Compatibility ]]--
-local CompatibilityFuncs = {
-    [292439477] = function() -- Phantom Forces
-        for _, v in pairs(getgc(true)) do
-            if type(v) == "function" and islclosure(v) then
-                local constants = getconstants(v)
-                if getinfo(v).name == "gethealth" and table.find(constants, "alive") then
-                    MainESP.GetHealth = v
-                end
-            elseif type(v) == "table" and rawget(v, "getbodyparts") then
-                getgenv().PF_Replication = v
-            end
-        end
-        
-        Services.RunService.Stepped:Connect(function()
-            for _, player in pairs(Services.Players:GetPlayers()) do
-                if player ~= LocalPlayer then
-                    local body = getgenv().PF_Replication.getbodyparts(player)
-                    if body and rawget(body, "rootpart") then
-                        player.Character = body.rootpart.Parent
-                    else
-                        player.Character = nil
+do
+    local CompatibilityFuncs = {
+        ["292439477"] = function() -- Phantom Forces
+            for _, v in getgc(true) do
+                if type(v) == "function" and islclosure(v) then
+                    local constants = getconstants(v)
+                    if getinfo(v).name == "gethealth" and table.find(constants, "alive") then
+                        MainESP.GetHealth = v
                     end
+                elseif type(v) == "table" and rawget(v, "getbodyparts") then
+                    getgenv().PF_Replication = v
                 end
             end
-        end)
-    end,
-    
-    [286090429] = function() -- Arsenal
-        MainESP.GetHealth = function(player)
-            return player.NRPBS.Health.Value, 100
-        end
-    end,
 
-    [6172932937] = function() -- Energy Assault
-		MainESP.GetHealth = function(Player)
-			return Player.health.Value, 100
-		end
-	end,
-    
-    [142823291] = function() -- Murder Mystery 2
-        local murderTeam = Instance.new("Team")
-        murderTeam.Name = "Murderer"
-        murderTeam.TeamColor = BrickColor.new("Bright red")
-        murderTeam.Parent = game.Teams
-        
-        local sheriffTeam = Instance.new("Team")
-        sheriffTeam.Name = "Sheriff" 
-        sheriffTeam.TeamColor = BrickColor.new("Bright blue")
-        sheriffTeam.Parent = game.Teams
-        
-        local innocentTeam = Instance.new("Team")
-        innocentTeam.Name = "Innocent"
-        innocentTeam.TeamColor = BrickColor.new("Bright green")
-        innocentTeam.Parent = game.Teams
-        
-        task.spawn(function()
-            while true do
-                local success, playerData = pcall(function()
-                    return Services.ReplicatedStorage.GetPlayerData:InvokeServer()
-                end)
-                
-                if success and playerData then
-                    for _, player in pairs(Services.Players:GetPlayers()) do
-                        if playerData[player.Name] and playerData[player.Name].Role then
-                            player.Team = game.Teams[playerData[player.Name].Role]
+            Services.RunService.Stepped:Connect(function()
+                for _, player in Services.Players:GetPlayers() do
+                    if player ~= LocalPlayer then
+                        local body = getgenv().PF_Replication.getbodyparts(player)
+                        if body and rawget(body, "rootpart") then
+                            player.Character = body.rootpart.Parent
                         else
-                            player.Team = innocentTeam
+                            player.Character = nil
                         end
                     end
                 end
-                task.wait(1)
+            end)
+        end,
+
+        ["286090429"] = function() -- Arsenal
+            MainESP.GetHealth = function(player)
+                return player.NRPBS.Health.Value, 100
             end
-        end)
-    end,
+        end,
 
-    [893973440] = function() -- Flee the Facility
-		local beast = Instance.new("Team", game:GetService("Teams"))
-		beast.Name = "Beast"
-		beast.TeamColor = BrickColor.new(255, 0, 0)
+        ["6172932937"] = function() -- Energy Assault
+            MainESP.GetHealth = function(Player)
+                return Player.health.Value, 100
+            end
+        end,
 
-		game:GetService("RunService").Heartbeat:Connect(function()
-			for _, player in pairs(Services.Players:GetPlayers()) do
-				if player.Character and player.Character:FindFirstChild("Hammer") then
-					player.Team = beast
-				else
-					player.Team = nil
-				end
-			end
-		end)
-	end,
-}
+        ["142823291"] = function() -- Murder Mystery 2
+            local murderTeam = Instance.new("Team")
+            murderTeam.Name = "Murderer"
+            murderTeam.TeamColor = BrickColor.new("Bright red")
+            murderTeam.Parent = game.Teams
+            
+            local sheriffTeam = Instance.new("Team")
+            sheriffTeam.Name = "Sheriff" 
+            sheriffTeam.TeamColor = BrickColor.new("Bright blue")
+            sheriffTeam.Parent = game.Teams
+            
+            local innocentTeam = Instance.new("Team")
+            innocentTeam.Name = "Innocent"
+            innocentTeam.TeamColor = BrickColor.new("Bright green")
+            innocentTeam.Parent = game.Teams
+            
+            task.spawn(function()
+                while true do
+                    local success, playerData = pcall(function()
+                        return Services.ReplicatedStorage.GetPlayerData:InvokeServer()
+                    end)
 
--- Apply game-specific compatibility
-if CompatibilityFuncs[game.PlaceId] then
-    CompatibilityFuncs[game.PlaceId]()
+                    if success and playerData then
+                        for _, player in Services.Players:GetPlayers() do
+                            if not playerData[player.Name] then
+                                continue
+                            end
+
+                            local playerRole = playerData[player.Name].Role
+                            player.Team = playerRole and game.Teams[playerRole] or innocentTeam
+                        end
+                    end
+                    task.wait(1)
+                end
+            end)
+        end,
+
+        ["893973440"] = function() -- Flee the Facility
+            local beast = Instance.new("Team", game:GetService("Teams"))
+            beast.Name = "Beast"
+            beast.TeamColor = BrickColor.new(255, 0, 0)
+
+            Services.RunService.Heartbeat:Connect(function()
+                for _, player in Services.Players:GetPlayers() do
+                    player.Team = (player.Character and player.Character:FindFirstChild("Hammer")) and beast or nil
+                end
+            end)
+        end,
+    }
+
+    -- Apply game-specific compatibility
+    if CompatibilityFuncs[tostring(game.PlaceId)] then
+        CompatibilityFuncs[tostring(game.PlaceId)]()
+    end
+
+    CompatibilityFuncs = nil
 end
 
 --[[ Player Management ]]--
@@ -1045,7 +1050,7 @@ Services.Players.PlayerRemoving:Connect(function(player)
     MainESP:RemoveESP(player.Name)
 end)
 
-for _, player in pairs(Services.Players:GetPlayers()) do
+for _, player in Services.Players:GetPlayers() do
     if player ~= LocalPlayer then
         MainESP:CreateESP(player)
     end
