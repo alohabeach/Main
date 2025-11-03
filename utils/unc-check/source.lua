@@ -212,8 +212,8 @@ addTest("clonefunction", {}, function()
 	end
 
 	local success, errorMessage = pcall(function()
-		local module = game:GetService("CoreGui").RobloxGui.Modules.Common.CommonUtil
-		local cloneFuncTest = getrenv().require(module).GetDeviceMemoryTier
+		local module = game:GetService("Players").LocalPlayer.PlayerScripts.PlayerModule
+		local cloneFuncTest = require(module).new
 		assert(typeof(cloneFuncTest) == "function" and #getupvalues(cloneFuncTest) > 0, "No function with upvalues found")
 
 		local copy = clonefunction(cloneFuncTest)
@@ -230,7 +230,7 @@ addTest("clonefunction", {}, function()
 		assert(getupvalue(cloneFuncTest, 1) ~= getupvalue(copy, 1), "Changing clone upvalues affected the original")
 	end)
 
-	assert(success, "Upvalue test failed: " .. (errorMessage or ""))
+	assert(success, "Upvalue integrity test failed: " .. (errorMessage or ""))
 end)
 
 addTest("getcallingscript", {})
