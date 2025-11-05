@@ -109,14 +109,16 @@ function Notifications:new(message: string, iconName: string?)
     newNotif.message.BackgroundTransparency = 1.000
     newNotif.message.BorderColor3 = Color3.fromRGB(0, 0, 0)
     newNotif.message.BorderSizePixel = 0
-    newNotif.message.Position = UDim2.new(0.0733131766, 0, 0, 0)
-    newNotif.message.Size = UDim2.new(0.866412938, 0, 1, 0)
+    newNotif.message.AnchorPoint = Vector2.new(0, 0.5)
+    newNotif.message.Position = UDim2.new(0.0733131766, 0, 0.5, 0)
+    newNotif.message.Size = UDim2.new(0.866412938, 0, 0.3, 0)
     newNotif.message.Font = Enum.Font.SourceSansBold
     newNotif.message.Text = message
     newNotif.message.RichText = true
     newNotif.message.TextTruncate = Enum.TextTruncate.AtEnd
     newNotif.message.TextColor3 = Color3.fromRGB(255, 255, 255)
     newNotif.message.TextSize = 16.000
+    newNotif.message.TextScaled = true
     newNotif.message.TextXAlignment = Enum.TextXAlignment.Left
     newNotif.message.TextTransparency = 1
 
