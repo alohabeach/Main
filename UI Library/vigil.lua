@@ -667,6 +667,7 @@ function Vigil.new(Name, ...)
 					default = 0;
 					min = 0;
 					max = 100;
+					prefix = '';
 					suffix = '';
 					decimals = false;
 					callback = function()
@@ -682,7 +683,7 @@ function Vigil.new(Name, ...)
 				local SliderLabel = AddInstance("TextLabel", { Parent = SliderFrame, Name = [[SliderLabel]], TextWrapped = false, BorderSizePixel = 0, BackgroundColor3 = Color3.fromRGB(255, 255, 255), AnchorPoint = Vector2.new(0, 0.5), TextSize = 16, Size = UDim2.new(0.5, 0, 1, 0), TextXAlignment = Enum.TextXAlignment.Left, BorderColor3 = Color3.fromRGB(0, 0, 0), Text = Meta.title, Font = Enum.Font.GothamMedium, Position = UDim2.new(0, 0, 0.5, 0), TextColor3 = Color3.fromRGB(255, 255, 255), BackgroundTransparency = 1,})
 				local SliderBar = AddInstance("ImageButton", { Parent = SliderFrame, Name = [[SliderBar]], AnchorPoint = Vector2.new(1, 0.5), Image = [[rbxassetid://117462785670806]], BorderSizePixel = 0, Size = UDim2.new(0.5, -20, 0, 24), ScaleType = Enum.ScaleType.Fit, BorderColor3 = Color3.fromRGB(0, 0, 0), Position = UDim2.new(1, -3, 0.5, 0), BackgroundTransparency = 1, BackgroundColor3 = Color3.fromRGB(255, 255, 255),})
 				local SliderFill = AddInstance("ImageLabel", { Parent = SliderBar, Name = [[SliderFill]], AnchorPoint = Vector2.new(0, 0.5), Image = [[rbxassetid://81914770912624]], BorderSizePixel = 0, Size = UDim2.new((Meta.default - Meta.min) / (Meta.max - Meta.min), 0, 1, 0), ScaleType = Enum.ScaleType.Slice, SliceCenter = Rect.new(12, 21, 268, 21), BorderColor3 = Color3.fromRGB(0, 0, 0), Position = UDim2.new(0, 0, 0.5, 0), BackgroundTransparency = 1, BackgroundColor3 = Color3.fromRGB(255, 255, 255),})
-				local SliderValueLabel = AddInstance("TextLabel", { Parent = SliderBar, Name = [[SliderValueLabel]], TextWrapped = false, ZIndex = 2, BorderSizePixel = 0, TextScaled = true, BackgroundColor3 = Color3.fromRGB(255, 255, 255), AnchorPoint = Vector2.new(0.5, 0.5), TextSize = 14, Size = UDim2.new(1, 0, 1, 0), TextXAlignment = Enum.TextXAlignment.Left, BorderColor3 = Color3.fromRGB(0, 0, 0), Text = `{Meta.default}{Meta.suffix}`; FontFace = Font.new('rbxasset://fonts/families/GothamSSm.json', Enum.FontWeight.SemiBold, Enum.FontStyle.Normal), Position = UDim2.new(0.5, 0, 0.5, 0), TextColor3 = Color3.fromRGB(170, 170, 170), BackgroundTransparency = 1,})
+				local SliderValueLabel = AddInstance("TextLabel", { Parent = SliderBar, Name = [[SliderValueLabel]], TextWrapped = false, ZIndex = 2, BorderSizePixel = 0, TextScaled = true, BackgroundColor3 = Color3.fromRGB(255, 255, 255), AnchorPoint = Vector2.new(0.5, 0.5), TextSize = 14, Size = UDim2.new(1, 0, 1, 0), TextXAlignment = Enum.TextXAlignment.Left, BorderColor3 = Color3.fromRGB(0, 0, 0), Text = `{Meta.prefix}{Meta.default}{Meta.suffix}`; FontFace = Font.new('rbxasset://fonts/families/GothamSSm.json', Enum.FontWeight.SemiBold, Enum.FontStyle.Normal), Position = UDim2.new(0.5, 0, 0.5, 0), TextColor3 = Color3.fromRGB(170, 170, 170), BackgroundTransparency = 1,})
 				AddInstance("UIPadding", { Parent = SliderValueLabel, PaddingTop = UDim.new(0, 6), PaddingRight = UDim.new(0, 9), PaddingLeft = UDim.new(0, 8), PaddingBottom = UDim.new(0, 6),})
 				AddInstance("UICorner", { Parent = SliderBar, CornerRadius = UDim.new(0.195121944, 0),})
 				AddInstance("UICorner", { Parent = SliderFrame, CornerRadius = UDim.new(0, 4),})
@@ -710,10 +711,10 @@ function Vigil.new(Name, ...)
 
 					if Meta.decimals then
 						Slider.Value = new_value
-						SliderValueLabel.Text = string.format("%.2f%s", Slider.Value, Meta.suffix)
+						SliderValueLabel.Text = string.format("%s%.2f%s", Meta.prefix, Slider.Value, Meta.suffix)
 					else
 						Slider.Value = math.floor(new_value)
-						SliderValueLabel.Text = `{tostring(Slider.Value)}{Meta.suffix}`
+						SliderValueLabel.Text = `{Meta.prefix}{tostring(Slider.Value)}{Meta.suffix}`
 					end
 
 					local fill_fraction = (Slider.Value - min) / (max - min)
